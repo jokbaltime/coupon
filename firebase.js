@@ -12,6 +12,8 @@ initializeApp
 
 
 
+
+
 import {
 
 getFirestore,
@@ -30,9 +32,14 @@ getDocs
 
 
 
+
+
 import {
 
-getAuth
+getAuth,
+signInWithEmailAndPassword,
+onAuthStateChanged,
+signOut
 
 } from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -41,8 +48,13 @@ getAuth
 
 
 
-// Firebase 설정값
-// 기존 본인의 설정값 그대로 유지하세요
+
+
+
+
+// =============================
+// Firebase 설정
+// =============================
 
 
 const firebaseConfig = {
@@ -67,6 +79,15 @@ const firebaseConfig = {
 
 
 
+
+
+
+
+// =============================
+// Firebase 시작
+// =============================
+
+
 const app =
 initializeApp(
 firebaseConfig
@@ -76,7 +97,12 @@ firebaseConfig
 
 
 
+
+
+// =============================
 // Firestore
+// =============================
+
 
 const db =
 getFirestore(
@@ -87,7 +113,12 @@ app
 
 
 
+
+
+// =============================
 // Authentication
+// =============================
+
 
 const auth =
 getAuth(
@@ -99,12 +130,21 @@ app
 
 
 
+
+
+
+// =============================
+// Export
+// =============================
+
+
 export {
 
 
 db,
 
 auth,
+
 
 doc,
 
@@ -116,13 +156,21 @@ updateDoc,
 
 deleteDoc,
 
+
 collection,
 
 query,
 
 where,
 
-getDocs
+getDocs,
+
+
+signInWithEmailAndPassword,
+
+onAuthStateChanged,
+
+signOut
 
 
 };
