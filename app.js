@@ -1,115 +1,207 @@
 // ======================================
-// JOKBALTIME ADMIN FIREBASE
+// JOKBALTIME CUSTOMER COUPON
+// 손님용 app.js
 // ======================================
 
-import {
-    db,
-    doc,
-    setDoc,
-    getDoc
-} from "./firebase.js";
+
+// =============================
+// 실시간 시계
+// =============================
+
+function updateClock(){
+
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth()+1).padStart(2,"0");
+    const day = String(now.getDate()).padStart(2,"0");
+
+    const hour = String(now.getHours()).padStart(2,"0");
+    const minute = String(now.getMinutes()).padStart(2,"0");
+    const second = String(now.getSeconds()).padStart(2,"0");
 
 
-const couponRef = doc(
-    db,
-    "coupon",
-    "setting"
-);
+    const clock =
+    document.getElementById("clock");
 
 
-// 로그인
+    if(clock){
 
-const loginButton =
-document.getElementById("loginButton");
-
-const loginBox =
-document.querySelector(".login-box");
-
-const adminPanel =
-document.getElementById("adminPanel");
-
-
-loginButton.addEventListener("click", async function(){
-
-    const pin =
-    document.getElementById("adminPin").value;
-
-
-    if(pin === "7812"){
-
-        loginBox.classList.add("hidden");
-
-        adminPanel.classList.remove("hidden");
-
-        loadCoupon();
-
-    }else{
-
-        alert("PIN이 올바르지 않습니다.");
-
-    }
-
-});
-
-
-// 데이터 불러오기
-
-async function loadCoupon(){
-
-    const snap =
-    await getDoc(couponRef);
-
-
-    if(snap.exists()){
-
-        const data = snap.data();
-
-
-        document.getElementById("title").value =
-        data.title || "메인메뉴";
-
-
-        document.getElementById("discount").value =
-        data.discount || 20;
-
-
-        document.getElementById("notice").value =
-        data.notice || "";
+        clock.textContent =
+        `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 
     }
 
 }
 
 
-// 저장
+updateClock();
 
-document
-.getElementById("saveButton")
-.addEventListener("click", async ()=>{
+setInterval(updateClock,1000);
 
 
-    const data={
 
-        title:
-        document.getElementById("title").value,
+// =============================
+// 쿠폰 번호 생성
+// =============================
 
+function createCouponNumber(){
 
-        discount:
-        Number(document.getElementById("discount").value),
-
-
-        notice:
-        document.getElementById("notice").value
-
-    };
+    const now = new Date();
 
 
-    await setDoc(
-        couponRef,
-        data
-    );
+    const date =
+    String(now.getFullYear()).slice(-2)
+    +
+    String(now.getMonth()+1).padStart(2,"0")
+    +
+    String(now.getDate()).padStart(2,"0");
 
 
-    alert("Firebase 저장 완료");
+    const random =
+    Math.floor(Math.random()*9000+1000);
+
+
+    const coupon =
+    document.getElementById("couponNumber");
+
+
+    if(coupon){
+
+        coupon.textContent =
+        `JT-${date}-${random}`;
+
+    }
+
+}
+
+
+createCouponNumber();
+
+
+
+// =============================
+// 메뉴 슬라이드
+// =============================
+
+
+const menuImages=[
+
+"images/menu1.jpg",
+"images/menu2.jpg",
+"images/menu3.jpg",
+"images/menu4.jpg"
+
+];
+
+
+let currentImage=0;
+
+
+const sliderImage =
+document.getElementById("sliderImage");
+
+
+const dots =
+document.querySelectorAll(".dot");
+
+
+
+function changeSlide(){
+
+
+    if(!sliderImage) return;
+
+
+    currentImage++;
+
+
+    if(currentImage >= menuImages.length){
+
+        currentImage=0;
+
+    }
+
+
+    sliderImage.style.opacity="0";
+
+
+    setTimeout(()=>{
+
+
+        sliderImage.src =
+        menuImages[currentImage];
+
+
+        sliderImage.style.opacity="1";
+
+
+    },250);
+
+
+
+    dots.forEach(dot=>{
+
+        dot.classList.remove("active");
+
+    });
+
+
+
+    if(dots[currentImage]){
+
+        dots[currentImage]
+        .classList.add("active");
+
+    }
+
+
+}
+
+
+setInterval(changeSlide,3000);
+
+
+
+// =============================
+// 직원 확인 버튼
+// =============================
+
+
+const staffButton =
+document.getElementById("staffButton");
+
+
+if(staffButton){
+
+
+staffButton.addEventListener("click",()=>{
+
+
+    const pin =
+    prompt("직원 PIN을 입력하세요.");
+
+
+    if(pin==="7812"){
+
+
+        alert(
+        "✅ 쿠폰 사용이 확인되었습니다."
+        );
+
+
+    }else{
+
+
+        alert(
+        "❌ PIN이 올바르지 않습니다."
+        );
+
+
+    }
+
 
 });
+
+
+}
