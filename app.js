@@ -17,7 +17,6 @@ onSnapshot
 
 
 
-
 // =============================
 // 쿠폰 설정 반영
 // =============================
@@ -65,6 +64,7 @@ const notice =
 document.getElementById(
 "couponNotice"
 );
+
 
 
 
@@ -244,10 +244,21 @@ createdTime:new Date()
 
 
 
+const couponNumber =
 document.getElementById(
 "couponNumber"
-).textContent =
+);
+
+
+
+if(couponNumber){
+
+
+couponNumber.textContent =
 number;
+
+
+}
 
 
 
@@ -298,13 +309,6 @@ ref
 
 
 
-const discount =
-document.querySelector(
-".discount"
-);
-
-
-
 if(snap.exists()){
 
 
@@ -333,18 +337,14 @@ body.innerHTML =
 `
 
 <h2>
-
 사용 완료된 쿠폰입니다.
-
 </h2>
 
 <p>
-
 사용일 :
 ${data.usedTime?.toDate?.()
 .toLocaleString("ko-KR")
 ||""}
-
 </p>
 
 `;
@@ -372,7 +372,10 @@ ${data.usedTime?.toDate?.()
 
 
 
+// =============================
 // 실행
+// =============================
+
 
 loadCoupon();
 
@@ -424,3 +427,38 @@ clock,
 
 
 clock();
+
+
+
+
+
+
+
+
+
+// =============================
+// 직원 확인 이동
+// =============================
+
+
+const staffButton =
+document.getElementById(
+"staffButton"
+);
+
+
+
+if(staffButton){
+
+
+staffButton.onclick = ()=>{
+
+
+location.href =
+"staff.html";
+
+
+};
+
+
+}
