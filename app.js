@@ -1,6 +1,6 @@
 // ======================================
-// JOKBaltime CUSTOMER APP
-// FIREBASE REALTIME COUPON
+// JOKBALTIME CUSTOMER APP
+// FIREBASE COUPON ISSUE v5
 // ======================================
 
 
@@ -8,6 +8,7 @@ import {
 
     db,
     doc,
+    setDoc,
     onSnapshot
 
 } from "./firebase.js";
@@ -16,11 +17,11 @@ import {
 
 
 // =============================
-// 쿠폰 데이터 위치
+// 쿠폰 설정 위치
 // =============================
 
-
-const couponRef = doc(
+const couponRef =
+doc(
     db,
     "coupon",
     "setting"
@@ -31,180 +32,76 @@ const couponRef = doc(
 
 
 // =============================
-// Firebase 실시간 쿠폰 반영
+// 쿠폰 실시간 반영
 // =============================
 
 
 onSnapshot(
-    couponRef,
-    (snapshot)=>{
+couponRef,
+(snapshot)=>{
 
 
-        if(snapshot.exists()){
+    if(snapshot.exists()){
 
 
-            const data =
-            snapshot.data();
+        const data =
+        snapshot.data();
 
 
 
-            const title =
-            document.getElementById(
-                "couponTitle"
+        const title =
+        document.getElementById(
+            "couponTitle"
+        );
+
+
+        const discount =
+        document.getElementById(
+            "discountValue"
+        );
+
+
+        const notice =
+        document.getElementById(
+            "couponNotice"
+        );
+
+
+
+        if(title){
+
+            title.textContent =
+            data.title;
+
+        }
+
+
+
+        if(discount){
+
+            discount.textContent =
+            data.discount + "%";
+
+        }
+
+
+
+        if(notice){
+
+            notice.innerHTML =
+            data.notice.replace(
+                /\n/g,
+                "<br>"
             );
-
-
-
-            const discount =
-            document.getElementById(
-                "discountValue"
-            );
-
-
-
-            const notice =
-            document.getElementById(
-                "couponNotice"
-            );
-
-
-
-
-
-            if(title){
-
-                title.textContent =
-                data.title;
-
-            }
-
-
-
-
-            if(discount){
-
-                discount.textContent =
-                data.discount + "%";
-
-            }
-
-
-
-
-
-            if(notice){
-
-                notice.innerHTML =
-                data.notice.replace(
-                    /\n/g,
-                    "<br>"
-                );
-
-            }
-
-
 
         }
 
 
     }
 
-);
 
+});
 
-
-
-
-
-
-// =============================
-// 실시간 시계
-// =============================
-
-
-function updateClock(){
-
-
-    const now =
-    new Date();
-
-
-
-    const year =
-    now.getFullYear();
-
-
-
-    const month =
-    String(
-        now.getMonth()+1
-    )
-    .padStart(2,"0");
-
-
-
-    const day =
-    String(
-        now.getDate()
-    )
-    .padStart(2,"0");
-
-
-
-    const hour =
-    String(
-        now.getHours()
-    )
-    .padStart(2,"0");
-
-
-
-    const minute =
-    String(
-        now.getMinutes()
-    )
-    .padStart(2,"0");
-
-
-
-    const second =
-    String(
-        now.getSeconds()
-    )
-    .padStart(2,"0");
-
-
-
-
-    const clock =
-    document.getElementById(
-        "clock"
-    );
-
-
-
-    if(clock){
-
-
-        clock.textContent =
-
-        `${year}-${month}-${day} ${hour}:${minute}:${second}`;
-
-
-    }
-
-
-}
-
-
-
-updateClock();
-
-
-setInterval(
-    updateClock,
-    1000
-);
 
 
 
@@ -214,11 +111,11 @@ setInterval(
 
 
 // =============================
-// 쿠폰번호 생성
+// 쿠폰번호 생성 + Firebase 저장
 // =============================
 
 
-function createCouponNumber(){
+async function createCouponNumber(){
 
 
     const now =
@@ -259,8 +156,15 @@ function createCouponNumber(){
 
 
 
-    const couponNumber =
+    const number =
 
+    `JT-${date}-${random}`;
+
+
+
+
+
+    const couponNumber =
     document.getElementById(
         "couponNumber"
     );
@@ -269,20 +173,109 @@ function createCouponNumber(){
 
     if(couponNumber){
 
-
         couponNumber.textContent =
-
-        `JT-${date}-${random}`;
-
+        number;
 
     }
+
+
+
+
+    // Firebase 저장 위치
+
+    const issueRef =
+    doc(
+        db,
+        "coupon_issue",
+        number
+    );
+
+
+
+
+
+    await setDoc(
+
+        issueRef,
+
+        {
+
+
+            couponNumber:
+            number,
+
+
+            createdTime:
+            new Date(),
+
+
+            used:false
+
+
+        }
+
+    );
+
 
 
 }
 
 
 
+
 createCouponNumber();
+
+
+
+
+
+
+
+
+
+// =============================
+// 시계
+// =============================
+
+
+function updateClock(){
+
+
+    const clock =
+    document.getElementById(
+        "clock"
+    );
+
+
+    if(!clock)
+    return;
+
+
+
+    const now =
+    new Date();
+
+
+
+    clock.textContent =
+
+    now.toLocaleString(
+        "ko-KR"
+    );
+
+
+}
+
+
+
+updateClock();
+
+
+setInterval(
+updateClock,
+1000
+);
+
 
 
 
@@ -296,7 +289,7 @@ createCouponNumber();
 // =============================
 
 
-const menuImages = [
+const menuImages=[
 
 "images/menu1.jpg",
 
@@ -309,87 +302,76 @@ const menuImages = [
 ];
 
 
-let currentImage = 0;
+let currentImage=0;
 
 
 
 const sliderImage =
 document.getElementById(
-    "sliderImage"
+"sliderImage"
 );
 
 
 
 const dots =
 document.querySelectorAll(
-    ".dot"
+".dot"
 );
-
 
 
 
 function changeSlide(){
 
 
-    if(!sliderImage)
-    return;
+if(!sliderImage)
+return;
 
 
 
-    currentImage++;
+currentImage++;
 
 
 
-    if(
-        currentImage >= menuImages.length
-    ){
+if(
+currentImage >= menuImages.length
+){
 
-        currentImage = 0;
+currentImage=0;
 
-    }
-
-
-
-
-    sliderImage.style.opacity="0";
+}
 
 
 
-    setTimeout(()=>{
-
-
-        sliderImage.src =
-        menuImages[currentImage];
-
-
-        sliderImage.style.opacity="1";
-
-
-    },250);
+sliderImage.style.opacity="0";
 
 
 
+setTimeout(()=>{
 
 
-    dots.forEach(
-        dot=>
-        dot.classList.remove(
-            "active"
-        )
-    );
+sliderImage.src =
+menuImages[currentImage];
+
+
+sliderImage.style.opacity="1";
+
+
+},250);
 
 
 
-    if(dots[currentImage]){
+dots.forEach(
+d=>d.classList.remove("active")
+);
 
 
-        dots[currentImage]
-        .classList.add(
-            "active"
-        );
 
+if(dots[currentImage]){
 
-    }
+dots[currentImage]
+.classList.add("active");
+
+}
 
 
 }
@@ -397,6 +379,6 @@ function changeSlide(){
 
 
 setInterval(
-    changeSlide,
-    3000
+changeSlide,
+3000
 );
