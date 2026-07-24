@@ -1,12 +1,12 @@
 // ======================================
-// JOKBALTlME ADMIN LOGIN TEST
-// FIREBASE AUTH
+// JOKBALTlME ADMIN
+// FIREBASE AUTH LOGIN TEST v1
 // ======================================
 
 
 import {
 
-auth
+    auth
 
 } from "./firebase.js";
 
@@ -14,9 +14,9 @@ auth
 
 import {
 
-signInWithEmailAndPassword,
-onAuthStateChanged,
-signOut
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
 
 } from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -25,25 +25,28 @@ signOut
 
 
 
+// =============================
+// 화면 요소
+// =============================
 
 
 const loginButton =
 document.getElementById(
-"loginButton"
+    "loginButton"
 );
 
 
 
 const loginBox =
 document.querySelector(
-".login-box"
+    ".login-box"
 );
 
 
 
 const adminPanel =
 document.getElementById(
-"adminPanel"
+    "adminPanel"
 );
 
 
@@ -52,145 +55,165 @@ document.getElementById(
 
 
 
+
+
 // =============================
-// 로그인
+// 로그인 버튼
 // =============================
 
 
 if(loginButton){
 
 
-loginButton.onclick = async()=>{
+loginButton.addEventListener(
 
+"click",
 
-const email =
-document
-.getElementById(
-"adminEmail"
-)
-.value
-.trim();
+async()=>{
 
 
 
-const password =
-document
-.getElementById(
-"adminPassword"
-)
-.value
-.trim();
+    const email =
+    document.getElementById(
+        "adminEmail"
+    )
+    .value
+    .trim();
 
 
 
 
 
-console.log(
-"입력 이메일:",
-email
-);
-
-
-
-console.log(
-"비밀번호 길이:",
-password.length
-);
+    const password =
+    document.getElementById(
+        "adminPassword"
+    )
+    .value
+    .trim();
 
 
 
 
 
 
-if(!email || !password){
+
+    console.log(
+        "입력 이메일:",
+        email
+    );
 
 
-alert(
-"이메일과 비밀번호를 입력하세요."
-);
+
+    console.log(
+        "비밀번호 길이:",
+        password.length
+    );
 
 
-return;
+
+
+
+
+
+    if(!email || !password){
+
+
+        alert(
+            "이메일과 비밀번호를 입력하세요."
+        );
+
+
+        return;
+
+
+    }
+
+
+
+
+
+
+
+
+    try{
+
+
+        const result =
+
+        await signInWithEmailAndPassword(
+
+            auth,
+
+            email,
+
+            password
+
+        );
+
+
+
+
+        console.log(
+            "로그인 성공",
+            result.user.email
+        );
+
+
+
+
+        alert(
+            "로그인 성공"
+        );
+
+
+
+
+        showAdmin();
+
+
+
+    }
+
+
+
+    catch(error){
+
+
+
+        console.log(
+            "Firebase 오류:",
+            error
+        );
+
+
+
+        alert(
+
+            "로그인 실패\n\n" +
+
+            error.code +
+
+            "\n\n" +
+
+            error.message
+
+        );
+
+
+
+    }
+
 
 
 }
 
 
-
-
-
-
-try{
-
-
-await signInWithEmailAndPassword(
-
-auth,
-
-email,
-
-password
-
 );
-
-
-
-alert(
-"로그인 성공"
-);
-
-
-
-if(loginBox){
-
-loginBox.classList.add(
-"hidden"
-);
-
-}
-
-
-
-if(adminPanel){
-
-adminPanel.classList.remove(
-"hidden"
-);
-
-}
-
 
 
 }
 
 
-
-catch(error){
-
-
-
-console.log(
-error
-);
-
-
-
-alert(
-"로그인 실패 : "
-+
-error.code
-);
-
-
-
-}
-
-
-
-};
-
-
-}
 
 
 
@@ -199,7 +222,7 @@ error.code
 
 
 // =============================
-// 로그인 유지
+// 로그인 상태 확인
 // =============================
 
 
@@ -210,42 +233,32 @@ auth,
 (user)=>{
 
 
-if(user){
+
+    if(user){
 
 
 
-console.log(
-"로그인 유지:",
-user.email
-);
+        console.log(
+
+            "현재 로그인:",
+            user.email
+
+        );
 
 
 
-if(loginBox){
-
-loginBox.classList.add(
-"hidden"
-);
-
-}
+        showAdmin();
 
 
 
-if(adminPanel){
-
-adminPanel.classList.remove(
-"hidden"
-);
-
-}
+    }
 
 
 
 }
 
+);
 
-
-});
 
 
 
@@ -255,35 +268,31 @@ adminPanel.classList.remove(
 
 
 // =============================
-// 로그아웃
+// 관리자 화면 표시
 // =============================
 
 
-const logoutButton =
-document.getElementById(
-"logoutButton"
-);
+function showAdmin(){
 
 
 
-if(logoutButton){
+    if(loginBox){
 
 
-logoutButton.onclick =
-async()=>{
+        loginBox.classList.add(
+            "hidden"
+        );
 
 
-await signOut(
-auth
-);
-
-
-
-location.reload();
+    }
 
 
 
-};
 
 
-}
+    if(adminPanel){
+
+
+        adminPanel.classList.remove(
+            "hidden"
+  
