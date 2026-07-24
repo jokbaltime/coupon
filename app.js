@@ -454,8 +454,18 @@ if(staffButton){
 staffButton.onclick = ()=>{
 
 
+const number =
+localStorage.getItem(
+"JT_COUPON_NUMBER"
+);
+
+
+
 location.href =
-"staff.html";
+"staff.html?coupon="
++
+number;
+
 
 
 };
