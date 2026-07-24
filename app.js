@@ -115,3 +115,35 @@ staffButton.addEventListener("click", function () {
     }
 
 });
+// =============================
+// 관리자 설정 불러오기
+// =============================
+
+function loadCouponData() {
+
+    const title = localStorage.getItem("title");
+    const discount = localStorage.getItem("discount");
+    const notice = localStorage.getItem("notice");
+
+    if (title) {
+
+        document.getElementById("couponTitle").textContent = title;
+
+    }
+
+    if (discount) {
+
+        document.getElementById("discountValue").textContent = discount + "%";
+
+    }
+
+    if (notice) {
+
+        document.getElementById("couponNotice").innerHTML =
+            notice.replace(/\n/g,"<br>");
+
+    }
+
+}
+
+loadCouponData();
