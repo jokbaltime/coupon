@@ -1,222 +1,306 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>족발타임 | PREMIUM COUPON</title>
+    <meta charset="UTF-8">
 
-<meta name="description" content="족발타임 메인메뉴 20% 할인쿠폰">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
+    <title>족발타임 | PREMIUM COUPON</title>
+
+    <meta name="description"
+          content="족발타임 메인메뉴 20% 할인쿠폰">
+
+    <link rel="stylesheet"
+          href="style.css">
 
 </head>
 
 <body>
 
-<!-- ===================== -->
-<!-- HEADER -->
-<!-- ===================== -->
+<!-- =======================================
+     HEADER
+======================================= -->
 
-<header>
+<header class="header">
 
-    <div class="logo">
-
-        <img src="images/logo.png" alt="족발타임 로고">
-
-    </div>
+    <img src="images/logo.png"
+         class="logo"
+         alt="족발타임">
 
     <h1>족발타임</h1>
 
-    <p class="brand-text">
+    <p class="subtitle">
         정성을 담아 삶은 족발
     </p>
-<div class="premium">
 
-PREMIUM COUPON
+    <div class="premium-badge">
 
-</div>
-    
+        PREMIUM COUPON
+
+    </div>
+
 </header>
 
-
-
-<!-- ===================== -->
-<!-- HERO IMAGE -->
-<!-- ===================== -->
+<!-- =======================================
+     HERO
+======================================= -->
 
 <section class="hero">
 
-    <img src="images/hero.jpg" alt="대표메뉴">
+    <img src="images/hero.jpg"
+         alt="족발타임 대표메뉴">
+
+    <div class="hero-overlay">
+
+        <h2>
+
+            메인메뉴
+
+            <span>20% 할인</span>
+
+        </h2>
+
+        <p>
+
+            매장 방문 고객 전용 쿠폰
+
+        </p>
+
+    </div>
 
 </section>
 
-
-
-<!-- ===================== -->
-<!-- PREMIUM COUPON -->
-<!-- ===================== -->
+<!-- =======================================
+     COUPON
+======================================= -->
 
 <section class="coupon">
 
-    <h2>PREMIUM COUPON</h2>
+    <div class="coupon-header">
 
-    <div class="discount">
-
-        메인메뉴
-
-        <span>20%</span>
-
-        할인
+        PREMIUM COUPON
 
     </div>
 
-    <div class="notice">
+    <div class="coupon-body">
 
-        <p>✔ 매장 내 식사만 가능</p>
+        <h2>
 
-        <p>✔ 포장 · 배달 제외</p>
+            메인메뉴
 
-        <p>✔ 직원에게 화면을 제시해주세요.</p>
+        </h2>
+
+        <div class="discount">
+
+            <span>20%</span>
+
+            OFF
+
+        </div>
+
+        <div class="notice">
+
+            <p>✔ 매장 내 식사만 가능</p>
+
+            <p>✔ 포장 · 배달 제외</p>
+
+            <p>✔ 직원에게 화면을 제시해주세요.</p>
+
+        </div>
+
+    </div>
+
+    <div class="ticket-line"></div>
+
+    <div class="coupon-footer">
+
+        <div>
+
+            <small>쿠폰번호</small>
+
+            <p id="couponNumber">
+
+                JT-0000
+
+            </p>
+
+        </div>
+
+        <div>
+
+            <small>현재시간</small>
+
+            <p id="clock">
+
+                Loading...
+
+            </p>
+
+        </div>
 
     </div>
 
 </section>
-
-
-
-<!-- ===================== -->
-<!-- COUPON INFO -->
-<!-- ===================== -->
-
-<section class="coupon-info">
-
-    <div>
-
-        <h3>쿠폰번호</h3>
-
-        <p id="couponNumber">
-            JT-20260724-0001
-        </p>
-
-    </div>
-
-    <div>
-
-        <h3>현재시간</h3>
-
-        <p id="clock">
-            2026-07-24 20:30:00
-        </p>
-
-    </div>
-
-</section>
-
-
-
-<!-- ===================== -->
-<!-- MENU SLIDE -->
-<!-- ===================== -->
+<!-- =======================================
+     대표 메뉴
+======================================= -->
 
 <section class="menu">
 
-<h2>대표 메뉴</h2>
+    <div class="section-title">
 
-<div class="slider">
+        <h2>대표 메뉴</h2>
 
-    <img id="sliderImage"
-         src="images/menu1.jpg"
-         alt="대표메뉴">
+        <p>족발타임의 인기 메뉴를 만나보세요.</p>
 
-</div>
+    </div>
 
-<div class="dots">
+    <div class="slider">
 
-    <span class="dot active"></span>
-    <span class="dot"></span>
-    <span class="dot"></span>
-    <span class="dot"></span>
+        <img
+            id="sliderImage"
+            src="images/menu1.jpg"
+            alt="대표메뉴">
 
-</div>
+    </div>
+
+    <div class="dots">
+
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+
+    </div>
 
 </section>
 
-
-
-<!-- ===================== -->
-<!-- BUTTON -->
-<!-- ===================== -->
-
-
-
-
-
-<!-- ===================== -->
-<!-- STORE INFO -->
-<!-- ===================== -->
+<!-- =======================================
+     매장 정보
+======================================= -->
 
 <section class="store">
 
-<h2>매장안내</h2>
+    <div class="section-title">
 
-<p>영업시간 : 15:00 ~ 24:00</p>
+        <h2>매장 안내</h2>
 
-<p>휴무 : 매주 월요일</p>
+        <p>방문 전 확인해주세요.</p>
 
-<p>전화 : 031-8087-7812</p>
+    </div>
+
+    <div class="store-card">
+
+        <div class="store-item">
+
+            <h3>🕒 영업시간</h3>
+
+            <p>15:00 ~ 24:00</p>
+
+        </div>
+
+        <div class="store-item">
+
+            <h3>📅 휴무</h3>
+
+            <p>매주 월요일</p>
+
+        </div>
+
+        <div class="store-item">
+
+            <h3>📞 전화</h3>
+
+            <p>
+                <a href="tel:03180877812">
+                    031-8087-7812
+                </a>
+            </p>
+
+        </div>
+
+        <div class="store-item">
+
+            <h3>📍 주소</h3>
+
+            <p>
+                방문 전 네이버 플레이스에서
+                위치를 확인하세요.
+            </p>
+
+        </div>
+
+    </div>
 
 </section>
-
-
-
-<!-- ===================== -->
-<!-- STAFF -->
-<!-- ===================== -->
+<!-- =======================================
+     직원 확인
+======================================= -->
 
 <section class="staff">
 
-<button id="staffButton">
+    <div class="section-title">
 
-직원 확인
+        <h2>쿠폰 사용</h2>
 
-</button>
+        <p>결제 시 직원에게 화면을 보여주세요.</p>
+
+    </div>
+
+    <button id="staffButton" class="staff-btn">
+
+        직원 확인
+
+    </button>
 
 </section>
 
+<!-- =======================================
+     하단 고정 메뉴
+======================================= -->
 
-
-<!-- ===================== -->
-<!-- FOOTER -->
-<!-- ===================== -->
-
-<footer>
-
-<p>
-
-© JokbalTime
-
-</p>
-
-</footer>
 <nav class="bottom-nav">
 
     <a href="tel:03180877812">
-        📞
+
+        <div class="nav-icon">📞</div>
+
         <span>전화</span>
+
     </a>
 
-    <a href="https://map.naver.com" target="_blank">
-        📍
+    <a href="https://map.naver.com/p/search/%EC%A1%B1%EB%B0%9C%ED%83%80%EC%9E%84"
+       target="_blank">
+
+        <div class="nav-icon">📍</div>
+
         <span>길찾기</span>
+
     </a>
 
-    <a href="https://m.place.naver.com/restaurant/2050429190/home?entry=pll&bk_query=%EC%A1%B1%EB%B0%9C%ED%83%80%EC%9E%84" target="_blank">
-        🟢
+    <a href="https://m.place.naver.com/restaurant/2050429190/home?entry=pll&bk_query=%EC%A1%B1%EB%B0%9C%ED%83%80%EC%9E%84"
+       target="_blank">
+
+        <div class="nav-icon">🟢</div>
+
         <span>플레이스</span>
+
     </a>
 
 </nav>
+
+<!-- =======================================
+     FOOTER
+======================================= -->
+
+<footer>
+
+    <p>© 2026 JokbalTime. All Rights Reserved.</p>
+
+</footer>
 
 <script src="app.js"></script>
 
