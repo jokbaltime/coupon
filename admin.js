@@ -1,9 +1,23 @@
 // ======================================
-// JOKBALTlME ADMIN LOGIN
+// JOKBALTlME ADMIN
+// LOGIN + COUPON SETTING
 // ======================================
 
 
-import { auth } from "./firebase.js";
+import {
+
+auth,
+
+db,
+
+doc,
+
+setDoc,
+
+getDoc
+
+} from "./firebase.js";
+
 
 
 import {
@@ -18,16 +32,23 @@ signOut
 
 
 
+// Firestore 위치
 
-console.log(
-"admin.js 시작"
+const couponRef =
+
+doc(
+db,
+"coupon",
+"setting"
 );
 
 
 
 
 
+
 const loginButton =
+
 document.getElementById(
 "loginButton"
 );
@@ -35,6 +56,7 @@ document.getElementById(
 
 
 const loginBox =
+
 document.querySelector(
 ".login-box"
 );
@@ -42,6 +64,7 @@ document.querySelector(
 
 
 const adminPanel =
+
 document.getElementById(
 "adminPanel"
 );
@@ -51,19 +74,14 @@ document.getElementById(
 
 
 
-
-
 function showAdmin(){
-
 
 
 if(loginBox){
 
-
 loginBox.classList.add(
 "hidden"
 );
-
 
 }
 
@@ -71,34 +89,35 @@ loginBox.classList.add(
 
 if(adminPanel){
 
-
 adminPanel.classList.remove(
 "hidden"
 );
 
+}
+
+
+loadSetting();
+
 
 }
 
 
 
-}
 
 
 
 
 
-
+// =============================
+// 로그인
+// =============================
 
 
 if(loginButton){
 
 
 
-loginButton.addEventListener(
-
-"click",
-
-async()=>{
+loginButton.onclick = async()=>{
 
 
 
@@ -120,7 +139,6 @@ document.getElementById(
 )
 .value
 .trim();
-
 
 
 
@@ -160,12 +178,6 @@ catch(error){
 
 
 
-console.log(
-error
-);
-
-
-
 alert(
 
 "로그인 실패 : "
@@ -182,10 +194,7 @@ error.code
 
 
 
-}
-
-
-);
+};
 
 
 }
@@ -195,6 +204,11 @@ error.code
 
 
 
+
+
+// =============================
+// 로그인 유지
+// =============================
 
 
 onAuthStateChanged(
@@ -204,27 +218,13 @@ auth,
 (user)=>{
 
 
-
 if(user){
-
-
-
-console.log(
-
-"로그인 유지",
-
-user.email
-
-);
-
 
 
 showAdmin();
 
 
-
 }
-
 
 
 }
@@ -236,6 +236,164 @@ showAdmin();
 
 
 
+
+
+
+// =============================
+// 쿠폰 설정 불러오기
+// =============================
+
+
+async function loadSetting(){
+
+
+
+const snap =
+
+await getDoc(
+couponRef
+);
+
+
+
+if(snap.exists()){
+
+
+
+const data = snap.data();
+
+
+
+
+document.getElementById(
+"title"
+).value =
+
+data.title || "";
+
+
+
+
+document.getElementById(
+"discount"
+).value =
+
+data.discount || 20;
+
+
+
+
+document.getElementById(
+"notice"
+).value =
+
+data.notice || "";
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =============================
+// 저장
+// =============================
+
+
+const saveButton =
+
+document.getElementById(
+"saveButton"
+);
+
+
+
+
+if(saveButton){
+
+
+
+saveButton.onclick = async()=>{
+
+
+
+await setDoc(
+
+couponRef,
+
+{
+
+
+title:
+
+document.getElementById(
+"title"
+).value,
+
+
+
+discount:
+
+Number(
+
+document.getElementById(
+"discount"
+).value
+
+),
+
+
+
+notice:
+
+document.getElementById(
+"notice"
+).value
+
+
+
+}
+
+
+
+);
+
+
+
+
+alert(
+"저장 완료"
+);
+
+
+
+};
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =============================
+// 로그아웃
+// =============================
 
 
 const logoutButton =
@@ -243,7 +401,6 @@ const logoutButton =
 document.getElementById(
 "logoutButton"
 );
-
 
 
 
@@ -259,12 +416,12 @@ auth
 );
 
 
-
 location.reload();
 
 
 
 };
+
 
 
 }
