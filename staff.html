@@ -8,21 +8,16 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-
 <title>
-족발타임 직원 쿠폰 관리
+족발타임 직원 관리
 </title>
 
 
 <style>
 
-
 *{
-
 box-sizing:border-box;
-
 }
-
 
 
 body{
@@ -31,15 +26,14 @@ margin:0;
 
 background:#111;
 
+color:white;
+
 font-family:
 Arial,
 "Noto Sans KR",
 sans-serif;
 
-color:white;
-
 }
-
 
 
 .container{
@@ -57,8 +51,7 @@ padding:20px;
 }
 
 
-
-.staff-box{
+.box{
 
 width:100%;
 
@@ -66,14 +59,11 @@ max-width:450px;
 
 background:#222;
 
-border-radius:20px;
-
 padding:30px;
 
-text-align:center;
+border-radius:20px;
 
-box-shadow:
-0 10px 30px rgba(0,0,0,.5);
+text-align:center;
 
 }
 
@@ -86,16 +76,11 @@ font-size:40px;
 }
 
 
-
 h1{
-
-font-size:26px;
 
 margin:20px 0;
 
 }
-
-
 
 
 
@@ -105,19 +90,17 @@ width:100%;
 
 height:55px;
 
+margin-bottom:15px;
+
 border-radius:12px;
 
 border:none;
 
-font-size:18px;
+padding:10px;
 
-text-align:center;
-
-margin-bottom:15px;
+font-size:17px;
 
 }
-
-
 
 
 
@@ -135,35 +118,23 @@ font-size:18px;
 
 font-weight:bold;
 
-cursor:pointer;
-
 margin-top:10px;
 
-}
-
-
-
-#checkButton{
-
-background:white;
-
-color:#111;
+cursor:pointer;
 
 }
 
 
 
-#useButton{
+#loginButton{
 
-background:#c62828;
-
-color:white;
+background:#D4AF37;
 
 }
 
 
 
-#cancelButton{
+#logoutButton{
 
 background:#555;
 
@@ -173,11 +144,37 @@ color:white;
 
 
 
+#staffArea{
+
+display:none;
+
+}
+
+
+
+.action{
+
+background:white;
+
+color:#111;
+
+}
+
+
+
+.danger{
+
+background:#c62828;
+
+color:white;
+
+}
+
 
 
 #result{
 
-margin-top:25px;
+margin-top:20px;
 
 background:#000;
 
@@ -185,23 +182,15 @@ padding:20px;
 
 border-radius:12px;
 
-font-size:20px;
-
-line-height:1.6;
-
 }
-
-
-
 
 
 
 #requestList{
 
-margin-top:25px;
+margin-top:20px;
 
 }
-
 
 
 
@@ -218,41 +207,7 @@ margin-bottom:15px;
 }
 
 
-
-.request-box h2{
-
-margin-top:0;
-
-}
-
-
-
-.request-box button{
-
-background:#D4AF37;
-
-color:#111;
-
-}
-
-
-
-
-
-.notice{
-
-margin-top:20px;
-
-font-size:14px;
-
-color:#aaa;
-
-}
-
-
-
 </style>
-
 
 </head>
 
@@ -264,26 +219,79 @@ color:#aaa;
 <div class="container">
 
 
-<div class="staff-box">
+<div class="box">
 
 
 
 <div class="logo">
-
 🍖
+</div>
+
+
+<h1>
+족발타임<br>
+직원 시스템
+</h1>
+
+
+
+
+<!-- 로그인 -->
+
+<div id="loginArea">
+
+
+<input
+
+id="email"
+
+placeholder="직원 이메일">
+
+
+<input
+
+id="password"
+
+type="password"
+
+placeholder="비밀번호">
+
+
+
+<button id="loginButton">
+
+직원 로그인
+
+</button>
+
+
 
 </div>
 
 
 
 
-<h1>
 
-족발타임<br>
 
-직원 쿠폰 확인
+<!-- 직원 영역 -->
 
-</h1>
+<div id="staffArea">
+
+
+
+<h2>
+쿠폰 관리
+</h2>
+
+
+
+<button
+
+id="logoutButton">
+
+로그아웃
+
+</button>
 
 
 
@@ -301,7 +309,9 @@ placeholder="쿠폰번호 입력">
 
 <button
 
-id="checkButton">
+id="checkButton"
+
+class="action">
 
 🔎 쿠폰 확인
 
@@ -310,10 +320,11 @@ id="checkButton">
 
 
 
-
 <button
 
-id="useButton">
+id="useButton"
+
+class="danger">
 
 ✅ 사용 완료
 
@@ -335,18 +346,14 @@ id="cancelButton">
 
 
 
-
 <div id="result">
 
-쿠폰번호를 입력하세요
+대기중
 
 </div>
 
 
 
-
-
-<!-- 고객 요청 표시 -->
 
 <div id="requestList">
 
@@ -354,21 +361,14 @@ id="cancelButton">
 
 
 
-
-
-<div class="notice">
-
-고객 요청이 실시간으로 표시됩니다.
-
 </div>
-
 
 
 
 </div>
 
-
 </div>
+
 
 
 
