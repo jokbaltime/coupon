@@ -1,19 +1,15 @@
 // ======================================
 // JOKBALTlME ADMIN
-// LOGIN + COUPON SAVE
+// FIRESTORE SAVE TEST
 // ======================================
 
 
 import {
 
 auth,
-
 db,
-
 doc,
-
 setDoc,
-
 getDoc
 
 } from "./firebase.js";
@@ -32,11 +28,13 @@ signOut
 
 
 
-const couponRef = doc(
-    db,
-    "coupon",
-    "setting"
+const couponRef =
+doc(
+db,
+"coupon",
+"setting"
 );
+
 
 
 
@@ -44,50 +42,55 @@ const couponRef = doc(
 
 const loginButton =
 document.getElementById(
-    "loginButton"
+"loginButton"
 );
 
 
 const loginBox =
 document.querySelector(
-    ".login-box"
+".login-box"
 );
 
 
 const adminPanel =
 document.getElementById(
-    "adminPanel"
+"adminPanel"
 );
 
 
 
 
 
-function showAdmin(){
 
 
-    if(loginBox){
-
-        loginBox.classList.add(
-            "hidden"
-        );
-
-    }
+function openAdmin(){
 
 
-    if(adminPanel){
+if(loginBox){
 
-        adminPanel.classList.remove(
-            "hidden"
-        );
+loginBox.classList.add(
+"hidden"
+);
 
-    }
+}
 
 
-    loadSetting();
+
+if(adminPanel){
+
+adminPanel.classList.remove(
+"hidden"
+);
+
+}
+
+
+
+loadSetting();
 
 
 }
+
 
 
 
@@ -104,71 +107,71 @@ if(loginButton){
 loginButton.onclick = async()=>{
 
 
-    const email =
-    document.getElementById(
-        "adminEmail"
-    )
-    .value
-    .trim();
+const email =
+document.getElementById(
+"adminEmail"
+)
+.value.trim();
 
 
 
-    const password =
-    document.getElementById(
-        "adminPassword"
-    )
-    .value
-    .trim();
+const password =
+document.getElementById(
+"adminPassword"
+)
+.value.trim();
 
 
 
 
-    try{
+try{
 
 
-        await signInWithEmailAndPassword(
+await signInWithEmailAndPassword(
 
-            auth,
+auth,
 
-            email,
+email,
 
-            password
+password
 
-        );
-
-
-
-        alert(
-            "로그인 성공"
-        );
+);
 
 
-        showAdmin();
+
+alert(
+"로그인 성공"
+);
 
 
-    }
+
+openAdmin();
 
 
-    catch(error){
+
+}
+
+catch(error){
 
 
-        alert(
-            "로그인 실패 : "
-            +
-            error.code
-        );
+alert(
+"로그인 실패 : "
++
+error.code
+);
 
 
-        console.log(error);
+console.log(error);
 
 
-    }
+}
 
 
 };
 
 
 }
+
 
 
 
@@ -185,13 +188,13 @@ auth,
 (user)=>{
 
 
-    if(user){
+if(user){
 
 
-        showAdmin();
+openAdmin();
 
 
-    }
+}
 
 
 }
@@ -206,9 +209,19 @@ auth,
 
 
 
-// 설정 불러오기
+// ======================
+// 불러오기
+// ======================
+
 
 async function loadSetting(){
+
+
+
+console.log(
+"Firestore 불러오기 시작"
+);
+
 
 
 try{
@@ -216,12 +229,23 @@ try{
 
 const snap =
 await getDoc(
-    couponRef
+couponRef
 );
 
 
 
+
+console.log(
+"문서 존재:",
+snap.exists()
+);
+
+
+
+
+
 if(snap.exists()){
+
 
 
 const data =
@@ -229,24 +253,44 @@ snap.data();
 
 
 
+console.log(
+"저장 데이터:",
+data
+);
+
+
+
+
+
 document.getElementById(
-    "title"
+"title"
 ).value =
 data.title || "";
 
 
 
 document.getElementById(
-    "discount"
+"discount"
 ).value =
-data.discount || 20;
+data.discount || "";
 
 
 
 document.getElementById(
-    "notice"
+"notice"
 ).value =
 data.notice || "";
+
+
+
+}
+
+else{
+
+
+console.log(
+"저장된 데이터 없음"
+);
 
 
 }
@@ -258,8 +302,8 @@ data.notice || "";
 catch(error){
 
 
-console.log(
-"불러오기 오류",
+console.error(
+"불러오기 실패",
 error
 );
 
@@ -267,6 +311,7 @@ error
 }
 
 
+
 }
 
 
@@ -277,21 +322,15 @@ error
 
 
 
-// 저장 버튼
+// ======================
+// 저장
+// ======================
+
 
 const saveButton =
 document.getElementById(
-    "saveButton"
+"saveButton"
 );
-
-
-
-console.log(
-"saveButton:",
-saveButton
-);
-
-
 
 
 
@@ -303,20 +342,13 @@ saveButton.onclick = async()=>{
 
 
 
-try{
-
-
-await setDoc(
-
-couponRef,
-
-{
+const saveData = {
 
 
 title:
 
 document.getElementById(
-    "title"
+"title"
 ).value,
 
 
@@ -326,7 +358,7 @@ discount:
 Number(
 
 document.getElementById(
-    "discount"
+"discount"
 ).value
 
 ),
@@ -336,13 +368,33 @@ document.getElementById(
 notice:
 
 document.getElementById(
-    "notice"
+"notice"
 ).value
 
 
 
-}
+};
 
+
+
+console.log(
+"저장할 데이터:",
+saveData
+);
+
+
+
+
+
+
+try{
+
+
+await setDoc(
+
+couponRef,
+
+saveData
 
 );
 
@@ -354,16 +406,18 @@ alert(
 
 
 
+await loadSetting();
+
+
+
 }
-
-
 
 catch(error){
 
 
 
-console.log(
-"저장 오류",
+console.error(
+"저장 실패",
 error
 );
 
@@ -387,17 +441,6 @@ error.code
 
 }
 
-else{
-
-
-console.log(
-"saveButton 없음"
-);
-
-
-}
-
-
 
 
 
@@ -407,9 +450,10 @@ console.log(
 
 // 로그아웃
 
+
 const logoutButton =
 document.getElementById(
-    "logoutButton"
+"logoutButton"
 );
 
 
@@ -421,7 +465,7 @@ logoutButton.onclick = async()=>{
 
 
 await signOut(
-    auth
+auth
 );
 
 
