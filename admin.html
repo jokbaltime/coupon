@@ -9,7 +9,9 @@
 content="width=device-width, initial-scale=1.0">
 
 
-<title>족발타임 관리자</title>
+<title>
+족발타임 관리자
+</title>
 
 
 <link rel="stylesheet"
@@ -26,10 +28,7 @@ href="admin.css">
 
 
 
-<!-- =====================
-     로그인
-===================== -->
-
+<!-- 로그인 -->
 
 <div class="login-box">
 
@@ -40,7 +39,7 @@ href="admin.css">
 
 
 <p>
-관리자 PIN을 입력하세요.
+관리자 PIN 입력
 </p>
 
 
@@ -64,10 +63,7 @@ id="loginButton">
 
 
 
-<!-- =====================
-     관리자 패널
-===================== -->
-
+<!-- 관리자 -->
 
 <div id="adminPanel"
 class="hidden">
@@ -84,6 +80,7 @@ class="hidden">
 
 <!-- 쿠폰 설정 -->
 
+
 <section class="card">
 
 
@@ -94,7 +91,7 @@ class="hidden">
 
 
 <label>
-할인율 (%)
+할인율
 </label>
 
 
@@ -136,6 +133,7 @@ id="notice">
 
 
 
+
 <button
 id="saveButton"
 class="save-btn">
@@ -145,8 +143,10 @@ class="save-btn">
 </button>
 
 
-
 </section>
+
+
+
 
 
 
@@ -172,7 +172,7 @@ class="save-btn">
 
 <input
 id="useCouponNumber"
-placeholder="JT-0000-0000">
+placeholder="JT-000000-0000">
 
 
 
@@ -216,11 +216,41 @@ class="cancel-btn">
 
 
 
-
 <p
 id="useResult">
 
 </p>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- 발급 목록 -->
+
+
+<section class="card">
+
+
+<h2>
+📋 최근 발급 쿠폰
+</h2>
+
+
+
+<div
+id="couponList">
+
+불러오는 중...
+
+</div>
 
 
 
@@ -236,6 +266,9 @@ id="useResult">
 
 
 </div>
+
+
+
 
 
 
