@@ -10,7 +10,10 @@ getFirestore,
 doc,
 setDoc,
 getDoc,
-onSnapshot
+onSnapshot,
+collection,
+addDoc,
+serverTimestamp
 }
 from 
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -53,6 +56,9 @@ db,
 doc,
 setDoc,
 getDoc,
-onSnapshot
+onSnapshot,
+collection,
+addDoc,
+serverTimestamp
 
 };
