@@ -1,11 +1,7 @@
 // ======================================
 // JOKBALTIME ADMIN FIREBASE
 // ======================================
-import {
-    db,
-    doc,
-    onSnapshot
-} from "./firebase.js";
+
 import {
     db,
     doc,
@@ -115,65 +111,5 @@ document
 
 
     alert("Firebase 저장 완료");
-
-});
-// ======================================
-// FIREBASE 실시간 쿠폰 반영
-// ======================================
-
-const couponRef = doc(
-    db,
-    "coupon",
-    "setting"
-);
-
-
-onSnapshot(couponRef, (snapshot)=>{
-
-
-    if(snapshot.exists()){
-
-
-        const data = snapshot.data();
-
-
-        const title =
-        document.getElementById("couponTitle");
-
-
-        const discount =
-        document.getElementById("discountValue");
-
-
-        const notice =
-        document.getElementById("couponNotice");
-
-
-
-        if(title){
-
-            title.textContent =
-            data.title;
-
-        }
-
-
-        if(discount){
-
-            discount.textContent =
-            data.discount + "%";
-
-        }
-
-
-        if(notice){
-
-            notice.innerHTML =
-            data.notice.replace(/\n/g,"<br>");
-
-        }
-
-
-    }
 
 });
