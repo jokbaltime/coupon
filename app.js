@@ -1,6 +1,10 @@
-// ===============================
+// ======================================
+// JOKBALTIME PREMIUM COUPON v2
+// ======================================
+
+// -------------------------------
 // 실시간 시계
-// ===============================
+// -------------------------------
 
 function updateClock() {
 
@@ -14,98 +18,100 @@ function updateClock() {
     const minute = String(now.getMinutes()).padStart(2, "0");
     const second = String(now.getSeconds()).padStart(2, "0");
 
-    const text =
+    document.getElementById("clock").textContent =
         `${year}-${month}-${day} ${hour}:${minute}:${second}`;
-
-    document.getElementById("clock").innerHTML = text;
-
 }
 
-setInterval(updateClock,1000);
-
 updateClock();
+setInterval(updateClock, 1000);
 
 
-// ===============================
+// -------------------------------
 // 쿠폰번호 생성
-// ===============================
+// -------------------------------
 
-function createCoupon(){
+function createCouponNumber() {
 
     const now = new Date();
 
-    const number =
-    "JT-" +
-    now.getFullYear() +
-    String(now.getMonth()+1).padStart(2,"0") +
-    String(now.getDate()).padStart(2,"0") +
-    "-" +
-    Math.floor(Math.random()*9000+1000);
+    const date =
+        String(now.getFullYear()).slice(-2) +
+        String(now.getMonth() + 1).padStart(2, "0") +
+        String(now.getDate()).padStart(2, "0");
 
-    document.getElementById("couponNumber").innerHTML = number;
+    const random =
+        Math.floor(Math.random() * 9000 + 1000);
 
+    document.getElementById("couponNumber").textContent =
+        `JT-${date}-${random}`;
 }
 
-createCoupon();
+createCouponNumber();
 
 
-// ===============================
-// 직원 확인
-// ===============================
+// -------------------------------
+// 메뉴 슬라이드
+// -------------------------------
 
-document.getElementById("staffButton").onclick=function(){
+const menuImages = [
+    "images/menu1.jpg",
+    "images/menu2.jpg",
+    "images/menu3.jpg",
+    "images/menu4.jpg"
+];
 
-    const pin=prompt("직원 PIN을 입력하세요");
+let currentImage = 0;
 
-    if(pin==="7812"){
+const sliderImage = document.getElementById("sliderImage");
+const dots = document.querySelectorAll(".dot");
 
-        alert("✅ 쿠폰 사용 완료");
+function changeSlide() {
+
+    currentImage++;
+
+    if (currentImage >= menuImages.length) {
+
+        currentImage = 0;
 
     }
 
-    else{
+    sliderImage.style.opacity = "0";
+
+    setTimeout(() => {
+
+        sliderImage.src = menuImages[currentImage];
+
+        sliderImage.style.opacity = "1";
+
+    }, 250);
+
+    dots.forEach(dot => dot.classList.remove("active"));
+
+    dots[currentImage].classList.add("active");
+
+}
+
+setInterval(changeSlide, 3000);
+
+
+// -------------------------------
+// 직원 확인
+// -------------------------------
+
+const staffButton = document.getElementById("staffButton");
+
+staffButton.addEventListener("click", function () {
+
+    const pin = prompt("직원 PIN을 입력하세요.");
+
+    if (pin === "7812") {
+
+        alert("✅ 쿠폰 사용이 확인되었습니다.");
+
+    } else {
 
         alert("❌ PIN이 올바르지 않습니다.");
 
     }
 
-};
-// ===============================
-// 메뉴 슬라이드
-// ===============================
-
-const images = [
-
-"images/menu1.jpg",
-
-"images/menu2.jpg",
-
-"images/menu3.jpg",
-
-"images/menu4.jpg"
-
-];
-
-let current=0;
-
-const slider=document.getElementById("sliderImage");
-
-const dots=document.querySelectorAll(".dot");
-
-setInterval(function(){
-
-    current++;
-
-    if(current>=images.length){
-
-        current=0;
-
-    }
-
-    slider.src=images[current];
-
-    dots.forEach(dot=>dot.classList.remove("active"));
-
-    dots[current].classList.add("active");
-
-},3000);
+});
