@@ -1,120 +1,96 @@
 // ======================================
-// JOKBALTlME ADMIN TEST
+// JOKBALTlME ADMIN LOGIN TEST
 // ======================================
-
-
-console.log("admin.js 시작");
-
 
 
 import { auth } from "./firebase.js";
 
 
 import {
-
-signInWithEmailAndPassword
-
-} from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
+
+console.log("admin.js 시작");
 
 
 
 const loginButton =
-document.getElementById(
-"loginButton"
-);
-
+document.getElementById("loginButton");
 
 
 
 if(loginButton){
 
 
-loginButton.onclick = async function(){
+    loginButton.addEventListener(
+        "click",
+        async function(){
 
 
-const email =
-document
-.getElementById(
-"adminEmail"
-)
-.value
-.trim();
-
-
-
-const password =
-document
-.getElementById(
-"adminPassword"
-)
-.value
-.trim();
+            const email =
+            document
+            .getElementById("adminEmail")
+            .value
+            .trim();
 
 
 
-
-
-console.log(
-"입력:",
-email
-);
-
-
+            const password =
+            document
+            .getElementById("adminPassword")
+            .value
+            .trim();
 
 
 
-
-try{
-
-
-await signInWithEmailAndPassword(
-
-auth,
-
-email,
-
-password
-
-);
+            console.log("EMAIL:", email);
+            console.log("PASSWORD LENGTH:", password.length);
 
 
 
-alert(
-"로그인 성공"
-);
+            try{
 
 
-
-}
-
-
-
-catch(error){
-
+                await signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
 
 
-console.log(
-error
-);
+                alert("로그인 성공");
 
 
+            }
+            catch(error){
 
-alert(
-"로그인 실패 : "
-+
-error.code
-);
 
+                console.log(error);
+
+
+                alert(
+                    "로그인 실패 : "
+                    +
+                    error.code
+                );
+
+
+            }
+
+
+        }
+    );
 
 
 }
+else{
 
 
-
-};
+    console.log(
+        "loginButton 없음"
+    );
 
 
 }
