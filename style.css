@@ -355,3 +355,155 @@ footer{
     background:#D4AF37;
 
 }
+/* ===========================
+   FADE ANIMATION
+=========================== */
+
+@keyframes fadeUp{
+
+0%{
+opacity:0;
+transform:translateY(40px);
+}
+
+100%{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+header,
+.hero,
+.coupon,
+.coupon-info,
+.menu,
+.buttons,
+.store,
+.staff{
+
+animation:fadeUp .8s ease forwards;
+
+}
+
+
+/* ===========================
+   GOLD GLOW
+=========================== */
+
+@keyframes goldGlow{
+
+0%{
+box-shadow:0 0 10px rgba(212,175,55,.2);
+}
+
+50%{
+box-shadow:0 0 30px rgba(212,175,55,.8);
+}
+
+100%{
+box-shadow:0 0 10px rgba(212,175,55,.2);
+}
+
+}
+
+.coupon{
+
+animation:goldGlow 3s infinite;
+
+}
+
+
+/* ===========================
+   DISCOUNT
+=========================== */
+
+.discount span{
+
+animation:pulse 1.8s infinite;
+
+}
+
+@keyframes pulse{
+
+0%{
+transform:scale(1);
+}
+
+50%{
+transform:scale(1.08);
+color:#FFD700;
+}
+
+100%{
+transform:scale(1);
+}
+
+}
+
+
+/* ===========================
+   BUTTON EFFECT
+=========================== */
+
+.btn{
+
+transition:.35s;
+
+}
+
+.btn:hover{
+
+transform:translateY(-4px);
+
+box-shadow:0 10px 30px rgba(212,175,55,.4);
+
+}
+
+
+/* ===========================
+   STAFF BUTTON
+=========================== */
+
+.staff button:hover{
+
+transform:scale(1.03);
+
+transition:.3s;
+
+}
+
+
+/* ===========================
+   IMAGE ZOOM
+=========================== */
+
+.hero{
+
+overflow:hidden;
+
+border-radius:25px;
+
+}
+
+.hero img{
+
+animation:zoom 12s infinite alternate;
+
+}
+
+@keyframes zoom{
+
+from{
+
+transform:scale(1);
+
+}
+
+to{
+
+transform:scale(1.12);
+
+}
+
+}
