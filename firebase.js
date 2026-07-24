@@ -5,83 +5,66 @@
 
 import {
 
-    initializeApp
+initializeApp
 
-}
-from
+} from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
 
 import {
 
-    getFirestore,
-    doc,
-    setDoc,
-    getDoc,
-    updateDoc,
-    deleteDoc,
-    collection,
-    getDocs,
-    query,
-    where,
-    orderBy,
-    onSnapshot
+getFirestore,
+doc,
+setDoc,
+getDoc,
+updateDoc,
+deleteDoc,
+collection,
+query,
+where,
+getDocs
 
-}
-from
+} from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 
+import {
+
+getAuth
+
+} from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
-// =============================
-// Firebase 설정
-// =============================
+
+
+
+// Firebase 설정값
+// 기존 본인의 설정값 그대로 유지하세요
 
 
 const firebaseConfig = {
 
 
-    apiKey:
-    "AIzaSyAykACgg1IqU-8tawPLRAfP2pKYST-PWjQ",
+    apiKey: "기존값",
 
+    authDomain: "기존값",
 
-    authDomain:
-    "jokbaltime-coupon.firebaseapp.com",
+    projectId: "기존값",
 
+    storageBucket: "기존값",
 
-    projectId:
-    "jokbaltime-coupon",
+    messagingSenderId: "기존값",
 
-
-    storageBucket:
-    "jokbaltime-coupon.firebasestorage.app",
-
-
-    messagingSenderId:
-    "1077568919018",
-
-
-    appId:
-    "1:1077568919018:web:2205193cae7848ec518e93",
-
-
-    measurementId:
-    "G-BEHR2WZR0F"
+    appId: "기존값"
 
 
 };
 
 
 
-
-
-
-// =============================
-// Firebase 시작
-// =============================
 
 
 const app =
@@ -92,6 +75,9 @@ firebaseConfig
 
 
 
+
+// Firestore
+
 const db =
 getFirestore(
 app
@@ -101,50 +87,42 @@ app
 
 
 
+// Authentication
+
+const auth =
+getAuth(
+app
+);
 
 
-// =============================
-// 외부 사용 전달
-// =============================
+
+
 
 
 export {
 
 
-    db,
+db,
 
+auth,
 
-    doc,
+doc,
 
+setDoc,
 
-    setDoc,
+getDoc,
 
+updateDoc,
 
-    getDoc,
+deleteDoc,
 
+collection,
 
-    updateDoc,
+query,
 
+where,
 
-    deleteDoc,
-
-
-    collection,
-
-
-    getDocs,
-
-
-    query,
-
-
-    where,
-
-
-    orderBy,
-
-
-    onSnapshot
+getDocs
 
 
 };
