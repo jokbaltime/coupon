@@ -1,111 +1,98 @@
 // ======================================
 // JOKBALTIME ADMIN
-// FIREBASE COUPON MANAGER
+// FIREBASE COUPON MANAGER v2
 // ======================================
 
 
 import {
 
-db,
-doc,
-setDoc,
-getDoc,
-deleteDoc
+    db,
+    doc,
+    setDoc,
+    getDoc,
+    deleteDoc,
+    collection,
+    query,
+    where,
+    getDocs
 
 } from "./firebase.js";
 
 
 
 
+// =============================
+// 쿠폰 설정 위치
+// =============================
 
-const couponRef =
 
-doc(
-
-db,
-
-"coupon",
-
-"setting"
-
+const couponRef = doc(
+    db,
+    "coupon",
+    "setting"
 );
 
 
 
 
-
 // =============================
-// 로그인
+// 관리자 로그인
 // =============================
 
 
 const loginButton =
-
-document.getElementById(
-"loginButton"
-);
-
+document.getElementById("loginButton");
 
 
 const loginBox =
-
-document.querySelector(
-".login-box"
-);
-
+document.querySelector(".login-box");
 
 
 const adminPanel =
-
-document.getElementById(
-"adminPanel"
-);
+document.getElementById("adminPanel");
 
 
 
 
-loginButton.onclick = async()=>{
+loginButton.addEventListener(
+"click",
+async function(){
 
 
-const pin =
-
-document.getElementById(
-"adminPin"
-).value;
+    const pin =
+    document.getElementById("adminPin").value;
 
 
 
-if(pin==="7812"){
+    if(pin === "7812"){
 
 
-loginBox.classList.add(
-"hidden"
-);
+        loginBox.classList.add(
+            "hidden"
+        );
 
 
-adminPanel.classList.remove(
-"hidden"
-);
+        adminPanel.classList.remove(
+            "hidden"
+        );
 
 
-loadData();
+        await loadData();
 
 
-}
-
-else{
-
-
-alert(
-"PIN이 올바르지 않습니다."
-);
+    }
+    else{
 
 
-}
+        alert(
+            "PIN이 올바르지 않습니다."
+        );
 
 
-};
+    }
 
+
+});
 
 
 
@@ -113,56 +100,53 @@ alert(
 
 
 // =============================
-// 설정 불러오기
+// Firebase 쿠폰 설정 불러오기
 // =============================
 
 
 async function loadData(){
 
 
-const snap =
-
-await getDoc(
-couponRef
-);
-
-
-
-if(snap.exists()){
-
-
-const data =
-snap.data();
+    const snap =
+    await getDoc(
+        couponRef
+    );
 
 
 
-document.getElementById(
-"title"
-).value =
-data.title;
+    if(snap.exists()){
+
+
+        const data =
+        snap.data();
 
 
 
-document.getElementById(
-"discount"
-).value =
-data.discount;
+        document.getElementById(
+            "title"
+        ).value =
+        data.title || "메인메뉴";
 
 
 
-document.getElementById(
-"notice"
-).value =
-data.notice;
+        document.getElementById(
+            "discount"
+        ).value =
+        data.discount || 20;
 
 
 
-}
+        document.getElementById(
+            "notice"
+        ).value =
+        data.notice || 
+        "매장 내 식사만 가능\n포장 · 배달 제외";
 
+
+    }
 
 
 }
-
 
 
 
@@ -175,51 +159,63 @@ data.notice;
 
 
 document
-.getElementById(
-"saveButton"
-)
-.onclick = async()=>{
-
-
-await setDoc(
-
-couponRef,
-
-{
-
-
-title:
-document.getElementById(
-"title"
-).value,
-
-
-discount:
-Number(
-document.getElementById(
-"discount"
-).value
-),
-
-
-notice:
-document.getElementById(
-"notice"
-).value
-
-
-}
-
-);
+.getElementById("saveButton")
+.addEventListener(
+"click",
+async function(){
 
 
 
-alert(
-"Firebase 저장 완료"
-);
+    const couponData = {
 
 
-};
+        title:
+
+        document.getElementById(
+            "title"
+        ).value,
+
+
+
+        discount:
+
+        Number(
+            document.getElementById(
+                "discount"
+            ).value
+        ),
+
+
+
+        notice:
+
+        document.getElementById(
+            "notice"
+        ).value
+
+
+
+    };
+
+
+
+
+    await setDoc(
+
+        couponRef,
+
+        couponData
+
+    );
+
+
+
+    alert(
+        "Firebase 저장 완료"
+    );
+
+
+});
 
 
 
@@ -232,152 +228,71 @@ alert(
 // =============================
 
 
-
 document
-.getElementById(
-"checkUseButton"
-)
-.onclick = async()=>{
+.getElementById("checkUseButton")
+.addEventListener(
+"click",
+async function(){
 
 
-const number =
 
-document.getElementById(
-"useCouponNumber"
-).value;
+    const number =
 
+    document.getElementById(
+        "useCouponNumber"
+    )
+    .value
+    .trim();
 
 
-const useRef =
 
-doc(
 
-db,
+    const result =
 
-"coupon_use",
+    document.getElementById(
+        "useResult"
+    );
 
-number
 
-);
 
 
+    if(!number){
 
 
-const snap =
+        result.innerHTML =
+        "❌ 쿠폰번호를 입력하세요.";
 
-await getDoc(
-useRef
-);
 
+        return;
 
 
-const result =
+    }
 
-document.getElementById(
-"useResult"
-);
 
 
 
 
-if(snap.exists()){
+    const q = query(
 
+        collection(
+            db,
+            "coupon_use"
+        ),
 
-result.innerHTML =
+        where(
 
-"✅ 사용완료 쿠폰입니다.";
+            "couponNumber",
+            "==",
+            number
 
+        )
 
+    );
 
-}
 
-else{
 
 
-result.innerHTML =
 
-"❌ 사용 기록이 없습니다.";
+    const snap =
 
-
-}
-
-
-
-};
-
-
-
-
-
-
-
-// =============================
-// 쿠폰 사용 취소
-// =============================
-
-
-
-document
-.getElementById(
-"cancelUseButton"
-)
-.onclick = async()=>{
-
-
-const number =
-
-document.getElementById(
-"useCouponNumber"
-).value;
-
-
-
-
-if(!number){
-
-
-alert(
-"쿠폰번호를 입력하세요."
-);
-
-
-return;
-
-
-}
-
-
-
-
-
-const useRef =
-
-doc(
-
-db,
-
-"coupon_use",
-
-number
-
-);
-
-
-
-
-await deleteDoc(
-useRef
-);
-
-
-
-
-document.getElementById(
-"useResult"
-).innerHTML =
-
-"♻️ 사용 취소 완료";
-
-
-
-};
+  
