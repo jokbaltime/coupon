@@ -21,16 +21,24 @@ href="admin.css">
 </head>
 
 
+
 <body>
+
 
 
 <div class="admin-wrap">
 
 
 
-<!-- 로그인 -->
+
+
+<!-- =========================
+     관리자 로그인
+========================= -->
+
 
 <section class="admin-card login-box">
+
 
 
 <h1>
@@ -38,9 +46,11 @@ href="admin.css">
 </h1>
 
 
+
 <p>
 관리자 이메일 로그인
 </p>
+
 
 
 
@@ -51,7 +61,10 @@ id="adminEmail"
 
 type="email"
 
-placeholder="관리자 이메일">
+placeholder="관리자 이메일"
+
+autocomplete="username">
+
 
 
 
@@ -63,7 +76,10 @@ id="adminPassword"
 
 type="password"
 
-placeholder="비밀번호">
+placeholder="비밀번호"
+
+autocomplete="current-password">
+
 
 
 
@@ -79,6 +95,7 @@ id="loginButton">
 
 
 
+
 </section>
 
 
@@ -89,7 +106,10 @@ id="loginButton">
 
 
 
-<!-- 관리자 화면 -->
+<!-- =========================
+     관리자 화면
+========================= -->
+
 
 <section
 
@@ -99,9 +119,12 @@ class="admin-card hidden">
 
 
 
+
+
 <h1>
-🍖 관리자 설정
+🍖 관리자 페이지
 </h1>
+
 
 
 
@@ -120,6 +143,7 @@ class="admin-card hidden">
 </label>
 
 
+
 <input
 
 id="title"
@@ -136,6 +160,7 @@ value="메인메뉴">
 </label>
 
 
+
 <input
 
 id="discount"
@@ -148,9 +173,12 @@ value="20">
 
 
 
+
 <label>
 안내 문구
 </label>
+
+
 
 
 <textarea
@@ -166,11 +194,12 @@ id="notice">
 
 
 
+
 <button
 
 id="saveButton">
 
-💾 저장
+저장
 
 </button>
 
@@ -189,26 +218,36 @@ id="saveButton">
 
 
 <h2>
-쿠폰 관리
+쿠폰 사용 관리
 </h2>
+
+
 
 
 
 <p>
 
-사용 처리는 직원 페이지에서 진행합니다.
+직원 쿠폰 확인 페이지에서 관리합니다.
 
 </p>
 
 
 
 
+
 <a href="staff.html">
 
-👨‍🍳 직원 쿠폰 확인 이동
+직원 페이지 이동
 
 </a>
 
+
+
+
+
+
+
+<br><br>
 
 
 
@@ -227,8 +266,9 @@ id="logoutButton">
 
 
 
-
 </section>
+
+
 
 
 
@@ -253,6 +293,8 @@ src="admin.js">
 
 
 
+
 </body>
+
 
 </html>
