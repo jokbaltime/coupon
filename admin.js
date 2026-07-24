@@ -1,5 +1,5 @@
 // ======================================
-// JOKBALTlME ADMIN LOGIN TEST
+// JOKBALTlME ADMIN LOGIN
 // ======================================
 
 
@@ -7,90 +7,264 @@ import { auth } from "./firebase.js";
 
 
 import {
-    signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+signInWithEmailAndPassword,
+onAuthStateChanged,
+signOut
+
+} from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 
-console.log("admin.js 시작");
+
+
+console.log(
+"admin.js 시작"
+);
+
+
 
 
 
 const loginButton =
-document.getElementById("loginButton");
+document.getElementById(
+"loginButton"
+);
+
+
+
+const loginBox =
+document.querySelector(
+".login-box"
+);
+
+
+
+const adminPanel =
+document.getElementById(
+"adminPanel"
+);
+
+
+
+
+
+
+
+
+function showAdmin(){
+
+
+
+if(loginBox){
+
+
+loginBox.classList.add(
+"hidden"
+);
+
+
+}
+
+
+
+if(adminPanel){
+
+
+adminPanel.classList.remove(
+"hidden"
+);
+
+
+}
+
+
+
+}
+
+
+
+
+
 
 
 
 if(loginButton){
 
 
-    loginButton.addEventListener(
-        "click",
-        async function(){
 
+loginButton.addEventListener(
 
-            const email =
-            document
-            .getElementById("adminEmail")
-            .value
-            .trim();
+"click",
+
+async()=>{
 
 
 
-            const password =
-            document
-            .getElementById("adminPassword")
-            .value
-            .trim();
+const email =
+
+document.getElementById(
+"adminEmail"
+)
+.value
+.trim();
 
 
 
-            console.log("EMAIL:", email);
-            console.log("PASSWORD LENGTH:", password.length);
+
+const password =
+
+document.getElementById(
+"adminPassword"
+)
+.value
+.trim();
 
 
 
-            try{
 
 
-                await signInWithEmailAndPassword(
-                    auth,
-                    email,
-                    password
-                );
 
 
-                alert("로그인 성공");
+try{
 
 
-            }
-            catch(error){
+await signInWithEmailAndPassword(
+
+auth,
+
+email,
+
+password
+
+);
 
 
-                console.log(error);
+
+alert(
+"로그인 성공"
+);
 
 
-                alert(
-                    "로그인 실패 : "
-                    +
-                    error.code
-                );
 
+showAdmin();
 
-            }
-
-
-        }
-    );
 
 
 }
-else{
 
 
-    console.log(
-        "loginButton 없음"
-    );
+
+catch(error){
+
+
+
+console.log(
+error
+);
+
+
+
+alert(
+
+"로그인 실패 : "
+
++
+
+error.code
+
+);
+
+
+
+}
+
+
+
+}
+
+
+);
+
+
+}
+
+
+
+
+
+
+
+
+onAuthStateChanged(
+
+auth,
+
+(user)=>{
+
+
+
+if(user){
+
+
+
+console.log(
+
+"로그인 유지",
+
+user.email
+
+);
+
+
+
+showAdmin();
+
+
+
+}
+
+
+
+}
+
+);
+
+
+
+
+
+
+
+
+const logoutButton =
+
+document.getElementById(
+"logoutButton"
+);
+
+
+
+
+if(logoutButton){
+
+
+
+logoutButton.onclick = async()=>{
+
+
+await signOut(
+auth
+);
+
+
+
+location.reload();
+
+
+
+};
 
 
 }
