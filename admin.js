@@ -1,24 +1,31 @@
 // ======================================
 // JOKBALTlME ADMIN
-// FIRESTORE SAVE TEST
+// LOGIN + FIRESTORE SETTING
 // ======================================
 
 
 import {
 
 auth,
+
 db,
+
 doc,
+
 setDoc,
+
 getDoc
 
 } from "./firebase.js";
 
 
+
 import {
 
 signInWithEmailAndPassword,
+
 onAuthStateChanged,
+
 signOut
 
 } from
@@ -27,79 +34,82 @@ signOut
 
 
 
+// Firestore 위치
 
-const couponRef =
-doc(
-db,
-"coupon",
-"setting"
+const couponRef = doc(
+    db,
+    "coupon",
+    "setting"
 );
 
 
 
 
-
+// 화면 요소
 
 const loginButton =
 document.getElementById(
-"loginButton"
+    "loginButton"
 );
 
 
 const loginBox =
 document.querySelector(
-".login-box"
+    ".login-box"
 );
 
 
 const adminPanel =
 document.getElementById(
-"adminPanel"
+    "adminPanel"
 );
 
 
 
 
 
+// =============================
+// 관리자 화면 표시
+// =============================
 
 
-function openAdmin(){
+function showAdmin(){
 
 
-if(loginBox){
+    if(loginBox){
 
-loginBox.classList.add(
-"hidden"
-);
+        loginBox.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    if(adminPanel){
+
+        adminPanel.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    loadSetting();
+
 
 }
 
 
 
-if(adminPanel){
-
-adminPanel.classList.remove(
-"hidden"
-);
-
-}
-
-
-
-loadSetting();
-
-
-}
 
 
 
 
 
-
-
-
-
+// =============================
 // 로그인
+// =============================
+
 
 if(loginButton){
 
@@ -107,64 +117,69 @@ if(loginButton){
 loginButton.onclick = async()=>{
 
 
-const email =
-document.getElementById(
-"adminEmail"
-)
-.value.trim();
+    const email =
+    document.getElementById(
+        "adminEmail"
+    )
+    .value
+    .trim();
 
 
 
-const password =
-document.getElementById(
-"adminPassword"
-)
-.value.trim();
+    const password =
+    document.getElementById(
+        "adminPassword"
+    )
+    .value
+    .trim();
 
 
 
 
-try{
+    try{
 
 
-await signInWithEmailAndPassword(
+        await signInWithEmailAndPassword(
 
-auth,
+            auth,
 
-email,
+            email,
 
-password
+            password
 
-);
-
-
-
-alert(
-"로그인 성공"
-);
+        );
 
 
 
-openAdmin();
+        alert(
+            "로그인 성공"
+        );
 
 
 
-}
-
-catch(error){
+        showAdmin();
 
 
-alert(
-"로그인 실패 : "
-+
-error.code
-);
+
+    }
 
 
-console.log(error);
+    catch(error){
 
 
-}
+        console.error(
+            error
+        );
+
+
+        alert(
+            "로그인 실패 : "
+            +
+            error.code
+        );
+
+
+    }
 
 
 };
@@ -179,7 +194,11 @@ console.log(error);
 
 
 
-// 로그인 유지
+
+// =============================
+// 로그인 상태 유지
+// =============================
+
 
 onAuthStateChanged(
 
@@ -188,13 +207,19 @@ auth,
 (user)=>{
 
 
-if(user){
+    if(user){
 
 
-openAdmin();
+        console.log(
+            "로그인 사용자:",
+            user.email
+        );
 
 
-}
+        showAdmin();
+
+
+    }
 
 
 }
@@ -209,35 +234,35 @@ openAdmin();
 
 
 
-// ======================
-// 불러오기
-// ======================
+// =============================
+// 설정 불러오기
+// =============================
 
 
 async function loadSetting(){
 
 
-
-console.log(
-"Firestore 불러오기 시작"
-);
-
-
-
 try{
 
 
+console.log(
+    "설정 불러오기"
+);
+
+
+
 const snap =
+
 await getDoc(
-couponRef
+    couponRef
 );
 
 
 
 
 console.log(
-"문서 존재:",
-snap.exists()
+    "문서 존재:",
+    snap.exists()
 );
 
 
@@ -247,50 +272,68 @@ snap.exists()
 if(snap.exists()){
 
 
-
 const data =
 snap.data();
 
 
 
 console.log(
-"저장 데이터:",
-data
+    "Firebase 데이터:",
+    data
 );
 
 
 
 
 
+
+const titleBox =
 document.getElementById(
-"title"
-).value =
+    "title"
+);
+
+
+const discountBox =
+document.getElementById(
+    "discount"
+);
+
+
+const noticeBox =
+document.getElementById(
+    "notice"
+);
+
+
+
+
+
+if(titleBox){
+
+titleBox.value =
 data.title || "";
-
-
-
-document.getElementById(
-"discount"
-).value =
-data.discount || "";
-
-
-
-document.getElementById(
-"notice"
-).value =
-data.notice || "";
-
-
 
 }
 
-else{
 
 
-console.log(
-"저장된 데이터 없음"
-);
+if(discountBox){
+
+discountBox.value =
+data.discount || 0;
+
+}
+
+
+
+if(noticeBox){
+
+noticeBox.value =
+data.notice || "";
+
+}
+
+
 
 
 }
@@ -303,15 +346,14 @@ catch(error){
 
 
 console.error(
-"불러오기 실패",
-error
+    "불러오기 오류:",
+    error
 );
 
 
 }
 
 
-
 }
 
 
@@ -322,15 +364,18 @@ error
 
 
 
-// ======================
+// =============================
 // 저장
-// ======================
+// =============================
 
 
 const saveButton =
+
 document.getElementById(
-"saveButton"
+    "saveButton"
 );
+
+
 
 
 
@@ -342,13 +387,17 @@ saveButton.onclick = async()=>{
 
 
 
+try{
+
+
+
 const saveData = {
 
 
 title:
 
 document.getElementById(
-"title"
+    "title"
 ).value,
 
 
@@ -358,7 +407,7 @@ discount:
 Number(
 
 document.getElementById(
-"discount"
+    "discount"
 ).value
 
 ),
@@ -368,7 +417,7 @@ document.getElementById(
 notice:
 
 document.getElementById(
-"notice"
+    "notice"
 ).value
 
 
@@ -377,56 +426,56 @@ document.getElementById(
 
 
 
+
+
 console.log(
-"저장할 데이터:",
-saveData
+    "저장 데이터:",
+    saveData
 );
 
 
 
 
-
-
-try{
 
 
 await setDoc(
 
-couponRef,
+    couponRef,
 
-saveData
+    saveData
 
 );
+
+
 
 
 
 alert(
-"저장 완료"
+    "저장 완료"
 );
 
 
 
-await loadSetting();
-
-
 
 }
+
+
 
 catch(error){
 
 
 
 console.error(
-"저장 실패",
-error
+    "저장 오류:",
+    error
 );
 
 
 
 alert(
-"저장 실패 : "
-+
-error.code
+    "저장 실패 : "
+    +
+    error.code
 );
 
 
@@ -448,12 +497,16 @@ error.code
 
 
 
+
+// =============================
 // 로그아웃
+// =============================
 
 
 const logoutButton =
+
 document.getElementById(
-"logoutButton"
+    "logoutButton"
 );
 
 
@@ -461,11 +514,12 @@ document.getElementById(
 if(logoutButton){
 
 
+
 logoutButton.onclick = async()=>{
 
 
 await signOut(
-auth
+    auth
 );
 
 
@@ -473,6 +527,7 @@ location.reload();
 
 
 };
+
 
 
 }
