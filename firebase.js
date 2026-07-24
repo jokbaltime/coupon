@@ -1,10 +1,12 @@
 // ======================================
-// JOKBALTIME FIREBASE CONFIG
+// JOKBALTlME FIREBASE CONFIG
 // ======================================
 
 
 import {
+
     initializeApp
+
 }
 from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -17,11 +19,14 @@ import {
     doc,
     setDoc,
     getDoc,
+    updateDoc,
     deleteDoc,
     collection,
+    getDocs,
     query,
     where,
-    getDocs
+    orderBy,
+    onSnapshot
 
 }
 from
@@ -30,69 +35,116 @@ from
 
 
 
+
+// =============================
 // Firebase 설정
+// =============================
+
 
 const firebaseConfig = {
 
 
-apiKey: "AIzaSyAykACgg1IqU-8tawPLRAfP2pKYST-PWjQ",
+    apiKey:
+    "AIzaSyAykACgg1IqU-8tawPLRAfP2pKYST-PWjQ",
 
-authDomain:
-"jokbaltime-coupon.firebaseapp.com",
 
-projectId:
-"jokbaltime-coupon",
+    authDomain:
+    "jokbaltime-coupon.firebaseapp.com",
 
-storageBucket:
-"jokbaltime-coupon.firebasestorage.app",
 
-messagingSenderId:
-"1077568919018",
+    projectId:
+    "jokbaltime-coupon",
 
-appId:
-"1:1077568919018:web:2205193cae7848ec518e93",
 
-measurementId:
-"G-BEHR2WZR0F"
+    storageBucket:
+    "jokbaltime-coupon.firebasestorage.app",
+
+
+    messagingSenderId:
+    "1077568919018",
+
+
+    appId:
+    "1:1077568919018:web:2205193cae7848ec518e93",
+
+
+    measurementId:
+    "G-BEHR2WZR0F"
+
 
 };
 
 
 
 
+
+
+// =============================
 // Firebase 시작
+// =============================
+
 
 const app =
-initializeApp(firebaseConfig);
+initializeApp(
+firebaseConfig
+);
+
 
 
 
 const db =
-getFirestore(app);
+getFirestore(
+app
+);
 
 
 
 
-// export
+
+
+
+// =============================
+// 외부 사용 전달
+// =============================
+
 
 export {
 
+
     db,
+
 
     doc,
 
+
     setDoc,
+
 
     getDoc,
 
+
+    updateDoc,
+
+
     deleteDoc,
+
 
     collection,
 
+
+    getDocs,
+
+
     query,
+
 
     where,
 
-    getDocs
+
+    orderBy,
+
+
+    onSnapshot
+
 
 };
