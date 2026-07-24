@@ -24,17 +24,17 @@ href="admin.css">
 <body>
 
 
-<div class="admin-container">
+<div class="admin-wrap">
 
 
 
 <!-- 로그인 -->
 
-<div class="login-box">
+<section class="admin-card login-box">
 
 
 <h1>
-족발타임 관리자
+🍖 족발타임 관리자
 </h1>
 
 
@@ -44,20 +44,25 @@ href="admin.css">
 
 
 <input
-type="password"
+
 id="adminPin"
-placeholder="PIN 입력">
+
+type="password"
+
+placeholder="PIN">
 
 
-<button
-id="loginButton">
+
+
+<button id="loginButton">
 
 로그인
 
 </button>
 
 
-</div>
+
+</section>
 
 
 
@@ -65,35 +70,20 @@ id="loginButton">
 
 
 
+<!-- 관리자 화면 -->
 
-<!-- 관리자 영역 -->
+<section
 
+id="adminPanel"
 
-<div id="adminPanel"
-class="hidden">
+class="admin-card hidden">
 
-
-
-
-
-<h1>
-족발타임 관리자
-</h1>
-
-
-
-
-
-
-<!-- 쿠폰 설정 -->
-
-
-<section class="card">
 
 
 <h2>
-🎟 쿠폰 설정
+쿠폰 설정
 </h2>
+
 
 
 
@@ -116,8 +106,11 @@ value="메인메뉴">
 
 
 <input
+
 id="discount"
+
 type="number"
+
 value="20">
 
 
@@ -125,128 +118,55 @@ value="20">
 
 
 <label>
-안내 문구
+안내문구
 </label>
 
 
 <textarea
+
 id="notice">
 
 매장 내 식사만 가능
-포장 · 배달 제외
 
 </textarea>
 
 
 
 
+
 <button
+
 id="saveButton">
 
-저장하기
+저장
 
 </button>
 
 
 
-</section>
+
+<hr>
 
 
 
-
-
-
-
-
-<!-- 직원 쿠폰 확인 -->
-
-
-<section class="card">
 
 
 <h2>
-👨‍🍳 직원 쿠폰 확인
+사용 관리
 </h2>
 
 
 
-
-<input
-id="useCouponNumber"
-placeholder="JT-260724-1234">
-
-
-
-
-
-<div class="button-group">
-
-
-<button
-id="checkUseButton">
-
-사용 확인
-
-</button>
-
-
-
-<button
-id="completeUseButton">
-
-사용 완료
-
-</button>
-
-
-
-<button
-id="cancelUseButton">
-
-사용 취소
-
-</button>
-
-
-</div>
-
-
-
-
-<p
-id="useResult">
-
+<p>
+직원 페이지에서 처리하세요.
 </p>
 
 
+<a href="staff.html">
 
-</section>
+직원 쿠폰 확인 이동
 
-
-
-
-
-
-
-
-
-<!-- 최근 쿠폰 목록 -->
-
-
-<section class="card">
-
-
-<h2>
-📋 최근 발급 쿠폰
-</h2>
-
-
-<div
-id="couponList">
-
-불러오는 중...
-
-</div>
+</a>
 
 
 
@@ -255,23 +175,19 @@ id="couponList">
 
 
 
-
-
 </div>
-
-
-</div>
-
-
 
 
 
 
 <script
+
 type="module"
+
 src="admin.js">
 
 </script>
+
 
 
 </body>
