@@ -5,11 +5,16 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
 
 <title>족발타임 관리자</title>
 
-<link rel="stylesheet" href="admin.css">
+
+<link rel="stylesheet"
+href="admin.css">
+
 
 </head>
 
@@ -17,38 +22,40 @@
 <body>
 
 
-<!-- ==============================
-     관리자 로그인
-============================== -->
+<div class="admin-container">
+
+
+
+<!-- =====================
+     로그인
+===================== -->
+
 
 <div class="login-box">
 
 
-    <h1>족발타임 관리자</h1>
+<h1>
+족발타임 관리자
+</h1>
 
 
-    <p>
-        관리자 PIN을 입력하세요.
-    </p>
+<p>
+관리자 PIN을 입력하세요.
+</p>
 
 
-    <input
-
-        type="password"
-
-        id="adminPin"
-
-        placeholder="PIN 입력"
-
-    >
+<input
+type="password"
+id="adminPin"
+placeholder="PIN 입력">
 
 
+<button
+id="loginButton">
 
-    <button id="loginButton">
+로그인
 
-        로그인
-
-    </button>
+</button>
 
 
 </div>
@@ -57,145 +64,184 @@
 
 
 
-<!-- ==============================
+<!-- =====================
      관리자 패널
-============================== -->
+===================== -->
 
 
-<div id="adminPanel" class="hidden">
+<div id="adminPanel"
+class="hidden">
+
+
+
+<h1>
+관리자 대시보드
+</h1>
+
+
+
+
+
+<!-- 쿠폰 설정 -->
+
+<section class="card">
 
 
 <h2>
-    쿠폰 설정
+🎟 쿠폰 설정
 </h2>
 
 
 
 <label>
-    할인율
+할인율 (%)
 </label>
 
 
 <input
+id="discount"
+type="number"
+value="20">
 
-    id="discount"
-
-    value="20"
-
-    type="number"
-
->
 
 
 
 
 <label>
-    쿠폰 제목
+쿠폰 제목
 </label>
 
 
 <input
+id="title"
+value="메인메뉴">
 
-    id="title"
-
-    value="메인메뉴"
-
->
 
 
 
 
 <label>
-    안내문구
+안내 문구
 </label>
 
 
-<textarea id="notice">
-
+<textarea
+id="notice">
 
 매장 내 식사만 가능
-
 포장 · 배달 제외
-
 
 </textarea>
 
 
 
 
-<button id="saveButton">
+<button
+id="saveButton"
+class="save-btn">
 
 저장하기
 
 </button>
 
-<hr>
+
+
+</section>
+
+
+
+
+
+
+<!-- 쿠폰 관리 -->
+
+
+<section class="card">
 
 
 <h2>
-쿠폰 사용 관리
+🔎 쿠폰 사용 관리
 </h2>
+
+
+
+<label>
+쿠폰번호
+</label>
 
 
 <input
 id="useCouponNumber"
-placeholder="쿠폰번호 입력">
+placeholder="JT-0000-0000">
 
 
-<button id="checkUseButton">
+
+
+
+<div class="button-group">
+
+
+<button
+id="checkUseButton"
+class="check-btn">
 
 사용 확인
 
 </button>
 
 
-<button id="cancelUseButton">
+
+
+<button
+id="completeUseButton"
+class="complete-btn">
+
+사용 완료
+
+</button>
+
+
+
+
+<button
+id="cancelUseButton"
+class="cancel-btn">
 
 사용 취소
 
 </button>
 
 
-<p id="useResult"></p>
-
-
-<hr>
+</div>
 
 
 
 
-<!-- ==============================
-     사용 쿠폰 확인
-============================== -->
+<p
+id="useResult">
 
-
-<h2>
-
-사용 완료 쿠폰
-
-</h2>
+</p>
 
 
 
-<div id="usedCoupons">
+</section>
 
 
-사용 기록 불러오는 중...
+
+
+
 
 </div>
 
 
 
 </div>
-
 
 
 
 
 <script
-
 type="module"
-
 src="admin.js">
 
 </script>
@@ -205,41 +251,3 @@ src="admin.js">
 </body>
 
 </html>
-변경된 부분:
-
-추가된 관리자 기능 영역:
-
-<h2>
-사용 완료 쿠폰
-</h2>
-
-<div id="usedCoupons">
-
-사용 기록 불러오는 중...
-
-</div>
-<hr>
-
-<h2>쿠폰 사용 관리</h2>
-
-<input
-id="useCouponNumber"
-placeholder="쿠폰번호 입력">
-
-
-<button id="checkUseButton">
-사용 확인
-</button>
-
-
-<button id="completeUseButton">
-사용 완료 처리
-</button>
-
-
-<button id="cancelUseButton">
-사용 취소
-</button>
-
-
-<p id="useResult"></p>
