@@ -1,6 +1,6 @@
 // ======================================
-// JOKBALTIME COUPON APP
-// COUPON ID FIX VERSION
+// JOKBaltime CUSTOMER APP
+// FIREBASE REALTIME COUPON
 // ======================================
 
 
@@ -8,85 +8,282 @@ import {
 
     db,
     doc,
-    getDoc,
-    setDoc,
-    serverTimestamp
+    onSnapshot
 
 } from "./firebase.js";
 
 
 
 
-// ======================================
-// 시계
-// ======================================
+// =============================
+// 쿠폰 데이터 위치
+// =============================
+
+
+const couponRef = doc(
+    db,
+    "coupon",
+    "setting"
+);
+
+
+
+
+
+// =============================
+// Firebase 실시간 쿠폰 반영
+// =============================
+
+
+onSnapshot(
+    couponRef,
+    (snapshot)=>{
+
+
+        if(snapshot.exists()){
+
+
+            const data =
+            snapshot.data();
+
+
+
+            const title =
+            document.getElementById(
+                "couponTitle"
+            );
+
+
+
+            const discount =
+            document.getElementById(
+                "discountValue"
+            );
+
+
+
+            const notice =
+            document.getElementById(
+                "couponNotice"
+            );
+
+
+
+
+
+            if(title){
+
+                title.textContent =
+                data.title;
+
+            }
+
+
+
+
+            if(discount){
+
+                discount.textContent =
+                data.discount + "%";
+
+            }
+
+
+
+
+
+            if(notice){
+
+                notice.innerHTML =
+                data.notice.replace(
+                    /\n/g,
+                    "<br>"
+                );
+
+            }
+
+
+
+        }
+
+
+    }
+
+);
+
+
+
+
+
+
+
+// =============================
+// 실시간 시계
+// =============================
 
 
 function updateClock(){
 
 
-    const now = new Date();
+    const now =
+    new Date();
 
 
-    document.getElementById("clock")
-    .textContent =
 
-    now.toLocaleString("ko-KR");
+    const year =
+    now.getFullYear();
+
+
+
+    const month =
+    String(
+        now.getMonth()+1
+    )
+    .padStart(2,"0");
+
+
+
+    const day =
+    String(
+        now.getDate()
+    )
+    .padStart(2,"0");
+
+
+
+    const hour =
+    String(
+        now.getHours()
+    )
+    .padStart(2,"0");
+
+
+
+    const minute =
+    String(
+        now.getMinutes()
+    )
+    .padStart(2,"0");
+
+
+
+    const second =
+    String(
+        now.getSeconds()
+    )
+    .padStart(2,"0");
+
+
+
+
+    const clock =
+    document.getElementById(
+        "clock"
+    );
+
+
+
+    if(clock){
+
+
+        clock.textContent =
+
+        `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+
+
+    }
 
 
 }
+
 
 
 updateClock();
 
-setInterval(updateClock,1000);
 
-
-
-
-
-// ======================================
-// 쿠폰 번호 생성 / 유지
-// ======================================
-
-
-let couponNumber =
-
-localStorage.getItem(
-    "jokbal_coupon"
+setInterval(
+    updateClock,
+    1000
 );
 
 
 
 
-if(!couponNumber){
 
 
-    couponNumber =
 
-    "JT-"
+
+// =============================
+// 쿠폰번호 생성
+// =============================
+
+
+function createCouponNumber(){
+
+
+    const now =
+    new Date();
+
+
+
+    const date =
+
+    String(
+        now.getFullYear()
+    )
+    .slice(-2)
+
     +
-    Date.now();
+
+    String(
+        now.getMonth()+1
+    )
+    .padStart(2,"0")
+
+    +
+
+    String(
+        now.getDate()
+    )
+    .padStart(2,"0");
 
 
 
-    localStorage.setItem(
 
-        "jokbal_coupon",
+    const random =
 
-        couponNumber
-
+    Math.floor(
+        Math.random()*9000+1000
     );
+
+
+
+
+    const couponNumber =
+
+    document.getElementById(
+        "couponNumber"
+    );
+
+
+
+    if(couponNumber){
+
+
+        couponNumber.textContent =
+
+        `JT-${date}-${random}`;
+
+
+    }
 
 
 }
 
 
 
+createCouponNumber();
 
-document
-.getElementById("couponNumber")
-.textContent = couponNumber;
 
 
 
@@ -94,229 +291,112 @@ document
 
 
 
-// ======================================
-// Firebase 쿠폰 설정 실시간 적용
-// ======================================
+// =============================
+// 메뉴 슬라이드
+// =============================
 
 
+const menuImages = [
 
-const settingRef =
+"images/menu1.jpg",
 
-doc(
+"images/menu2.jpg",
 
-    db,
+"images/menu3.jpg",
 
-    "coupon",
+"images/menu4.jpg"
 
-    "setting"
+];
 
-);
 
+let currentImage = 0;
 
 
 
-const { onSnapshot } =
-
-await import(
-
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
-
-);
-
-
-
-
-onSnapshot(
-
-settingRef,
-
-(snapshot)=>{
-
-
-    if(snapshot.exists()){
-
-
-        const data = snapshot.data();
-
-
-
-        const title =
-
-        document.getElementById(
-            "couponTitle"
-        );
-
-
-
-        const discount =
-
-        document.getElementById(
-            "discountValue"
-        );
-
-
-
-        const notice =
-
-        document.getElementById(
-            "couponNotice"
-        );
-
-
-
-        if(title)
-
-        title.textContent =
-        data.title;
-
-
-
-        if(discount)
-
-        discount.textContent =
-        data.discount+"%";
-
-
-
-        if(notice)
-
-        notice.innerHTML =
-        data.notice.replace(
-            /\n/g,
-            "<br>"
-        );
-
-
-    }
-
-
-});
-
-
-
-
-
-
-
-// ======================================
-// 직원 확인
-// ======================================
-
-
-const staffButton =
-
+const sliderImage =
 document.getElementById(
-    "staffButton"
+    "sliderImage"
+);
+
+
+
+const dots =
+document.querySelectorAll(
+    ".dot"
 );
 
 
 
 
-staffButton.addEventListener(
-
-"click",
-
-async()=>{
+function changeSlide(){
 
 
-
-    const pin =
-
-    prompt(
-        "직원 PIN을 입력하세요."
-    );
+    if(!sliderImage)
+    return;
 
 
 
-    if(pin !== "7812"){
+    currentImage++;
 
 
-        alert(
-            "PIN이 올바르지 않습니다."
-        );
 
+    if(
+        currentImage >= menuImages.length
+    ){
 
-        return;
-
+        currentImage = 0;
 
     }
 
 
 
 
+    sliderImage.style.opacity="0";
 
-    const couponRef =
 
-    doc(
 
-        db,
+    setTimeout(()=>{
 
-        "coupon_use",
 
-        couponNumber
+        sliderImage.src =
+        menuImages[currentImage];
 
+
+        sliderImage.style.opacity="1";
+
+
+    },250);
+
+
+
+
+
+    dots.forEach(
+        dot=>
+        dot.classList.remove(
+            "active"
+        )
     );
 
 
 
+    if(dots[currentImage]){
 
 
-    const check =
-
-    await getDoc(couponRef);
-
-
-
-
-
-    if(check.exists()){
-
-
-        alert(
-            "이미 사용된 쿠폰입니다."
+        dots[currentImage]
+        .classList.add(
+            "active"
         );
-
-
-        return;
 
 
     }
 
 
+}
 
 
 
-    await setDoc(
-
-        couponRef,
-
-        {
-
-
-            couponNumber:
-            couponNumber,
-
-
-            status:
-            "사용완료",
-
-
-            usedTime:
-            serverTimestamp()
-
-
-        }
-
-    );
-
-
-
-
-
-    alert(
-        "✅ 쿠폰 사용 완료"
-    );
-
-
-
-});
+setInterval(
+    changeSlide,
+    3000
+);
