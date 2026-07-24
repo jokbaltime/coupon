@@ -507,3 +507,22 @@ transform:scale(1.12);
 }
 
 }
+.premium{
+
+display:inline-block;
+
+margin-top:20px;
+
+padding:8px 20px;
+
+border:1px solid #D4AF37;
+
+border-radius:30px;
+
+color:#D4AF37;
+
+letter-spacing:3px;
+
+font-size:14px;
+
+}
