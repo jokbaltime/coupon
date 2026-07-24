@@ -1,6 +1,6 @@
 // ======================================
 // JOKBALTlME CUSTOMER APP
-// FIREBASE COUPON SYSTEM
+// FIREBASE COUPON SYSTEM v2
 // ======================================
 
 
@@ -9,6 +9,7 @@ import {
     db,
     doc,
     setDoc,
+    getDoc,
     onSnapshot
 
 } from "./firebase.js";
@@ -28,8 +29,6 @@ doc(
     "coupon",
     "setting"
 );
-
-
 
 
 
@@ -65,31 +64,29 @@ couponRef,
 
 
 
-
         if(title){
 
             title.textContent =
-            data.title;
+            data.title || "메인메뉴";
 
         }
-
 
 
 
         if(discount){
 
             discount.textContent =
-            data.discount + "%";
+            (data.discount || 20) + "%";
 
         }
-
 
 
 
         if(notice){
 
             notice.innerHTML =
-            data.notice.replace(
+            (data.notice || "")
+            .replace(
                 /\n/g,
                 "<br>"
             );
@@ -101,8 +98,8 @@ couponRef,
     }
 
 
-
 });
+
 
 
 
@@ -124,25 +121,26 @@ function createCouponNumber(){
 
 
 
-    const date =
+    const ymd =
 
-    now.getFullYear()
-    .toString()
+    String(
+        now.getFullYear()
+    )
     .slice(2)
+
     +
 
     String(
-    now.getMonth()+1
+        now.getMonth()+1
     )
     .padStart(2,"0")
 
     +
 
     String(
-    now.getDate()
+        now.getDate()
     )
     .padStart(2,"0");
-
 
 
 
@@ -157,47 +155,7 @@ function createCouponNumber(){
 
 
 
-    return `JT-${date}-${random}`;
-
-
-}
-
-
-
-
-
-
-
-
-// =============================
-// 쿠폰번호 표시
-// =============================
-
-
-const couponNumber =
-document.getElementById(
-    "couponNumber"
-);
-
-
-
-
-if(couponNumber){
-
-
-    const number =
-    createCouponNumber();
-
-
-
-    couponNumber.textContent =
-    number;
-
-
-
-
-    saveCoupon(number);
-
+    return `JT-${ymd}-${random}`;
 
 
 }
@@ -211,51 +169,100 @@ if(couponNumber){
 
 
 // =============================
-// Firebase 쿠폰 발급 저장
+// 쿠폰 발급
 // =============================
 
 
-async function saveCoupon(number){
+async function issueCoupon(){
 
 
-
-    const issueRef =
-    doc(
-
-        db,
-
-        "coupon_issue",
-
-        number
-
+    let couponNumber =
+    localStorage.getItem(
+        "jokbaltimeCoupon"
     );
 
 
 
 
-    await setDoc(
+    // 기존 쿠폰 없음
 
-        issueRef,
-
-        {
+    if(!couponNumber){
 
 
-            couponNumber:
-            number,
-
-
-            createdTime:
-            new Date(),
-
-
-            used:
-            false
+        couponNumber =
+        createCouponNumber();
 
 
 
-        }
+        localStorage.setItem(
 
+            "jokbaltimeCoupon",
+
+            couponNumber
+
+        );
+
+
+
+        const issueRef =
+        doc(
+
+            db,
+
+            "coupon_issue",
+
+            couponNumber
+
+        );
+
+
+
+
+        await setDoc(
+
+            issueRef,
+
+            {
+
+                couponNumber:
+                couponNumber,
+
+
+                used:
+                false,
+
+
+                createdTime:
+                new Date()
+
+
+            }
+
+        );
+
+
+    }
+
+
+
+
+
+
+    const display =
+    document.getElementById(
+        "couponNumber"
     );
+
+
+
+    if(display){
+
+
+        display.textContent =
+        couponNumber;
+
+
+    }
 
 
 
@@ -266,39 +273,43 @@ async function saveCoupon(number){
 
 
 
+issueCoupon();
+
+
+
+
+
+
 
 
 
 // =============================
-// 현재 시간 표시
+// 현재 시간
 // =============================
 
 
-function clock(){
+function updateClock(){
 
 
-    const el =
+    const clock =
     document.getElementById(
         "clock"
     );
 
 
 
-    if(!el)
-    return;
+    if(clock){
 
 
+        clock.textContent =
 
-    const now =
-    new Date();
+        new Date()
+        .toLocaleString(
+            "ko-KR"
+        );
 
 
-
-    el.textContent =
-
-    now.toLocaleString(
-        "ko-KR"
-    );
+    }
 
 
 }
@@ -306,12 +317,13 @@ function clock(){
 
 
 setInterval(
-clock,
-1000
+    updateClock,
+    1000
 );
 
 
-clock();
+
+updateClock();
 
 
 
@@ -322,7 +334,7 @@ clock();
 
 
 // =============================
-// 직원 확인 버튼
+// 직원 확인 안내
 // =============================
 
 
@@ -339,9 +351,9 @@ if(staffButton){
 staffButton.onclick = ()=>{
 
 
-alert(
-"직원에게 화면을 보여주세요."
-);
+    alert(
+        "직원에게 쿠폰 화면을 보여주세요."
+    );
 
 
 };
