@@ -223,6 +223,164 @@ async function createCouponNumber(){
 
 
 
+// =============================
+// 쿠폰번호 유지 발급
+// =============================
+
+
+async function createCouponNumber(){
+
+
+    let savedNumber =
+    localStorage.getItem(
+        "jokbaltime_coupon"
+    );
+
+
+
+    const couponNumber =
+    document.getElementById(
+        "couponNumber"
+    );
+
+
+
+
+    // 기존 쿠폰 있음
+
+    if(savedNumber){
+
+
+        couponNumber.textContent =
+        savedNumber;
+
+
+        return;
+
+
+    }
+
+
+
+
+
+
+
+    // 신규 쿠폰 생성
+
+
+    const now =
+    new Date();
+
+
+
+    const date =
+
+    String(
+        now.getFullYear()
+    )
+    .slice(-2)
+
+    +
+
+    String(
+        now.getMonth()+1
+    )
+    .padStart(2,"0")
+
+    +
+
+    String(
+        now.getDate()
+    )
+    .padStart(2,"0");
+
+
+
+
+
+    const random =
+
+    Math.floor(
+        Math.random()*9000+1000
+    );
+
+
+
+
+    const number =
+
+    `JT-${date}-${random}`;
+
+
+
+
+
+
+    localStorage.setItem(
+
+        "jokbaltime_coupon",
+
+        number
+
+    );
+
+
+
+
+
+
+    couponNumber.textContent =
+    number;
+
+
+
+
+
+    // Firebase 저장
+
+
+    const issueRef =
+    doc(
+
+        db,
+
+        "coupon_issue",
+
+        number
+
+    );
+
+
+
+
+    await setDoc(
+
+        issueRef,
+
+        {
+
+
+            couponNumber:number,
+
+
+            createdTime:
+            new Date(),
+
+
+            used:false
+
+
+        }
+
+    );
+
+
+
+}
+
+
+
 createCouponNumber();
 
 
