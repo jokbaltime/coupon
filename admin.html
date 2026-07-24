@@ -5,8 +5,7 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
 <title>
@@ -14,8 +13,7 @@ content="width=device-width, initial-scale=1.0">
 </title>
 
 
-<link rel="stylesheet"
-href="admin.css">
+<link rel="stylesheet" href="admin.css">
 
 
 </head>
@@ -25,20 +23,16 @@ href="admin.css">
 <body>
 
 
-
 <div class="admin-wrap">
 
 
 
-
-
 <!-- =========================
-     관리자 로그인
+     로그인
 ========================= -->
 
 
 <section class="admin-card login-box">
-
 
 
 <h1>
@@ -46,12 +40,9 @@ href="admin.css">
 </h1>
 
 
-
 <p>
-관리자 이메일 로그인
+관리자 로그인
 </p>
-
-
 
 
 
@@ -61,10 +52,7 @@ id="adminEmail"
 
 type="email"
 
-placeholder="관리자 이메일"
-
-autocomplete="username">
-
+placeholder="관리자 이메일">
 
 
 
@@ -76,23 +64,17 @@ id="adminPassword"
 
 type="password"
 
-placeholder="비밀번호"
-
-autocomplete="current-password">
+placeholder="비밀번호">
 
 
 
 
 
-
-<button
-
-id="loginButton">
+<button id="loginButton">
 
 로그인
 
 </button>
-
 
 
 
@@ -119,12 +101,9 @@ class="admin-card hidden">
 
 
 
-
-
 <h1>
-🍖 관리자 페이지
+🍖 쿠폰 관리자
 </h1>
-
 
 
 
@@ -133,7 +112,6 @@ class="admin-card hidden">
 <h2>
 쿠폰 설정
 </h2>
-
 
 
 
@@ -148,7 +126,9 @@ class="admin-card hidden">
 
 id="title"
 
-value="메인메뉴">
+type="text"
+
+value="">
 
 
 
@@ -167,7 +147,7 @@ id="discount"
 
 type="number"
 
-value="20">
+value="0">
 
 
 
@@ -180,15 +160,13 @@ value="20">
 
 
 
-
 <textarea
 
-id="notice">
+id="notice"
 
-매장 내 식사만 가능
+rows="5">
 
 </textarea>
-
 
 
 
@@ -208,7 +186,6 @@ id="saveButton">
 
 
 
-
 <hr>
 
 
@@ -216,19 +193,14 @@ id="saveButton">
 
 
 
-
 <h2>
-쿠폰 사용 관리
+사용 관리
 </h2>
 
 
 
-
-
 <p>
-
-직원 쿠폰 확인 페이지에서 관리합니다.
-
+직원 페이지에서 쿠폰 확인 및 사용 처리
 </p>
 
 
@@ -246,8 +218,8 @@ id="saveButton">
 
 
 
-
 <br><br>
+
 
 
 
@@ -265,9 +237,7 @@ id="logoutButton">
 
 
 
-
 </section>
-
 
 
 
@@ -282,6 +252,7 @@ id="logoutButton">
 
 
 
+
 <script
 
 type="module"
@@ -289,7 +260,6 @@ type="module"
 src="admin.js">
 
 </script>
-
 
 
 
