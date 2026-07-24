@@ -1,149 +1,126 @@
 // ======================================
-// JOKBALTIME PREMIUM COUPON v2
+// JOKBALTIME ADMIN FIREBASE v1
 // ======================================
 
-// -------------------------------
-// 실시간 시계
-// -------------------------------
-
-function updateClock() {
-
-    const now = new Date();
-
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-
-    const hour = String(now.getHours()).padStart(2, "0");
-    const minute = String(now.getMinutes()).padStart(2, "0");
-    const second = String(now.getSeconds()).padStart(2, "0");
-
-    document.getElementById("clock").textContent =
-        `${year}-${month}-${day} ${hour}:${minute}:${second}`;
-}
-
-updateClock();
-setInterval(updateClock, 1000);
+import {
+    db,
+    doc,
+    setDoc,
+    getDoc
+} from "./firebase.js";
 
 
-// -------------------------------
-// 쿠폰번호 생성
-// -------------------------------
+// Firebase 위치
 
-function createCouponNumber() {
-
-    const now = new Date();
-
-    const date =
-        String(now.getFullYear()).slice(-2) +
-        String(now.getMonth() + 1).padStart(2, "0") +
-        String(now.getDate()).padStart(2, "0");
-
-    const random =
-        Math.floor(Math.random() * 9000 + 1000);
-
-    document.getElementById("couponNumber").textContent =
-        `JT-${date}-${random}`;
-}
-
-createCouponNumber();
+const couponRef = doc(
+    db,
+    "coupon",
+    "setting"
+);
 
 
-// -------------------------------
-// 메뉴 슬라이드
-// -------------------------------
+// =============================
+// 관리자 로그인
+// =============================
 
-const menuImages = [
-    "images/menu1.jpg",
-    "images/menu2.jpg",
-    "images/menu3.jpg",
-    "images/menu4.jpg"
-];
+const loginButton =
+document.getElementById("loginButton");
 
-let currentImage = 0;
+const loginBox =
+document.querySelector(".login-box");
 
-const sliderImage = document.getElementById("sliderImage");
-const dots = document.querySelectorAll(".dot");
+const adminPanel =
+document.getElementById("adminPanel");
 
-function changeSlide() {
 
-    currentImage++;
+loginButton.addEventListener("click", function(){
 
-    if (currentImage >= menuImages.length) {
+    const pin =
+    document.getElementById("adminPin").value;
 
-        currentImage = 0;
+
+    if(pin === "7812"){
+
+        loginBox.classList.add("hidden");
+
+        adminPanel.classList.remove("hidden");
+
+        loadCoupon();
 
     }
+    else{
 
-    sliderImage.style.opacity = "0";
-
-    setTimeout(() => {
-
-        sliderImage.src = menuImages[currentImage];
-
-        sliderImage.style.opacity = "1";
-
-    }, 250);
-
-    dots.forEach(dot => dot.classList.remove("active"));
-
-    dots[currentImage].classList.add("active");
-
-}
-
-setInterval(changeSlide, 3000);
-
-
-// -------------------------------
-// 직원 확인
-// -------------------------------
-
-const staffButton = document.getElementById("staffButton");
-
-staffButton.addEventListener("click", function () {
-
-    const pin = prompt("직원 PIN을 입력하세요.");
-
-    if (pin === "7812") {
-
-        alert("✅ 쿠폰 사용이 확인되었습니다.");
-
-    } else {
-
-        alert("❌ PIN이 올바르지 않습니다.");
+        alert("PIN이 올바르지 않습니다.");
 
     }
 
 });
+
+
 // =============================
-// 관리자 설정 불러오기
+// Firebase 데이터 불러오기
 // =============================
 
-function loadCouponData() {
+async function loadCoupon(){
 
-    const title = localStorage.getItem("title");
-    const discount = localStorage.getItem("discount");
-    const notice = localStorage.getItem("notice");
+    const snap =
+    await getDoc(couponRef);
 
-    if (title) {
 
-        document.getElementById("couponTitle").textContent = title;
+    if(snap.exists()){
 
-    }
+        const data = snap.data();
 
-    if (discount) {
 
-        document.getElementById("discountValue").textContent = discount + "%";
+        document.getElementById("title").value =
+        data.title || "메인메뉴";
 
-    }
 
-    if (notice) {
+        document.getElementById("discount").value =
+        data.discount || 20;
 
-        document.getElementById("couponNotice").innerHTML =
-            notice.replace(/\n/g,"<br>");
+
+        document.getElementById("notice").value =
+        data.notice || "";
 
     }
 
 }
 
-loadCouponData();
+
+// =============================
+// 저장 버튼
+// =============================
+
+const saveButton =
+document.getElementById("saveButton");
+
+
+saveButton.addEventListener("click", async function(){
+
+
+    const data = {
+
+        title:
+        document.getElementById("title").value,
+
+
+        discount:
+        Number(document.getElementById("discount").value),
+
+
+        notice:
+        document.getElementById("notice").value
+
+    };
+
+
+    await setDoc(
+        couponRef,
+        data
+    );
+
+
+    alert("Firebase 저장 완료");
+
+});
