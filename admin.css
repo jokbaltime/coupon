@@ -1,16 +1,11 @@
 /* ======================================
-   JOKBALTIME ADMIN CSS
-   DASHBOARD STYLE
-====================================== */
+   JOKBALTlME ADMIN / STAFF STYLE
+   ====================================== */
 
 
 *{
 
-    box-sizing:border-box;
-
-    font-family:
-    "Noto Sans KR",
-    sans-serif;
+box-sizing:border-box;
 
 }
 
@@ -18,79 +13,37 @@
 
 body{
 
+margin:0;
 
-    margin:0;
+padding:0;
 
-    background:#f4f4f4;
+background:#111;
 
-    color:#333;
+font-family:
 
+"Apple SD Gothic Neo",
+Arial,
+sans-serif;
 
-}
-
-
-
-
-/* 전체 영역 */
-
-.admin-container{
-
-
-    width:100%;
-
-    max-width:520px;
-
-    margin:0 auto;
-
-    padding:30px 20px;
-
+color:white;
 
 }
 
 
 
 
+.admin-wrap{
 
 
-/* 로그인 */
+min-height:100vh;
 
-.login-box{
+display:flex;
 
+justify-content:center;
 
-    background:white;
+align-items:center;
 
-    padding:35px 25px;
-
-    border-radius:20px;
-
-    box-shadow:
-    0 10px 30px rgba(0,0,0,.12);
-
-    text-align:center;
-
-
-}
-
-
-
-.login-box h1{
-
-
-    margin-bottom:10px;
-
-    color:#5b2c0c;
-
-
-}
-
-
-
-.login-box p{
-
-
-    color:#777;
-
-    margin-bottom:25px;
+padding:20px;
 
 
 }
@@ -99,61 +52,22 @@ body{
 
 
 
+.admin-card{
 
 
-/* 관리자 영역 */
+width:100%;
 
+max-width:420px;
 
-#adminPanel h1{
+background:#222;
 
+border-radius:20px;
 
-    text-align:center;
+padding:30px;
 
-    margin-bottom:25px;
+box-shadow:
 
-    color:#5b2c0c;
-
-
-}
-
-
-
-
-
-
-/* 카드 */
-
-
-.card{
-
-
-    background:white;
-
-    border-radius:20px;
-
-    padding:25px;
-
-    margin-bottom:25px;
-
-
-    box-shadow:
-
-    0 8px 25px rgba(0,0,0,.08);
-
-
-}
-
-
-
-
-.card h2{
-
-
-    margin-top:0;
-
-    margin-bottom:20px;
-
-    font-size:20px;
+0 10px 30px rgba(0,0,0,.5);
 
 
 }
@@ -162,63 +76,76 @@ body{
 
 
 
+h1{
 
-/* 라벨 */
+text-align:center;
+
+font-size:28px;
+
+margin-bottom:25px;
+
+}
+
+
+
+h2{
+
+font-size:22px;
+
+border-bottom:
+
+1px solid #444;
+
+padding-bottom:15px;
+
+}
+
+
+
+
+
+p{
+
+color:#ccc;
+
+}
+
+
+
 
 
 label{
 
+display:block;
 
-    display:block;
+margin-top:20px;
 
-    margin-top:15px;
+margin-bottom:8px;
 
-    margin-bottom:8px;
-
-    font-weight:bold;
-
+color:#ddd;
 
 }
 
 
-
-
-
-
-/* 입력 */
 
 
 input,
 textarea{
 
 
-    width:100%;
+width:100%;
 
-    padding:14px;
+border:none;
 
-    border:
+border-radius:12px;
 
-    1px solid #ddd;
+padding:15px;
 
+font-size:18px;
 
-    border-radius:12px;
+background:#333;
 
-    font-size:16px;
-
-
-    outline:none;
-
-
-}
-
-
-
-
-input:focus,
-textarea:focus{
-
-
-    border-color:#8b4513;
+color:white;
 
 
 }
@@ -229,58 +156,39 @@ textarea:focus{
 textarea{
 
 
-    height:120px;
+height:120px;
 
-    resize:none;
+resize:none;
 
 
 }
 
 
 
-
-
-
-/* 기본 버튼 */
 
 
 button{
 
 
-    width:100%;
+width:100%;
 
-    border:none;
+height:55px;
 
-    padding:15px;
+margin-top:20px;
 
-    margin-top:15px;
+border:none;
 
-    border-radius:12px;
+border-radius:12px;
 
+background:#c62828;
 
-    font-size:16px;
+color:white;
 
-    font-weight:bold;
+font-size:20px;
 
+font-weight:bold;
 
-    cursor:pointer;
-
-
-}
-
-
-
-
-
-/* 로그인 버튼 */
-
-
-#loginButton{
-
-
-    background:#5b2c0c;
-
-    color:white;
+cursor:pointer;
 
 
 }
@@ -289,17 +197,10 @@ button{
 
 
 
+button:hover{
 
 
-/* 저장 */
-
-
-.save-btn{
-
-
-    background:#1e88e5;
-
-    color:white;
+opacity:.85;
 
 
 }
@@ -308,28 +209,24 @@ button{
 
 
 
-
-/* 버튼 그룹 */
-
-
-.button-group{
+a{
 
 
-    display:flex;
+display:block;
 
-    gap:10px;
+margin-top:25px;
 
-}
+padding:15px;
 
+text-align:center;
 
+background:#444;
 
+border-radius:12px;
 
-.button-group button{
+color:white;
 
-
-    flex:1;
-
-    font-size:14px;
+text-decoration:none;
 
 
 }
@@ -337,97 +234,27 @@ button{
 
 
 
+hr{
 
 
-/* 사용 확인 */
+border:none;
 
+border-top:
 
-.check-btn{
+1px solid #444;
 
-
-    background:#757575;
-
-    color:white;
-
-
-}
-
-
-
-
-
-
-/* 사용 완료 */
-
-
-.complete-btn{
-
-
-    background:#2e7d32;
-
-    color:white;
+margin:30px 0;
 
 
 }
 
 
-
-
-
-
-/* 사용 취소 */
-
-
-.cancel-btn{
-
-
-    background:#c62828;
-
-    color:white;
-
-
-}
-
-
-
-
-
-
-/* 결과 표시 */
-
-
-#useResult{
-
-
-    margin-top:20px;
-
-    padding:15px;
-
-    border-radius:10px;
-
-    background:#fafafa;
-
-    min-height:40px;
-
-    text-align:center;
-
-    font-weight:bold;
-
-
-}
-
-
-
-
-
-
-/* 숨김 */
 
 
 .hidden{
 
 
-    display:none;
+display:none;
 
 
 }
@@ -437,41 +264,48 @@ button{
 
 
 
+/* 직원 결과 */
 
-/* 모바일 */
+
+#result{
+
+
+margin-top:25px;
+
+background:#000;
+
+padding:20px;
+
+border-radius:12px;
+
+font-size:22px;
+
+text-align:center;
+
+
+}
+
+
+
+
 
 @media(max-width:480px){
 
 
 
-.admin-container{
+.admin-card{
 
-
-    padding:20px 15px;
-
+padding:22px;
 
 }
 
 
 
-.card{
+h1{
 
-
-    padding:20px;
-
+font-size:24px;
 
 }
-
-
-
-.button-group{
-
-
-    flex-direction:column;
-
-
-}
-
 
 
 }
