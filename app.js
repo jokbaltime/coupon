@@ -1,6 +1,6 @@
 // ======================================
 // JOKBALTlME CUSTOMER APP
-// COUPON FIX VERSION
+// COUPON STATUS CHECK
 // ======================================
 
 
@@ -9,6 +9,7 @@ import {
 db,
 doc,
 setDoc,
+getDoc,
 onSnapshot
 
 } from "./firebase.js";
@@ -18,11 +19,11 @@ onSnapshot
 
 
 // =============================
-// Firebase 쿠폰 설정 반영
+// 쿠폰 설정 반영
 // =============================
 
 
-const couponRef =
+const settingRef =
 doc(
 db,
 "coupon",
@@ -32,7 +33,9 @@ db,
 
 
 onSnapshot(
-couponRef,
+
+settingRef,
+
 (snapshot)=>{
 
 
@@ -78,7 +81,9 @@ data.title || "메인메뉴";
 if(discount){
 
 discount.textContent =
-(data.discount || 20) + "%";
+(data.discount || 20)
++
+"%";
 
 }
 
@@ -100,7 +105,9 @@ notice.innerHTML =
 }
 
 
-});
+}
+
+);
 
 
 
@@ -111,11 +118,11 @@ notice.innerHTML =
 
 
 // =============================
-// 쿠폰번호 생성
+// 쿠폰번호 생성 / 유지
 // =============================
 
 
-function createCouponNumber(){
+function createNumber(){
 
 
 const now =
@@ -123,7 +130,11 @@ new Date();
 
 
 
-const date =
+return (
+
+"JT-"
+
++
 
 String(now.getFullYear())
 .slice(2)
@@ -136,19 +147,21 @@ String(now.getMonth()+1)
 +
 
 String(now.getDate())
-.padStart(2,"0");
+.padStart(2,"0")
 
++
 
+"-"
 
-const random =
++
 
 Math.floor(
 Math.random()*9000
-)+1000;
++
+1000
+)
 
-
-
-return "JT-" + date + "-" + random;
+);
 
 
 }
@@ -161,12 +174,8 @@ return "JT-" + date + "-" + random;
 
 
 
-// =============================
-// 쿠폰번호 고정
-// =============================
+async function loadCoupon(){
 
-
-async function loadCouponNumber(){
 
 
 let number =
@@ -177,24 +186,25 @@ localStorage.getItem(
 
 
 
-// 처음 방문
-
 if(!number){
 
 
+
 number =
-createCouponNumber();
+createNumber();
 
 
 
 localStorage.setItem(
+
 "JT_COUPON_NUMBER",
+
 number
+
 );
 
 
 
-// Firebase 저장
 
 await setDoc(
 
@@ -222,6 +232,7 @@ createdTime:new Date()
 
 }
 
+
 );
 
 
@@ -232,29 +243,21 @@ createdTime:new Date()
 
 
 
-const couponNumber =
+
 document.getElementById(
 "couponNumber"
-);
-
-
-
-if(couponNumber){
-
-couponNumber.textContent =
+).textContent =
 number;
 
-}
+
+
+
+
+checkStatus(number);
 
 
 
 }
-
-
-
-
-
-loadCouponNumber();
 
 
 
@@ -265,7 +268,124 @@ loadCouponNumber();
 
 
 // =============================
-// 시간 표시
+// 사용 상태 확인
+// =============================
+
+
+async function checkStatus(number){
+
+
+
+const ref =
+doc(
+
+db,
+
+"coupon_issue",
+
+number
+
+);
+
+
+
+
+const snap =
+await getDoc(
+ref
+);
+
+
+
+
+const discount =
+document.querySelector(
+".discount"
+);
+
+
+
+if(snap.exists()){
+
+
+const data =
+snap.data();
+
+
+
+
+if(data.used===true){
+
+
+
+const body =
+document.querySelector(
+".coupon-body"
+);
+
+
+
+if(body){
+
+
+body.innerHTML =
+
+`
+
+<h2>
+
+사용 완료된 쿠폰입니다.
+
+</h2>
+
+<p>
+
+사용일 :
+${data.usedTime?.toDate?.()
+.toLocaleString("ko-KR")
+||""}
+
+</p>
+
+`;
+
+
+
+}
+
+
+
+}
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// 실행
+
+loadCoupon();
+
+
+
+
+
+
+
+
+
+// =============================
+// 시계
 // =============================
 
 
