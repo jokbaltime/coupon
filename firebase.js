@@ -1,5 +1,5 @@
 // ======================================
-// JOKBALTlME FIREBASE
+// JOKBALTlME FIREBASE CONFIG
 // ======================================
 
 
@@ -15,15 +15,26 @@ initializeApp
 import {
 
 getFirestore,
+
 doc,
+
 setDoc,
+
 getDoc,
+
 updateDoc,
+
 deleteDoc,
+
 collection,
+
 query,
+
 where,
-getDocs
+
+getDocs,
+
+onSnapshot
 
 } from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -32,10 +43,7 @@ getDocs
 
 import {
 
-getAuth,
-signInWithEmailAndPassword,
-onAuthStateChanged,
-signOut
+getAuth
 
 } from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -45,6 +53,7 @@ signOut
 
 
 
+// Firebase 설정
 
 const firebaseConfig = {
 
@@ -82,7 +91,6 @@ appId:
 measurementId:
 "G-BEHR2WZR0F"
 
-
 };
 
 
@@ -90,7 +98,13 @@ measurementId:
 
 
 
+
+
+// Firebase 시작
+
+
 const app =
+
 initializeApp(
 firebaseConfig
 );
@@ -99,7 +113,14 @@ firebaseConfig
 
 
 
+
+
+
+// Firestore
+
+
 const db =
+
 getFirestore(
 app
 );
@@ -108,10 +129,18 @@ app
 
 
 
+
+
+
+// Authentication
+
+
 const auth =
+
 getAuth(
 app
 );
+
 
 
 
@@ -137,7 +166,6 @@ updateDoc,
 
 deleteDoc,
 
-
 collection,
 
 query,
@@ -146,12 +174,7 @@ where,
 
 getDocs,
 
-
-signInWithEmailAndPassword,
-
-onAuthStateChanged,
-
-signOut
+onSnapshot
 
 
 };
