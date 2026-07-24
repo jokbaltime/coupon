@@ -70,3 +70,42 @@ document.getElementById("staffButton").onclick=function(){
     }
 
 };
+// ===============================
+// 메뉴 슬라이드
+// ===============================
+
+const images = [
+
+"images/menu1.jpg",
+
+"images/menu2.jpg",
+
+"images/menu3.jpg",
+
+"images/menu4.jpg"
+
+];
+
+let current=0;
+
+const slider=document.getElementById("sliderImage");
+
+const dots=document.querySelectorAll(".dot");
+
+setInterval(function(){
+
+    current++;
+
+    if(current>=images.length){
+
+        current=0;
+
+    }
+
+    slider.src=images[current];
+
+    dots.forEach(dot=>dot.classList.remove("active"));
+
+    dots[current].classList.add("active");
+
+},3000);
