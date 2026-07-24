@@ -302,3 +302,56 @@ footer{
     color:#777;
 
 }
+/* ===========================
+   MENU SLIDER
+=========================== */
+
+.slider{
+
+    overflow:hidden;
+
+    border-radius:20px;
+
+}
+
+.slider img{
+
+    width:100%;
+
+    height:300px;
+
+    object-fit:cover;
+
+    transition:1s;
+
+}
+
+.dots{
+
+    text-align:center;
+
+    margin-top:15px;
+
+}
+
+.dot{
+
+    width:12px;
+
+    height:12px;
+
+    display:inline-block;
+
+    border-radius:50%;
+
+    background:#666;
+
+    margin:5px;
+
+}
+
+.active{
+
+    background:#D4AF37;
+
+}
