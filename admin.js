@@ -1,6 +1,6 @@
 // ======================================
 // JOKBALTIME ADMIN
-// FIREBASE COUPON MANAGER v3
+// FIREBASE COUPON MANAGER v4
 // ======================================
 
 
@@ -25,7 +25,8 @@ import {
 // 쿠폰 설정 위치
 // =============================
 
-const couponRef = doc(
+const couponRef =
+doc(
     db,
     "coupon",
     "setting"
@@ -34,9 +35,8 @@ const couponRef = doc(
 
 
 
-
 // =============================
-// 관리자 로그인
+// 로그인
 // =============================
 
 
@@ -53,9 +53,8 @@ document.getElementById("adminPanel");
 
 
 
-loginButton.addEventListener(
-"click",
-async function(){
+
+loginButton.onclick = async()=>{
 
 
     const pin =
@@ -91,7 +90,8 @@ async function(){
     }
 
 
-});
+};
+
 
 
 
@@ -125,21 +125,21 @@ async function loadData(){
         document.getElementById(
             "title"
         ).value =
-        data.title || "메인메뉴";
+        data.title ?? "메인메뉴";
 
 
 
         document.getElementById(
             "discount"
         ).value =
-        data.discount || 20;
+        data.discount ?? 20;
 
 
 
         document.getElementById(
             "notice"
         ).value =
-        data.notice ||
+        data.notice ?? 
         "매장 내 식사만 가능\n포장 · 배달 제외";
 
 
@@ -154,6 +154,7 @@ async function loadData(){
 
 
 
+
 // =============================
 // 쿠폰 설정 저장
 // =============================
@@ -161,9 +162,7 @@ async function loadData(){
 
 document
 .getElementById("saveButton")
-.addEventListener(
-"click",
-async function(){
+.onclick = async()=>{
 
 
     const data = {
@@ -176,7 +175,6 @@ async function(){
         ).value,
 
 
-
         discount:
 
         Number(
@@ -186,17 +184,14 @@ async function(){
         ),
 
 
-
         notice:
 
         document.getElementById(
             "notice"
-        ).value
-
+            ).value
 
 
     };
-
 
 
 
@@ -211,11 +206,13 @@ async function(){
 
 
     alert(
-        "Firebase 저장 완료"
+        "쿠폰 설정 저장 완료"
     );
 
 
-});
+};
+
+
 
 
 
@@ -230,10 +227,7 @@ async function(){
 
 document
 .getElementById("checkUseButton")
-.addEventListener(
-"click",
-async function(){
-
+.onclick = async()=>{
 
 
     const number =
@@ -257,7 +251,7 @@ async function(){
 
 
         result.innerHTML =
-        "❌ 쿠폰번호를 입력하세요.";
+        "❌ 쿠폰번호 입력 필요";
 
 
         return;
@@ -268,7 +262,8 @@ async function(){
 
 
 
-    const q = query(
+    const q =
+    query(
 
         collection(
             db,
@@ -285,10 +280,8 @@ async function(){
 
 
 
-
     const snap =
     await getDocs(q);
-
 
 
 
@@ -297,7 +290,7 @@ async function(){
 
 
         result.innerHTML =
-        "❌ 사용 기록이 없습니다.";
+        "❌ 사용 기록 없음";
 
 
     }
@@ -305,13 +298,106 @@ async function(){
 
 
         result.innerHTML =
-        "✅ 이미 사용된 쿠폰입니다.";
+        "✅ 이미 사용 처리된 쿠폰";
 
 
     }
 
 
-});
+
+};
+
+
+
+
+
+
+
+
+
+// =============================
+// 쿠폰 사용 완료 처리
+// =============================
+
+
+document
+.getElementById("completeUseButton")
+.onclick = async()=>{
+
+
+    const number =
+    document.getElementById(
+        "useCouponNumber"
+    )
+    .value
+    .trim();
+
+
+
+    if(!number){
+
+
+        alert(
+            "쿠폰번호 입력하세요"
+        );
+
+
+        return;
+
+
+    }
+
+
+
+
+    const useRef =
+    doc(
+
+        db,
+
+        "coupon_use",
+
+        number
+
+    );
+
+
+
+
+    await setDoc(
+
+        useRef,
+
+        {
+
+
+            couponNumber:number,
+
+
+            used:true,
+
+
+            usedTime:
+            new Date()
+
+
+        }
+
+    );
+
+
+
+    document.getElementById(
+        "useResult"
+    )
+    .innerHTML =
+
+    "✅ 사용 완료 처리됨";
+
+
+};
+
+
 
 
 
@@ -326,10 +412,7 @@ async function(){
 
 document
 .getElementById("cancelUseButton")
-.addEventListener(
-"click",
-async function(){
-
+.onclick = async()=>{
 
 
     const number =
@@ -341,19 +424,12 @@ async function(){
 
 
 
-    const result =
-    document.getElementById(
-        "useResult"
-    );
-
-
-
-
     if(!number){
 
 
-        result.innerHTML =
-        "❌ 쿠폰번호를 입력하세요.";
+        alert(
+            "쿠폰번호 입력하세요"
+        );
 
 
         return;
@@ -364,72 +440,31 @@ async function(){
 
 
 
-    const q = query(
+    const useRef =
+    doc(
 
-        collection(
-            db,
-            "coupon_use"
-        ),
+        db,
 
-        where(
-            "couponNumber",
-            "==",
-            number
-        )
+        "coupon_use",
+
+        number
 
     );
 
 
 
-
-    const snap =
-    await getDocs(q);
-
-
-
-
-    if(snap.empty){
-
-
-        result.innerHTML =
-        "❌ 취소할 사용 기록이 없습니다.";
-
-
-        return;
-
-
-    }
+    await deleteDoc(
+        useRef
+    );
 
 
 
+    document.getElementById(
+        "useResult"
+    )
+    .innerHTML =
+
+    "♻️ 사용 취소 완료";
 
 
-    for(const item of snap.docs){
-
-
-        await deleteDoc(
-
-            doc(
-
-                db,
-
-                "coupon_use",
-
-                item.id
-
-            )
-
-        );
-
-
-    }
-
-
-
-
-
-    result.innerHTML =
-    "♻️ 쿠폰 사용 취소 완료";
-
-
-});
+};
