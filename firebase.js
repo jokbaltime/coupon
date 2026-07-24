@@ -1,5 +1,5 @@
 // ======================================
-// JOKBALTlME FIREBASE CONFIG
+// JOKBALTlME FIREBASE
 // ======================================
 
 
@@ -9,8 +9,6 @@ initializeApp
 
 } from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-
 
 
 
@@ -32,8 +30,6 @@ getDocs
 
 
 
-
-
 import {
 
 getAuth,
@@ -50,27 +46,41 @@ signOut
 
 
 
-
-
-// =============================
-// Firebase 설정
-// =============================
-
-
 const firebaseConfig = {
 
 
-    apiKey: "기존값",
+apiKey:
+"AIzaSyAykACgg1IqU-8tawPLRAfP2pKYST-PWjQ",
 
-    authDomain: "기존값",
 
-    projectId: "기존값",
 
-    storageBucket: "기존값",
+authDomain:
+"jokbaltime-coupon.firebaseapp.com",
 
-    messagingSenderId: "기존값",
 
-    appId: "기존값"
+
+projectId:
+"jokbaltime-coupon",
+
+
+
+storageBucket:
+"jokbaltime-coupon.firebasestorage.app",
+
+
+
+messagingSenderId:
+"1077568919018",
+
+
+
+appId:
+"1:1077568919018:web:2205193cae7848ec518e93",
+
+
+
+measurementId:
+"G-BEHR2WZR0F"
 
 
 };
@@ -78,14 +88,6 @@ const firebaseConfig = {
 
 
 
-
-
-
-
-
-// =============================
-// Firebase 시작
-// =============================
 
 
 const app =
@@ -97,13 +99,6 @@ firebaseConfig
 
 
 
-
-
-// =============================
-// Firestore
-// =============================
-
-
 const db =
 getFirestore(
 app
@@ -111,13 +106,6 @@ app
 
 
 
-
-
-
-
-// =============================
-// Authentication
-// =============================
 
 
 const auth =
@@ -129,13 +117,6 @@ app
 
 
 
-
-
-
-
-// =============================
-// Export
-// =============================
 
 
 export {
