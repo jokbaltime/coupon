@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>족발타임 관리자</title>
@@ -11,18 +13,36 @@
 
 </head>
 
+
 <body>
+
+
+<!-- ==============================
+     관리자 로그인
+============================== -->
 
 <div class="login-box">
 
+
     <h1>족발타임 관리자</h1>
 
-    <p>관리자 PIN을 입력하세요.</p>
+
+    <p>
+        관리자 PIN을 입력하세요.
+    </p>
+
 
     <input
+
         type="password"
+
         id="adminPin"
-        placeholder="PIN 입력">
+
+        placeholder="PIN 입력"
+
+    >
+
+
 
     <button id="loginButton">
 
@@ -30,42 +50,144 @@
 
     </button>
 
+
 </div>
+
+
+
+
+
+<!-- ==============================
+     관리자 패널
+============================== -->
+
 
 <div id="adminPanel" class="hidden">
 
-    <h2>쿠폰 설정</h2>
 
-    <label>할인율</label>
+<h2>
+    쿠폰 설정
+</h2>
 
-    <input
-        id="discount"
-        value="20">
 
-    <label>쿠폰 제목</label>
 
-    <input
-        id="title"
-        value="메인메뉴">
+<label>
+    할인율
+</label>
 
-    <label>안내문구</label>
 
-    <textarea id="notice">
+<input
+
+    id="discount"
+
+    value="20"
+
+    type="number"
+
+>
+
+
+
+
+<label>
+    쿠폰 제목
+</label>
+
+
+<input
+
+    id="title"
+
+    value="메인메뉴"
+
+>
+
+
+
+
+<label>
+    안내문구
+</label>
+
+
+<textarea id="notice">
+
 
 매장 내 식사만 가능
+
 포장 · 배달 제외
 
-    </textarea>
 
-    <button id="saveButton">
+</textarea>
 
-        저장하기
 
-    </button>
+
+
+<button id="saveButton">
+
+저장하기
+
+</button>
+
+
+
+
+<hr>
+
+
+
+
+<!-- ==============================
+     사용 쿠폰 확인
+============================== -->
+
+
+<h2>
+
+사용 완료 쿠폰
+
+</h2>
+
+
+
+<div id="usedCoupons">
+
+
+사용 기록 불러오는 중...
 
 </div>
 
-<script type="module" src="admin.js"></script>
+
+
+</div>
+
+
+
+
+
+<script
+
+type="module"
+
+src="admin.js">
+
+</script>
+
+
 
 </body>
+
 </html>
+변경된 부분:
+
+추가된 관리자 기능 영역:
+
+<h2>
+사용 완료 쿠폰
+</h2>
+
+<div id="usedCoupons">
+
+사용 기록 불러오는 중...
+
+</div>
