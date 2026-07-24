@@ -1,1 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>족발타임 관리자</title>
+
+<link rel="stylesheet" href="admin.css">
+
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <h1>족발타임 관리자</h1>
+
+    <p>관리자 PIN을 입력하세요.</p>
+
+    <input
+        type="password"
+        id="adminPin"
+        placeholder="PIN 입력">
+
+    <button id="loginButton">
+
+        로그인
+
+    </button>
+
+</div>
+
+<div id="adminPanel" class="hidden">
+
+    <h2>쿠폰 설정</h2>
+
+    <label>할인율</label>
+
+    <input
+        id="discount"
+        value="20">
+
+    <label>쿠폰 제목</label>
+
+    <input
+        id="title"
+        value="메인메뉴">
+
+    <label>안내문구</label>
+
+    <textarea id="notice">
+
+매장 내 식사만 가능
+포장 · 배달 제외
+
+    </textarea>
+
+    <button id="saveButton">
+
+        저장하기
+
+    </button>
+
+</div>
+
+<script src="admin.js"></script>
+
+</body>
+</html>
