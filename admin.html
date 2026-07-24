@@ -63,16 +63,23 @@ id="loginButton">
 
 
 
-<!-- 관리자 -->
+
+
+
+<!-- 관리자 영역 -->
+
 
 <div id="adminPanel"
 class="hidden">
 
 
 
+
+
 <h1>
-관리자 대시보드
+족발타임 관리자
 </h1>
+
 
 
 
@@ -91,6 +98,19 @@ class="hidden">
 
 
 <label>
+쿠폰 제목
+</label>
+
+
+<input
+id="title"
+value="메인메뉴">
+
+
+
+
+
+<label>
 할인율
 </label>
 
@@ -99,19 +119,6 @@ class="hidden">
 id="discount"
 type="number"
 value="20">
-
-
-
-
-
-<label>
-쿠폰 제목
-</label>
-
-
-<input
-id="title"
-value="메인메뉴">
 
 
 
@@ -133,14 +140,13 @@ id="notice">
 
 
 
-
 <button
-id="saveButton"
-class="save-btn">
+id="saveButton">
 
 저장하기
 
 </button>
+
 
 
 </section>
@@ -152,27 +158,22 @@ class="save-btn">
 
 
 
-
-<!-- 쿠폰 관리 -->
+<!-- 직원 쿠폰 확인 -->
 
 
 <section class="card">
 
 
 <h2>
-🔎 쿠폰 사용 관리
+👨‍🍳 직원 쿠폰 확인
 </h2>
 
 
 
-<label>
-쿠폰번호
-</label>
-
 
 <input
 id="useCouponNumber"
-placeholder="JT-000000-0000">
+placeholder="JT-260724-1234">
 
 
 
@@ -182,8 +183,7 @@ placeholder="JT-000000-0000">
 
 
 <button
-id="checkUseButton"
-class="check-btn">
+id="checkUseButton">
 
 사용 확인
 
@@ -191,10 +191,8 @@ class="check-btn">
 
 
 
-
 <button
-id="completeUseButton"
-class="complete-btn">
+id="completeUseButton">
 
 사용 완료
 
@@ -202,10 +200,8 @@ class="complete-btn">
 
 
 
-
 <button
-id="cancelUseButton"
-class="cancel-btn">
+id="cancelUseButton">
 
 사용 취소
 
@@ -213,6 +209,7 @@ class="cancel-btn">
 
 
 </div>
+
 
 
 
@@ -233,7 +230,7 @@ id="useResult">
 
 
 
-<!-- 발급 목록 -->
+<!-- 최근 쿠폰 목록 -->
 
 
 <section class="card">
@@ -242,7 +239,6 @@ id="useResult">
 <h2>
 📋 최근 발급 쿠폰
 </h2>
-
 
 
 <div
@@ -264,9 +260,7 @@ id="couponList">
 </div>
 
 
-
 </div>
-
 
 
 
@@ -278,7 +272,6 @@ type="module"
 src="admin.js">
 
 </script>
-
 
 
 </body>
