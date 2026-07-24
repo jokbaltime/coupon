@@ -187,26 +187,48 @@ usedTime:new Date()
 
 
 
+const requestRef =
+doc(
+db,
+"coupon_request",
+item.id
+);
+
+
+const requestSnap =
+await getDoc(
+requestRef
+);
+
+
+if(
+requestSnap.data().status !== "waiting"
+){
+
+alert(
+"이미 처리된 요청입니다."
+);
+
+return;
+
+}
+
+
+
+
 await updateDoc(
 
-doc(
-
-db,
-
-"coupon_request",
-
-item.id
-
-),
+requestRef,
 
 {
 
-status:"approved"
+status:"approved",
+
+approvedTime:new Date()
 
 }
 
 );
-
 
 
 
