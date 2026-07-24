@@ -1,5 +1,5 @@
 // ======================================
-// JOKBALTIME ADMIN FIREBASE v1
+// JOKBALTIME ADMIN FIREBASE
 // ======================================
 
 import {
@@ -10,8 +10,6 @@ import {
 } from "./firebase.js";
 
 
-// Firebase 위치
-
 const couponRef = doc(
     db,
     "coupon",
@@ -19,9 +17,7 @@ const couponRef = doc(
 );
 
 
-// =============================
-// 관리자 로그인
-// =============================
+// 로그인
 
 const loginButton =
 document.getElementById("loginButton");
@@ -33,7 +29,7 @@ const adminPanel =
 document.getElementById("adminPanel");
 
 
-loginButton.addEventListener("click", function(){
+loginButton.addEventListener("click", async function(){
 
     const pin =
     document.getElementById("adminPin").value;
@@ -47,8 +43,7 @@ loginButton.addEventListener("click", function(){
 
         loadCoupon();
 
-    }
-    else{
+    }else{
 
         alert("PIN이 올바르지 않습니다.");
 
@@ -57,9 +52,7 @@ loginButton.addEventListener("click", function(){
 });
 
 
-// =============================
-// Firebase 데이터 불러오기
-// =============================
+// 데이터 불러오기
 
 async function loadCoupon(){
 
@@ -88,18 +81,14 @@ async function loadCoupon(){
 }
 
 
-// =============================
-// 저장 버튼
-// =============================
+// 저장
 
-const saveButton =
-document.getElementById("saveButton");
-
-
-saveButton.addEventListener("click", async function(){
+document
+.getElementById("saveButton")
+.addEventListener("click", async ()=>{
 
 
-    const data = {
+    const data={
 
         title:
         document.getElementById("title").value,
