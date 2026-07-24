@@ -1,15 +1,18 @@
 // ======================================
-// JOKBALTlME STAFF
-// COUPON CHECK SYSTEM
+// JOKBALTlME STAFF REQUEST SYSTEM
 // ======================================
 
 
 import {
 
-    db,
-    doc,
-    getDoc,
-    updateDoc
+db,
+doc,
+getDoc,
+updateDoc,
+collection,
+query,
+where,
+onSnapshot
 
 } from "./firebase.js";
 
@@ -17,417 +20,226 @@ import {
 
 
 
-let currentCoupon = null;
-
-
-
-
-
-
 // =============================
-// URL 쿠폰번호 자동 입력
+// 고객 요청 실시간 감시
 // =============================
 
 
-const params =
-new URLSearchParams(
-    location.search
-);
-
-
-
-const urlCoupon =
-params.get(
-    "coupon"
-);
-
-
-
-
-const couponInput =
+const requestList =
 document.getElementById(
-    "couponNumber"
+"requestList"
 );
 
 
 
-if(urlCoupon && couponInput){
 
+const requestQuery =
+query(
 
-    couponInput.value =
-    urlCoupon;
+collection(
+db,
+"coupon_request"
+),
 
+where(
+"status",
+"==",
+"waiting"
+)
 
-}
-
-
-
-
-
-
-
-
-
-// =============================
-// 쿠폰 조회
-// =============================
-
-
-async function findCoupon(){
-
-
-
-    const number =
-    couponInput.value.trim();
-
-
-
-    const result =
-    document.getElementById(
-        "result"
-    );
-
-
-
-
-
-    if(!number){
-
-
-        result.innerHTML =
-        "❌ 쿠폰번호를 입력하세요";
-
-
-        return null;
-
-
-    }
-
-
-
-
-
-
-    try{
-
-
-        const ref =
-        doc(
-
-            db,
-
-            "coupon_issue",
-
-            number
-
-        );
-
-
-
-
-
-        const snap =
-        await getDoc(
-            ref
-        );
-
-
-
-
-
-        if(!snap.exists()){
-
-
-            result.innerHTML =
-            "❌ 존재하지 않는 쿠폰입니다.";
-
-
-            currentCoupon = null;
-
-
-            return null;
-
-
-        }
-
-
-
-
-
-        currentCoupon = {
-
-
-            ref:ref,
-
-
-            data:snap.data()
-
-
-        };
-
-
-
-        return currentCoupon;
-
-
-
-    }
-
-
-    catch(error){
-
-
-        console.error(
-            error
-        );
-
-
-        result.innerHTML =
-        "⚠️ 조회 오류입니다.";
-
-
-        return null;
-
-
-    }
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// =============================
-// 사용 확인
-// =============================
-
-
-const checkButton =
-document.getElementById(
-    "checkButton"
 );
 
 
 
-if(checkButton){
 
 
-checkButton.onclick =
+onSnapshot(
+
+requestQuery,
+
+(snapshot)=>{
+
+
+if(!requestList)
+return;
+
+
+
+
+requestList.innerHTML = "";
+
+
+
+
+
+snapshot.forEach(
+
+(item)=>{
+
+
+
+const data =
+item.data();
+
+
+
+
+
+const box =
+document.createElement(
+"div"
+);
+
+
+
+box.style.background =
+"#333";
+
+
+box.style.margin =
+"20px 0";
+
+
+box.style.padding =
+"20px";
+
+
+box.style.borderRadius =
+"15px";
+
+
+
+
+
+box.innerHTML =
+
+`
+
+<h2>
+🔔 새 요청
+</h2>
+
+<p>
+쿠폰번호
+<br>
+<b>
+${data.couponNumber}
+</b>
+</p>
+
+
+<button>
+✅ 승인
+</button>
+
+`;
+
+
+
+
+
+
+const button =
+box.querySelector(
+"button"
+);
+
+
+
+
+
+button.onclick =
 async()=>{
 
 
 
-    const coupon =
-    await findCoupon();
+const ref =
+doc(
 
+db,
 
+"coupon_issue",
 
+data.couponNumber
 
-    if(!coupon)
-    return;
-
-
-
-
-    const result =
-    document.getElementById(
-        "result"
-    );
+);
 
 
 
 
 
-    if(coupon.data.used === true){
+await updateDoc(
+
+ref,
+
+{
+
+used:true,
+
+usedTime:new Date()
+
+}
+
+);
 
 
-        result.innerHTML =
-
-        `
-        ❌ 이미 사용된 쿠폰입니다.
-        `;
 
 
-    }
 
 
-    else{
+await updateDoc(
+
+doc(
+
+db,
+
+"coupon_request",
+
+item.id
+
+),
+
+{
+
+status:"approved"
+
+}
+
+);
 
 
-        result.innerHTML =
-
-        `
-        ✅ 사용 가능한 쿠폰입니다.<br><br>
-        ${coupon.data.couponNumber}
-        `;
 
 
-    }
+
+
+alert(
+"사용 처리 완료"
+);
 
 
 
 };
 
 
-}
 
 
 
 
 
-
-
-
-
-// =============================
-// 사용 완료
-// =============================
-
-
-const useButton =
-document.getElementById(
-    "useButton"
+requestList.appendChild(
+box
 );
 
 
 
-if(useButton){
-
-
-useButton.onclick =
-async()=>{
-
-
-
-    const coupon =
-    await findCoupon();
-
-
-
-
-    if(!coupon)
-    return;
-
-
-
-
-
-    await updateDoc(
-
-        coupon.ref,
-
-        {
-
-            used:true,
-
-
-            usedTime:new Date()
-
-
-        }
-
-    );
-
-
-
-
-
-    document.getElementById(
-        "result"
-    )
-    .innerHTML =
-
-    `
-    ✅ 사용 완료 처리되었습니다.
-    `;
-
-
-
-};
 
 
 }
 
-
-
-
-
-
-
-
-
-// =============================
-// 사용 취소
-// =============================
-
-
-const cancelButton =
-document.getElementById(
-    "cancelButton"
 );
 
 
 
-if(cancelButton){
-
-
-cancelButton.onclick =
-async()=>{
-
-
-
-    const coupon =
-    await findCoupon();
-
-
-
-
-    if(!coupon)
-    return;
-
-
-
-
-
-    await updateDoc(
-
-        coupon.ref,
-
-        {
-
-
-            used:false,
-
-
-            cancelTime:new Date()
-
-
-        }
-
-    );
-
-
-
-
-
-    document.getElementById(
-        "result"
-    )
-    .innerHTML =
-
-    `
-    ♻️ 사용 취소 완료되었습니다.
-    `;
-
-
-
-};
-
-
 }
+
+);
