@@ -1,6 +1,8 @@
-/* ===========================
-   RESET
-=========================== */
+/* =====================================
+   JOKBALTIME PREMIUM COUPON v2
+===================================== */
+
+/* RESET */
 
 *{
     margin:0;
@@ -8,89 +10,400 @@
     box-sizing:border-box;
 }
 
+:root{
+
+    --gold:#D4AF37;
+    --gold-light:#F7D774;
+    --black:#111111;
+    --card:#1A1A1A;
+    --white:#ffffff;
+    --gray:#bdbdbd;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
 body{
-    background:#111111;
-    color:#ffffff;
-    font-family:'Pretendard',sans-serif;
+
+    background:
+        linear-gradient(
+            180deg,
+            #0f0f0f 0%,
+            #181818 100%
+        );
+
+    color:var(--white);
+
+    font-family:
+        Pretendard,
+        "Noto Sans KR",
+        sans-serif;
+
     line-height:1.6;
+
+    padding-bottom:95px;
+
 }
 
-/* ===========================
+/* ===============================
    HEADER
-=========================== */
+================================ */
 
-header{
+.header{
+
     text-align:center;
-    padding:40px 20px;
+
+    padding:45px 20px 30px;
+
+    animation:fadeUp .8s ease;
+
 }
 
-header img{
+.logo{
+
     width:120px;
+
+    display:block;
+
+    margin:auto;
+
 }
 
-header h1{
-    font-size:38px;
-    color:#D4AF37;
+.header h1{
+
     margin-top:20px;
+
+    font-size:38px;
+
+    color:var(--gold);
+
+    font-weight:800;
+
 }
 
-.brand-text{
-    color:#cccccc;
+.subtitle{
+
     margin-top:10px;
+
+    color:#d6d6d6;
+
+    font-size:16px;
+
 }
 
-/* ===========================
+.premium-badge{
+
+    display:inline-block;
+
+    margin-top:20px;
+
+    padding:10px 24px;
+
+    border-radius:50px;
+
+    border:1px solid var(--gold);
+
+    color:var(--gold);
+
+    letter-spacing:3px;
+
+    font-size:13px;
+
+    background:
+
+        rgba(212,175,55,.08);
+
+}
+
+/* ===============================
    HERO
-=========================== */
+================================ */
+
+.hero{
+
+    width:92%;
+
+    margin:auto;
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:28px;
+
+    box-shadow:
+
+        0 20px 60px
+
+        rgba(0,0,0,.45);
+
+}
 
 .hero img{
+
     width:100%;
-    display:block;
-    border-radius:20px;
+
+    height:340px;
+
+    object-fit:cover;
+
+    animation:
+
+        zoomHero
+
+        15s
+
+        infinite
+
+        alternate;
+
 }
 
-/* ===========================
-   COUPON
-=========================== */
+.hero-overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+        linear-gradient(
+
+            rgba(0,0,0,.1),
+
+            rgba(0,0,0,.7)
+
+        );
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:flex-end;
+
+    padding:30px;
+
+}
+
+.hero-overlay h2{
+
+    font-size:34px;
+
+    font-weight:800;
+
+}
+
+.hero-overlay span{
+
+    display:block;
+
+    color:var(--gold-light);
+
+    font-size:42px;
+
+    margin-top:8px;
+
+}
+
+.hero-overlay p{
+
+    margin-top:10px;
+
+    color:#efefef;
+
+    font-size:15px;
+
+}
+
+/* ===============================
+   SECTION TITLE
+================================ */
+
+.section-title{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+.section-title h2{
+
+    color:var(--gold);
+
+    font-size:28px;
+
+}
+
+.section-title p{
+
+    color:#c7c7c7;
+
+    font-size:14px;
+
+}
+
+/* ===============================
+   ANIMATION
+================================ */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:
+
+            translateY(35px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+
+            translateY(0);
+
+    }
+
+}
+
+@keyframes zoomHero{
+
+    from{
+
+        transform:scale(1);
+
+    }
+
+    to{
+
+        transform:scale(1.08);
+
+    }
+
+}
+/* =====================================
+   PREMIUM COUPON
+===================================== */
 
 .coupon{
 
-    width:90%;
+    width:92%;
 
     margin:40px auto;
 
-    padding:35px;
+    background:rgba(255,255,255,.04);
+
+    backdrop-filter:blur(18px);
+
+    -webkit-backdrop-filter:blur(18px);
+
+    border:1px solid rgba(212,175,55,.25);
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.45);
+
+}
+
+/* 티켓 양옆 반원 */
+
+.coupon::before,
+.coupon::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:36px;
+
+    height:36px;
+
+    background:#111;
+
+    border-radius:50%;
+
+    top:72%;
+
+}
+
+.coupon::before{
+
+    left:-18px;
+
+}
+
+.coupon::after{
+
+    right:-18px;
+
+}
+
+/* 골드 헤더 */
+
+.coupon-header{
+
+    background:linear-gradient(
+        90deg,
+        #A67C00,
+        #D4AF37,
+        #F7D774
+    );
+
+    color:#111;
 
     text-align:center;
 
-    border-radius:25px;
+    font-weight:700;
 
-    background:rgba(255,255,255,0.05);
+    letter-spacing:3px;
 
-    backdrop-filter:blur(20px);
-
-    -webkit-backdrop-filter:blur(20px);
-
-    border:1px solid rgba(212,175,55,0.3);
-
-    box-shadow:
-        0 20px 50px rgba(0,0,0,0.5),
-        0 0 20px rgba(212,175,55,0.15);
+    padding:16px;
 
 }
-.coupon h2{
 
-    color:#D4AF37;
+/* 내용 */
+
+.coupon-body{
+
+    padding:35px 25px;
+
+    text-align:center;
+
+}
+
+.coupon-body h2{
+
+    font-size:30px;
+
+    color:#fff;
 
     margin-bottom:20px;
 
 }
 
+/* 할인율 */
+
 .discount{
 
-    font-size:36px;
+    font-size:34px;
 
-    font-weight:bold;
+    font-weight:800;
+
+    color:#ffffff;
 
 }
 
@@ -98,224 +411,139 @@ header h1{
 
     display:block;
 
-    font-size:72px;
+    font-size:76px;
 
-    color:#ffcc00;
+    color:#FFD700;
 
-    margin:10px 0;
+    margin:8px 0;
+
+    animation:pulse 2s infinite;
 
 }
 
-/* ===========================
-   NOTICE
-=========================== */
+/* 안내 */
 
 .notice{
 
-    margin-top:25px;
-
-    color:#dddddd;
+    margin-top:30px;
 
 }
 
 .notice p{
 
-    margin:8px 0;
+    color:#d6d6d6;
+
+    margin:10px 0;
+
+    font-size:16px;
 
 }
 
-/* ===========================
-   INFO
-=========================== */
+/* 절취선 */
 
-.coupon-info{
+.ticket-line{
 
-    width:90%;
+    border-top:2px dashed rgba(255,255,255,.25);
 
-    margin:30px auto;
+}
+
+/* 하단 정보 */
+
+.coupon-footer{
 
     display:grid;
 
-    grid-template-columns:1fr;
+    grid-template-columns:1fr 1fr;
 
-    gap:20px;
-
-}
-
-.coupon-info div{
-
-    background:#1d1d1d;
-
-    padding:20px;
-
-    border-radius:15px;
-
-    border:1px solid #333;
-
-}
-
-/* ===========================
-   MENU
-=========================== */
-
-.menu{
-
-    width:90%;
-
-    margin:50px auto;
-
-}
-
-.menu h2{
-
-    text-align:center;
-
-    color:#D4AF37;
-
-    margin-bottom:20px;
-
-}
-
-.menu-list{
-
-    display:grid;
-
-    gap:20px;
-
-}
-
-.menu-list img{
-
-    width:100%;
-
-    border-radius:20px;
-
-}
-
-/* ===========================
-   BUTTON
-=========================== */
-
-.buttons{
-
-    width:90%;
-
-    margin:40px auto;
-
-}
-
-.btn{
-
-    display:block;
-
-    text-align:center;
-
-    text-decoration:none;
-
-    color:white;
-
-    background:#D4AF37;
-
-    color:#111;
-
-    font-weight:bold;
-
-    padding:18px;
-
-    border-radius:15px;
-
-    margin-bottom:15px;
-
-    transition:.3s;
-
-}
-
-.btn:hover{
-
-    background:white;
-
-}
-
-/* ===========================
-   STORE
-=========================== */
-
-.store{
-
-    width:90%;
-
-    margin:40px auto;
-
-    background:#1b1b1b;
-
-    border-radius:20px;
+    gap:15px;
 
     padding:25px;
 
 }
 
-.store h2{
+.coupon-footer div{
 
-    color:#D4AF37;
-
-    margin-bottom:20px;
-
-}
-
-/* ===========================
-   STAFF
-=========================== */
-
-.staff{
-
-    width:90%;
-
-    margin:50px auto;
-
-}
-
-.staff button{
-
-    width:100%;
-
-    padding:18px;
-
-    border:none;
+    background:#1F1F1F;
 
     border-radius:15px;
 
-    background:#B71C1C;
-
-    color:white;
-
-    font-size:18px;
-
-    cursor:pointer;
-
-}
-
-/* ===========================
-   FOOTER
-=========================== */
-
-footer{
+    padding:18px;
 
     text-align:center;
 
-    padding:40px;
-
-    color:#777;
+    border:1px solid rgba(212,175,55,.15);
 
 }
-/* ===========================
-   MENU SLIDER
-=========================== */
+
+.coupon-footer small{
+
+    display:block;
+
+    color:#bbbbbb;
+
+    margin-bottom:8px;
+
+}
+
+.coupon-footer p{
+
+    color:#ffffff;
+
+    font-size:16px;
+
+    font-weight:700;
+
+}
+
+/* 할인 애니메이션 */
+
+@keyframes pulse{
+
+    0%{
+
+        transform:scale(1);
+
+        text-shadow:0 0 8px rgba(255,215,0,.4);
+
+    }
+
+    50%{
+
+        transform:scale(1.08);
+
+        text-shadow:0 0 22px rgba(255,215,0,.9);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+        text-shadow:0 0 8px rgba(255,215,0,.4);
+
+    }
+
+}
+/* =====================================
+   MENU
+===================================== */
+
+.menu{
+
+    width:92%;
+
+    margin:60px auto;
+
+}
 
 .slider{
 
     overflow:hidden;
 
-    border-radius:20px;
+    border-radius:24px;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.4);
 
 }
 
@@ -323,11 +551,11 @@ footer{
 
     width:100%;
 
-    height:300px;
+    height:320px;
 
     object-fit:cover;
 
-    transition:1s;
+    transition:opacity .5s ease;
 
 }
 
@@ -335,7 +563,7 @@ footer{
 
     text-align:center;
 
-    margin-top:15px;
+    margin-top:18px;
 
 }
 
@@ -347,209 +575,137 @@ footer{
 
     display:inline-block;
 
+    margin:0 6px;
+
     border-radius:50%;
 
-    background:#666;
+    background:#555;
 
-    margin:5px;
-
-}
-
-.active{
-
-    background:#D4AF37;
-
-}
-/* ===========================
-   FADE ANIMATION
-=========================== */
-
-@keyframes fadeUp{
-
-0%{
-opacity:0;
-transform:translateY(40px);
-}
-
-100%{
-opacity:1;
-transform:translateY(0);
-}
+    transition:.3s;
 
 }
 
-header,
-.hero,
-.coupon,
-.coupon-info,
-.menu,
-.buttons,
-.store,
+.dot.active{
+
+    background:var(--gold);
+
+    transform:scale(1.2);
+
+}
+
+/* =====================================
+   STORE
+===================================== */
+
+.store{
+
+    width:92%;
+
+    margin:60px auto;
+
+}
+
+.store-card{
+
+    display:grid;
+
+    gap:16px;
+
+}
+
+.store-item{
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(212,175,55,.18);
+
+    border-radius:18px;
+
+    padding:20px;
+
+}
+
+.store-item h3{
+
+    color:var(--gold);
+
+    margin-bottom:8px;
+
+}
+
+.store-item a{
+
+    color:#fff;
+
+    text-decoration:none;
+
+}
+
+/* =====================================
+   STAFF
+===================================== */
+
 .staff{
 
-animation:fadeUp .8s ease forwards;
+    width:92%;
+
+    margin:60px auto;
+
+    text-align:center;
 
 }
 
+.staff-btn{
 
-/* ===========================
-   GOLD GLOW
-=========================== */
+    width:100%;
 
-@keyframes goldGlow{
+    padding:18px;
 
-0%{
-box-shadow:0 0 10px rgba(212,175,55,.2);
-}
+    border:none;
 
-50%{
-box-shadow:0 0 30px rgba(212,175,55,.8);
-}
+    border-radius:18px;
 
-100%{
-box-shadow:0 0 10px rgba(212,175,55,.2);
-}
+    background:linear-gradient(90deg,#8B0000,#C62828);
 
-}
+    color:#fff;
 
-.coupon{
+    font-size:18px;
 
-animation:goldGlow 3s infinite;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.3s;
 
 }
 
+.staff-btn:hover{
 
-/* ===========================
-   DISCOUNT
-=========================== */
+    transform:translateY(-2px);
 
-.discount span{
-
-animation:pulse 1.8s infinite;
+    box-shadow:0 10px 25px rgba(198,40,40,.4);
 
 }
 
-@keyframes pulse{
-
-0%{
-transform:scale(1);
-}
-
-50%{
-transform:scale(1.08);
-color:#FFD700;
-}
-
-100%{
-transform:scale(1);
-}
-
-}
-
-
-/* ===========================
-   BUTTON EFFECT
-=========================== */
-
-.btn{
-
-transition:.35s;
-
-}
-
-.btn:hover{
-
-transform:translateY(-4px);
-
-box-shadow:0 10px 30px rgba(212,175,55,.4);
-
-}
-
-
-/* ===========================
-   STAFF BUTTON
-=========================== */
-
-.staff button:hover{
-
-transform:scale(1.03);
-
-transition:.3s;
-
-}
-
-
-/* ===========================
-   IMAGE ZOOM
-=========================== */
-
-.hero{
-
-overflow:hidden;
-
-border-radius:25px;
-
-}
-
-.hero img{
-
-animation:zoom 12s infinite alternate;
-
-}
-
-@keyframes zoom{
-
-from{
-
-transform:scale(1);
-
-}
-
-to{
-
-transform:scale(1.12);
-
-}
-
-}
-.premium{
-
-display:inline-block;
-
-margin-top:20px;
-
-padding:8px 20px;
-
-border:1px solid #D4AF37;
-
-border-radius:30px;
-
-color:#D4AF37;
-
-letter-spacing:3px;
-
-font-size:14px;
-
-}
-/* ===========================
-   FLOATING NAVIGATION
-=========================== */
+/* =====================================
+   BOTTOM NAVIGATION
+===================================== */
 
 .bottom-nav{
 
     position:fixed;
 
-    bottom:0;
-
     left:0;
+
+    bottom:0;
 
     width:100%;
 
-    height:75px;
+    height:78px;
 
     background:#111;
 
-    border-top:2px solid #D4AF37;
+    border-top:1px solid rgba(212,175,55,.4);
 
     display:flex;
 
@@ -559,13 +715,15 @@ font-size:14px;
 
     z-index:999;
 
+    backdrop-filter:blur(12px);
+
 }
 
 .bottom-nav a{
 
-    color:white;
-
     text-decoration:none;
+
+    color:#fff;
 
     display:flex;
 
@@ -573,9 +731,15 @@ font-size:14px;
 
     align-items:center;
 
-    font-size:24px;
+    gap:4px;
 
     transition:.3s;
+
+}
+
+.nav-icon{
+
+    font-size:26px;
 
 }
 
@@ -583,21 +747,70 @@ font-size:14px;
 
     font-size:12px;
 
-    margin-top:5px;
-
 }
 
 .bottom-nav a:hover{
 
-    color:#D4AF37;
-
-    transform:translateY(-3px);
+    color:var(--gold);
 
 }
 
-/* 하단 메뉴 때문에 내용이 가려지지 않도록 */
-body{
+/* =====================================
+   FOOTER
+===================================== */
 
-    padding-bottom:90px;
+footer{
+
+    text-align:center;
+
+    color:#888;
+
+    padding:40px 20px 110px;
+
+    font-size:14px;
+
+}
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width:480px){
+
+    .header h1{
+
+        font-size:32px;
+
+    }
+
+    .hero img{
+
+        height:260px;
+
+    }
+
+    .hero-overlay h2{
+
+        font-size:28px;
+
+    }
+
+    .hero-overlay span{
+
+        font-size:36px;
+
+    }
+
+    .discount span{
+
+        font-size:60px;
+
+    }
+
+    .slider img{
+
+        height:240px;
+
+    }
 
 }
