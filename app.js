@@ -10,9 +10,12 @@ db,
 doc,
 setDoc,
 getDoc,
-onSnapshot
+onSnapshot,
+collection,
+addDoc
 
 } from "./firebase.js";
+
 
 
 
@@ -68,7 +71,6 @@ document.getElementById(
 
 
 
-
 if(title){
 
 title.textContent =
@@ -118,7 +120,7 @@ notice.innerHTML =
 
 
 // =============================
-// 쿠폰번호 생성 / 유지
+// 쿠폰번호 생성
 // =============================
 
 
@@ -189,7 +191,6 @@ localStorage.getItem(
 if(!number){
 
 
-
 number =
 createNumber();
 
@@ -220,18 +221,13 @@ number
 
 {
 
-
 couponNumber:number,
-
 
 used:false,
 
-
 createdTime:new Date()
 
-
 }
-
 
 );
 
@@ -242,23 +238,10 @@ createdTime:new Date()
 
 
 
-
-
-const couponNumber =
 document.getElementById(
 "couponNumber"
-);
-
-
-
-if(couponNumber){
-
-
-couponNumber.textContent =
+).textContent =
 number;
-
-
-}
 
 
 
@@ -300,11 +283,11 @@ number
 
 
 
-
 const snap =
 await getDoc(
 ref
 );
+
 
 
 
@@ -317,9 +300,7 @@ snap.data();
 
 
 
-
 if(data.used===true){
-
 
 
 const body =
@@ -341,7 +322,7 @@ body.innerHTML =
 </h2>
 
 <p>
-사용일 :
+사용시간 :
 ${data.usedTime?.toDate?.()
 .toLocaleString("ko-KR")
 ||""}
@@ -349,10 +330,7 @@ ${data.usedTime?.toDate?.()
 
 `;
 
-
-
 }
-
 
 
 }
@@ -373,11 +351,88 @@ ${data.usedTime?.toDate?.()
 
 
 // =============================
-// 실행
+// 직원 호출 요청
 // =============================
 
 
-loadCoupon();
+const staffButton =
+document.getElementById(
+"staffButton"
+);
+
+
+
+if(staffButton){
+
+
+
+staffButton.onclick =
+async()=>{
+
+
+
+const number =
+localStorage.getItem(
+"JT_COUPON_NUMBER"
+);
+
+
+
+if(!number){
+
+alert(
+"쿠폰번호가 없습니다."
+);
+
+return;
+
+}
+
+
+
+
+
+await addDoc(
+
+collection(
+
+db,
+
+"coupon_request"
+
+),
+
+{
+
+
+couponNumber:number,
+
+
+status:"waiting",
+
+
+createdTime:new Date()
+
+
+}
+
+);
+
+
+
+
+
+alert(
+"직원에게 확인 요청을 보냈습니다."
+);
+
+
+
+};
+
+
+
+}
 
 
 
@@ -436,39 +491,6 @@ clock();
 
 
 
-// =============================
-// 직원 확인 이동
-// =============================
+// 실행
 
-
-const staffButton =
-document.getElementById(
-"staffButton"
-);
-
-
-
-if(staffButton){
-
-
-staffButton.onclick = ()=>{
-
-
-const number =
-localStorage.getItem(
-"JT_COUPON_NUMBER"
-);
-
-
-
-location.href =
-"staff.html?coupon="
-+
-number;
-
-
-
-};
-
-
-}
+loadCoupon();
