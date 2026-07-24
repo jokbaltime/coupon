@@ -16,15 +16,22 @@ import {
 
 
 
+// 현재 선택된 쿠폰 저장
+
+let currentCoupon = null;
+
+
+
 
 
 
 // =============================
-// 쿠폰 찾기
+// 쿠폰 조회
 // =============================
 
 
 async function findCoupon(){
+
 
 
     const input =
@@ -38,7 +45,6 @@ async function findCoupon(){
     document.getElementById(
         "result"
     );
-
 
 
 
@@ -66,53 +72,88 @@ async function findCoupon(){
 
 
 
-    const ref =
-    doc(
-
-        db,
-
-        "coupon_issue",
-
-        number
-
-    );
+    try{
 
 
+        const ref =
+        doc(
 
+            db,
 
+            "coupon_issue",
 
-    const snap =
-    await getDoc(
-        ref
-    );
+            number
+
+        );
 
 
 
 
 
-    if(!snap.exists()){
+        const snap =
+        await getDoc(
+            ref
+        );
+
+
+
+
+
+        if(!snap.exists()){
+
+
+            result.innerHTML =
+            "❌ 존재하지 않는 쿠폰입니다.";
+
+
+            currentCoupon = null;
+
+
+            return null;
+
+
+        }
+
+
+
+
+
+        currentCoupon = {
+
+
+            ref:ref,
+
+
+            data:snap.data()
+
+
+        };
+
+
+
+        return currentCoupon;
+
+
+
+    }
+
+
+    catch(error){
+
+
+        console.error(
+            error
+        );
 
 
         result.innerHTML =
-        "❌ 존재하지 않는 쿠폰입니다.";
+        "⚠️ 조회 오류가 발생했습니다.";
 
 
         return null;
 
 
     }
-
-
-
-
-
-    return {
-
-        ref:ref,
-
-        data:snap.data()
-
-    };
 
 
 }
@@ -126,11 +167,12 @@ async function findCoupon(){
 
 
 // =============================
-// 사용 확인
+// 사용 확인 버튼
 // =============================
 
 
 const checkButton =
+
 document.getElementById(
     "checkButton"
 );
@@ -140,8 +182,9 @@ document.getElementById(
 if(checkButton){
 
 
-checkButton.onclick =
-async()=>{
+
+checkButton.onclick = async()=>{
+
 
 
     const coupon =
@@ -149,8 +192,10 @@ async()=>{
 
 
 
+
     if(!coupon)
     return;
+
 
 
 
@@ -163,19 +208,57 @@ async()=>{
 
 
 
+
     if(coupon.data.used === true){
 
 
+
+        let time = "";
+
+
+
+        if(coupon.data.usedTime){
+
+
+            time =
+            coupon.data.usedTime
+            .toDate()
+            .toLocaleString(
+                "ko-KR"
+            );
+
+
+        }
+
+
+
+
+
         result.innerHTML =
-        "❌ 이미 사용된 쿠폰입니다.";
+
+        `
+        ❌ 사용 완료 쿠폰<br><br>
+        사용시간<br>
+        ${time}
+        `;
+
 
 
     }
+
+
     else{
 
 
+
         result.innerHTML =
-        "✅ 사용 가능한 쿠폰입니다.";
+
+        `
+        ✅ 사용 가능한 쿠폰입니다.<br><br>
+        쿠폰번호<br>
+        ${coupon.data.couponNumber}
+        `;
+
 
 
     }
@@ -183,6 +266,7 @@ async()=>{
 
 
 };
+
 
 
 }
@@ -201,6 +285,7 @@ async()=>{
 
 
 const useButton =
+
 document.getElementById(
     "useButton"
 );
@@ -210,12 +295,14 @@ document.getElementById(
 if(useButton){
 
 
-useButton.onclick =
-async()=>{
+
+useButton.onclick = async()=>{
+
 
 
     const coupon =
     await findCoupon();
+
 
 
 
@@ -225,37 +312,64 @@ async()=>{
 
 
 
-    await updateDoc(
 
-        coupon.ref,
-
-        {
+    try{
 
 
-            used:true,
+        await updateDoc(
+
+            coupon.ref,
+
+            {
 
 
-            usedTime:
-            new Date()
+                used:true,
 
 
-        }
-
-    );
+                usedTime:new Date()
 
 
+            }
+
+        );
 
 
 
-    document.getElementById(
-        "result"
-    ).innerHTML =
-    "✅ 사용 완료 처리되었습니다.";
 
+
+        document.getElementById(
+            "result"
+        )
+        .innerHTML =
+
+        `
+        ✅ 사용 완료 처리되었습니다.
+        `;
+
+
+
+    }
+
+
+    catch(error){
+
+
+        console.error(
+            error
+        );
+
+
+        alert(
+            "처리 실패"
+        );
+
+
+    }
 
 
 
 };
+
 
 
 }
@@ -274,6 +388,7 @@ async()=>{
 
 
 const cancelButton =
+
 document.getElementById(
     "cancelButton"
 );
@@ -283,12 +398,14 @@ document.getElementById(
 if(cancelButton){
 
 
-cancelButton.onclick =
-async()=>{
+
+cancelButton.onclick = async()=>{
+
 
 
     const coupon =
     await findCoupon();
+
 
 
 
@@ -298,37 +415,64 @@ async()=>{
 
 
 
-    await updateDoc(
 
-        coupon.ref,
-
-        {
+    try{
 
 
-            used:false,
+        await updateDoc(
+
+            coupon.ref,
+
+            {
 
 
-            cancelTime:
-            new Date()
+                used:false,
 
 
-        }
-
-    );
+                cancelTime:new Date()
 
 
+            }
+
+        );
 
 
 
-    document.getElementById(
-        "result"
-    ).innerHTML =
-    "♻️ 사용 취소 완료되었습니다.";
 
+
+        document.getElementById(
+            "result"
+        )
+        .innerHTML =
+
+        `
+        ♻️ 사용 취소 완료되었습니다.
+        `;
+
+
+
+    }
+
+
+    catch(error){
+
+
+        console.error(
+            error
+        );
+
+
+        alert(
+            "취소 실패"
+        );
+
+
+    }
 
 
 
 };
+
 
 
 }
