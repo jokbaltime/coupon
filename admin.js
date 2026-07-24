@@ -242,25 +242,21 @@ document
 
 
 document
-.getElementById(
-    "checkUseButton"
-)
+.getElementById("checkUseButton")
 .onclick = async()=>{
 
 
     const number =
-    document.getElementById(
-        "useCouponNumber"
-    )
+    document
+    .getElementById("useCouponNumber")
     .value
     .trim();
 
 
 
     const result =
-    document.getElementById(
-        "useResult"
-    );
+    document
+    .getElementById("useResult");
 
 
 
@@ -268,7 +264,7 @@ document
 
 
         result.innerHTML =
-        "❌ 쿠폰번호 입력";
+        "❌ 쿠폰번호를 입력하세요";
 
 
         return;
@@ -279,62 +275,80 @@ document
 
 
 
-    const ref =
-    doc(
-
-        db,
-
-        "coupon_issue",
-
-        number
-
-    );
+    try{
 
 
+        const ref =
+        doc(
 
+            db,
 
-    const snap =
-    await getDoc(
-        ref
-    );
+            "coupon_issue",
+
+            number
+
+        );
 
 
 
-
-    if(!snap.exists()){
-
-
-        result.innerHTML =
-        "❌ 존재하지 않는 쿠폰";
+        const snap =
+        await getDoc(ref);
 
 
-        return;
+
+
+
+        if(!snap.exists()){
+
+
+            result.innerHTML =
+            "❌ 쿠폰을 찾을 수 없습니다.";
+
+
+            return;
+
+
+        }
+
+
+
+
+
+        const data =
+        snap.data();
+
+
+
+
+
+        if(data.used === true){
+
+
+            result.innerHTML =
+            "❌ 이미 사용된 쿠폰입니다.";
+
+
+        }
+        else{
+
+
+            result.innerHTML =
+            "✅ 사용 가능한 쿠폰입니다.";
+
+
+        }
+
 
 
     }
+    catch(error){
 
 
-
-
-    const data =
-    snap.data();
-
-
-
-
-    if(data.used){
+        console.error(error);
 
 
         result.innerHTML =
-        "❌ 이미 사용된 쿠폰";
-
-
-    }
-    else{
-
-
-        result.innerHTML =
-        "✅ 사용 가능한 쿠폰";
+        "⚠ 오류 발생";
 
 
     }
@@ -342,14 +356,6 @@ document
 
 
 };
-
-
-
-
-
-
-
-
 
 // =============================
 // 사용 완료
