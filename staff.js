@@ -78,7 +78,8 @@ document.getElementById("result");
 const reader =
 document.getElementById("reader");
 
-
+const historyList =
+document.getElementById("historyList");
 
 let html5QrCode = null;
 
@@ -167,7 +168,7 @@ staffArea.style.display="block";
 
 startRequestListener();
 
-
+loadHistory();
 }
 
 else{
