@@ -656,7 +656,9 @@ try{
 const result =
 await codeReader.decodeFromVideoDevice(
 
-null,
+{
+facingMode:"environment"
+},
 
 video,
 
