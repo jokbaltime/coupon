@@ -81,6 +81,7 @@ let html5QrCode = null;
 
 
 
+
 // ======================
 // 로그인
 // ======================
@@ -135,6 +136,7 @@ alert(
 
 
 
+
 // ======================
 // 로그인 상태
 // ======================
@@ -184,6 +186,7 @@ stopScanner();
 
 
 
+
 // ======================
 // 로그아웃
 // ======================
@@ -199,6 +202,7 @@ await signOut(auth);
 
 
 };
+
 
 
 
@@ -294,6 +298,26 @@ usedTime:serverTimestamp()
 
 
 
+await addDoc(
+
+collection(db,"coupon_history"),
+
+{
+
+couponNumber:data.couponNumber,
+
+action:"approved",
+
+usedTime:serverTimestamp(),
+
+staff:auth.currentUser.email
+
+}
+
+);
+
+
+
 await updateDoc(
 
 doc(
@@ -304,7 +328,6 @@ item.id
 
 {
 
-
 status:"approved",
 
 approvedTime:serverTimestamp(),
@@ -313,6 +336,7 @@ approvedBy:
 auth.currentUser.email
 
 }
+
 );
 
 
@@ -335,6 +359,8 @@ list.appendChild(div);
 
 
 }
+
+
 
 
 
@@ -372,6 +398,7 @@ doc(
 db,
 "coupon_issue",
 number
+
 )
 
 );
@@ -418,6 +445,13 @@ resultDiv.innerHTML=
 
 };
 
+
+
+
+
+
+
+
 // ======================
 // 사용 완료
 // ======================
@@ -433,23 +467,14 @@ const number =
 couponInput.value.trim();
 
 
-console.log(
-"사용완료 클릭:",
-number
-);
-
-
 
 if(!number){
-
 
 alert(
 "쿠폰번호 입력"
 );
 
-
 return;
-
 
 }
 
@@ -485,7 +510,11 @@ return;
 
 }
 
-const oldData = snap.data();
+
+
+const oldData =
+snap.data();
+
 
 
 if(oldData.used){
@@ -500,6 +529,8 @@ return;
 
 
 }
+
+
 
 await updateDoc(
 
@@ -517,29 +548,24 @@ usedTime:serverTimestamp()
 
 
 
+// 사용 기록 저장
+
 await addDoc(
 
-collection(
-db,
-"coupon_history"
-),
+collection(db,"coupon_history"),
 
 {
 
 couponNumber:number,
 
+action:"used",
+
 usedTime:serverTimestamp(),
 
-staff:
-auth.currentUser.email
+staff:auth.currentUser.email
 
 }
 
-);
-
-
-console.log(
-"Firestore 저장 완료"
 );
 
 
@@ -548,24 +574,20 @@ resultDiv.innerHTML =
 "❌ 사용 완료 쿠폰";
 
 
-couponInput.value = "";
-
 
 alert(
 "사용 완료 처리되었습니다."
 );
 
 
+
 }
+
 
 catch(error){
 
 
-console.error(
-"사용완료 오류:",
-error
-);
-
+console.error(error);
 
 
 alert(
@@ -578,10 +600,13 @@ error.message
 }
 
 
+
 };
 
 
 }
+
+
 
 
 
@@ -632,6 +657,29 @@ usedTime:null
 );
 
 
+
+// 취소 기록 저장
+
+await addDoc(
+
+collection(db,"coupon_history"),
+
+{
+
+couponNumber:number,
+
+action:"cancel",
+
+usedTime:serverTimestamp(),
+
+staff:auth.currentUser.email
+
+}
+
+);
+
+
+
 resultDiv.innerHTML=
 "✅ 사용 가능 쿠폰";
 
@@ -642,6 +690,7 @@ alert(
 
 
 };
+
 
 
 
@@ -706,7 +755,9 @@ qrbox:250
 await html5QrCode.start(
 
 {
+
 facingMode:"environment"
+
 },
 
 config,
@@ -737,9 +788,7 @@ checkButton.click();
 },
 
 
-(error)=>{
-
-}
+(error)=>{}
 
 
 );
@@ -777,9 +826,7 @@ html5QrCode.clear();
 
 catch(e){
 
-
 console.log(e);
-
 
 }
 
