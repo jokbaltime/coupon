@@ -217,12 +217,24 @@ async function startScanner() {
 };
 
     const onScanSuccess = async (decodedText) => {
-        
-        console.log("QR 스캔 성공:", decodedText);
-        couponInput.value = decodedText;
-        await stopScanner();
-        if (checkButton) checkButton.click();
-    };
+
+    console.log(
+        "QR 스캔 성공:",
+        decodedText
+    );
+
+
+    couponInput.value = decodedText;
+
+
+    await stopScanner();
+
+
+    if(checkButton){
+        checkButton.click();
+    }
+
+};
 
     // 2. 해상도 강제 지정 (선명한 초점을 위해 필수)
     const cameraConstraints = {
