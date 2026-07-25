@@ -414,15 +414,12 @@ resultDiv.innerHTML=
 
 };
 
-
-
-
-
-
-
 // ======================
 // 사용 완료
 // ======================
+
+
+if(useButton){
 
 
 useButton.onclick = async()=>{
@@ -432,14 +429,55 @@ const number =
 couponInput.value.trim();
 
 
+console.log(
+"사용완료 클릭:",
+number
+);
+
+
 
 if(!number){
+
 
 alert(
 "쿠폰번호 입력"
 );
 
+
 return;
+
+
+}
+
+
+
+try{
+
+
+const couponRef =
+doc(
+db,
+"coupon_issue",
+number
+);
+
+
+
+const snap =
+await getDoc(couponRef);
+
+
+
+if(!snap.exists()){
+
+
+alert(
+"존재하지 않는 쿠폰입니다."
+);
+
+
+return;
+
 
 }
 
@@ -447,11 +485,7 @@ return;
 
 await updateDoc(
 
-doc(
-db,
-"coupon_issue",
-number
-),
+couponRef,
 
 {
 
@@ -465,17 +499,49 @@ usedTime:serverTimestamp()
 
 
 
-resultDiv.innerHTML=
+console.log(
+"Firestore 저장 완료"
+);
+
+
+
+resultDiv.innerHTML =
 "❌ 사용 완료 쿠폰";
 
 
+
 alert(
-"사용 완료 처리"
+"사용 완료 처리되었습니다."
 );
+
+
+
+}
+
+catch(error){
+
+
+console.error(
+"사용완료 오류:",
+error
+);
+
+
+
+alert(
+"오류 : "
++
+error.message
+);
+
+
+}
 
 
 };
 
+
+}
 
 
 
