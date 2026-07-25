@@ -654,7 +654,11 @@ audio:false
 
 video.srcObject = stream;
 
-
+video.setAttribute(
+"playsinline",
+true
+);
+  
 await video.play();
 
 
