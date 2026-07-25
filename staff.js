@@ -653,12 +653,22 @@ reader.appendChild(video);
 try{
 
 
-const result =
+const devices =
+await codeReader.listVideoInputDevices();
+
+
+console.log(devices);
+
+
+
+const cameraId =
+devices[devices.length - 1].deviceId;
+
+
+
 await codeReader.decodeFromVideoDevice(
 
-{
-facingMode:"environment"
-},
+cameraId,
 
 video,
 
@@ -667,7 +677,8 @@ video,
 
 if(result){
 
-
+console.log("스캔중:", result);
+  
 const number =
 result.text;
 
