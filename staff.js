@@ -1045,6 +1045,124 @@ reader.style.display="none";
 
 }
 
+}  
 
+// ======================
+// HISTORY LIST
+// ======================
+
+function loadHistory(){
+
+
+if(!historyList) return;
+
+
+
+const q =
+query(
+
+collection(
+db,
+"coupon_history"
+)
+
+);
+
+
+
+onSnapshot(
+
+q,
+
+(snapshot)=>{
+
+
+historyList.innerHTML="";
+
+
+
+if(snapshot.empty){
+
+historyList.innerHTML =
+"기록이 없습니다.";
+
+return;
+
+}
+
+
+
+snapshot.forEach((item)=>{
+
+
+const data =
+item.data();
+
+
+
+let time="";
+
+if(data.usedTime){
+
+time =
+data.usedTime
+.toDate()
+.toLocaleString();
+
+}
+
+
+
+const div =
+document.createElement("div");
+
+
+div.style.borderBottom =
+"1px solid #444";
+
+
+div.style.padding =
+"10px 0";
+
+
+
+div.innerHTML = `
+
+<b>쿠폰번호</b> :
+${data.couponNumber}
+
+<br>
+
+<b>처리</b> :
+${data.action || "used"}
+
+<br>
+
+<b>직원</b> :
+${data.staff || ""}
+
+<br>
+
+<b>시간</b> :
+${time}
+
+`;
+
+
+
+historyList.appendChild(div);
+
+
+
+});
+
+
+}
+
+
+);
+
+
+}
 
 }
