@@ -1144,10 +1144,12 @@ snapshot.forEach((item)=>{
     `;
 
 
-    historyList.appendChild(div);
+   historyList.appendChild(div);
 
 });
 
-});   // onSnapshot 종료
+}
 
-}      // loadHistory 종료
+);
+
+}
