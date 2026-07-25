@@ -10,6 +10,7 @@ auth,
 doc,
 getDoc,
 updateDoc,
+addDoc,
 collection,
 query,
 where,
@@ -516,6 +517,27 @@ usedTime:serverTimestamp()
 
 
 
+await addDoc(
+
+collection(
+db,
+"coupon_history"
+),
+
+{
+
+couponNumber:number,
+
+usedTime:serverTimestamp(),
+
+staff:
+auth.currentUser.email
+
+}
+
+);
+
+
 console.log(
 "Firestore 저장 완료"
 );
@@ -526,11 +548,12 @@ resultDiv.innerHTML =
 "❌ 사용 완료 쿠폰";
 
 
+couponInput.value = "";
+
 
 alert(
 "사용 완료 처리되었습니다."
 );
-
 
 
 }
@@ -607,7 +630,6 @@ usedTime:null
 }
 
 );
-
 
 
 resultDiv.innerHTML=
