@@ -401,11 +401,8 @@ item.id
 
 {
 
-status:
-"approved",
+status:"approved",
 
-
-    
 approvedTime:
 serverTimestamp(),
 
@@ -415,6 +412,10 @@ auth.currentUser.email
 }
 
 );
+
+
+// 화면에서 제거
+div.remove();
 
 
 
