@@ -210,50 +210,51 @@ async function startScanner() {
         html5QrCode = new Html5Qrcode("reader");
     }
 
-    // QR 인식 영역 및 속도 설정 최적화
+    // 1. QR 인식 영역 및 프레임 설정
     const config = { 
-        fps: 15, // 인식 속도 상향 (10 -> 15)
+        fps: 20, // 인식 주기를 늘려 초점을 더 자주 잡도록 변경 (10 -> 20)
         qrbox: (viewfinderWidth, viewfinderHeight) => {
-            // 화면 크기에 맞춰 가변적으로 스캔 영역 지정
+            // 박스 크기를 약간 더 크게 설정하여 인식률 향상
             const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
             return {
-                width: Math.floor(minEdge * 0.7),
-                height: Math.floor(minEdge * 0.7)
+                width: Math.floor(minEdge * 0.8),
+                height: Math.floor(minEdge * 0.8)
             };
         },
-        aspectRatio: 1.0 // 1:1 정사각형 비율 고정
+        aspectRatio: 1.0
     };
 
     const onScanSuccess = async (decodedText) => {
-        // QR 스캔 결과값 확인 및 입력
         console.log("QR 스캔 성공:", decodedText);
         couponInput.value = decodedText;
-        
         await stopScanner();
         if (checkButton) checkButton.click();
     };
 
+    // 2. 해상도 강제 지정 (선명한 초점을 위해 필수)
+    const cameraConstraints = {
+        facingMode: "environment", // 후면 카메라
+        width: { min: 640, ideal: 1280, max: 1920 },
+        height: { min: 480, ideal: 720, max: 1080 }
+    };
+
     try {
-        // 후면 카메라 우선 시도 (고해상도 옵션 적용)
+        // 해상도 옵션을 포함하여 카메라 실행
         await html5QrCode.start(
-            { facingMode: { exact: "environment" } }, 
+            cameraConstraints, 
             config, 
             onScanSuccess, 
             () => {}
         );
     } catch (err1) {
-        console.warn("exact 후면 카메라 실패, 일반 후면 모드로 재시도:", err1);
+        console.warn("해상도 지정 후면 카메라 실패, 기본 설정으로 재시도:", err1);
         try {
+            // 실패 시 기본 후면 카메라인 옵션으로 fallback
             await html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, () => {});
         } catch (err2) {
-            console.warn("기본 카메라 모드로 재시도:", err2);
-            try {
-                await html5QrCode.start({ facingMode: "user" }, config, onScanSuccess, () => {});
-            } catch (err3) {
-                console.error("카메라 스캔 최종 실패:", err3);
-                alert("카메라 권한을 확인해주시거나 https 보안 접속인지 확인해 주세요.");
-                await stopScanner();
-            }
+            console.error("카메라 최종 실행 실패:", err2);
+            alert("카메라를 켤 수 없습니다. https 접속 여부 및 브라우저 권한을 확인하세요.");
+            await stopScanner();
         }
     }
 }
