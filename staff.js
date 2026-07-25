@@ -210,37 +210,50 @@ async function startScanner() {
         html5QrCode = new Html5Qrcode("reader");
     }
 
-    const config = { fps: 10, qrbox: { width: 220, height: 220 } };
+    // QR 인식 영역 및 속도 설정 최적화
+    const config = { 
+        fps: 15, // 인식 속도 상향 (10 -> 15)
+        qrbox: (viewfinderWidth, viewfinderHeight) => {
+            // 화면 크기에 맞춰 가변적으로 스캔 영역 지정
+            const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
+            return {
+                width: Math.floor(minEdge * 0.7),
+                height: Math.floor(minEdge * 0.7)
+            };
+        },
+        aspectRatio: 1.0 // 1:1 정사각형 비율 고정
+    };
 
     const onScanSuccess = async (decodedText) => {
+        // QR 스캔 결과값 확인 및 입력
+        console.log("QR 스캔 성공:", decodedText);
         couponInput.value = decodedText;
+        
         await stopScanner();
         if (checkButton) checkButton.click();
     };
 
     try {
-        // 후면 카메라 우선 시도
-        await html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, () => {});
+        // 후면 카메라 우선 시도 (고해상도 옵션 적용)
+        await html5QrCode.start(
+            { facingMode: { exact: "environment" } }, 
+            config, 
+            onScanSuccess, 
+            () => {}
+        );
     } catch (err1) {
-        console.warn("후면 카메라 실패, 기본 카메라로 재시도:", err1);
+        console.warn("exact 후면 카메라 실패, 일반 후면 모드로 재시도:", err1);
         try {
-            // 기본 카메라 재시도 (fallback)
-            await html5QrCode.start({ facingMode: "user" }, config, onScanSuccess, () => {});
+            await html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, () => {});
         } catch (err2) {
-            console.error("카메라 최종 실행 실패:", err2);
-            alert("카메라를 켤 수 없습니다.\n\n1. https:// 보안 접속인지 확인하세요.\n2. 브라우저의 카메라 권한 허용 상태를 확인하세요.");
-            await stopScanner();
+            console.warn("기본 카메라 모드로 재시도:", err2);
+            try {
+                await html5QrCode.start({ facingMode: "user" }, config, onScanSuccess, () => {});
+            } catch (err3) {
+                console.error("카메라 스캔 최종 실패:", err3);
+                alert("카메라 권한을 확인해주시거나 https 보안 접속인지 확인해 주세요.");
+                await stopScanner();
+            }
         }
     }
-}
-
-async function stopScanner() {
-    if (html5QrCode && html5QrCode.isScanning) {
-        try {
-            await html5QrCode.stop();
-        } catch (e) {
-            console.error("스캐너 정지 오류:", e);
-        }
-    }
-    if (reader) reader.style.display = "none";
 }
