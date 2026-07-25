@@ -16,6 +16,7 @@ collection,
 query,
 where,
 onSnapshot,
+orderBy,
 serverTimestamp
 
 } from "./firebase.js";
@@ -1065,8 +1066,12 @@ query(
 collection(
 db,
 "coupon_history"
-)
+),
 
+orderBy(
+"usedTime",
+"desc"
+)
 );
 
 
