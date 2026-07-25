@@ -627,21 +627,12 @@ if(scanButton){
 scanButton.onclick = async()=>{
 
 
-const reader =
+const video =
 document.getElementById("reader");
 
 
-reader.style.display="block";
+video.style.display="block";
 
-reader.setAttribute(
-"autoplay",
-true
-);
-
-reader.setAttribute(
-"playsinline",
-true
-);
 
 const codeReader =
 new ZXing.BrowserQRCodeReader(
@@ -652,6 +643,7 @@ new ZXing.BrowserQRCodeReader(
 );
 
 
+
 try{
 
 
@@ -660,28 +652,27 @@ await codeReader.listVideoInputDevices();
 
 
 
-console.log("카메라 목록", devices);
-
-
+console.log(
+"카메라 목록",
+devices
+);
 
 
 
 let cameraId =
 devices.find(
+
 (device)=>
-device.label.toLowerCase().includes("back")
+
+device.label
+.toLowerCase()
+.includes("back")
+
 )?.deviceId
 ||
-devices[devices.length - 1].deviceId;
-  
-
-  
-if(result){
+devices[0].deviceId;
 
 
-const couponNumber =
-result.text;const video =
-document.getElementById("reader");
 
 
 codeReader.decodeFromVideoDevice(
@@ -691,6 +682,13 @@ cameraId,
 video,
 
 (result,error)=>{
+
+
+if(result){
+
+
+const couponNumber =
+result.text;
 
 
 
@@ -718,11 +716,12 @@ document.getElementById(
 ).click();
 
 
-}
-
-
 
 }
+
+
+}
+
 
 );
 
@@ -737,6 +736,7 @@ console.error(
 "QR 오류",
 error
 );
+
 
 
 alert(
