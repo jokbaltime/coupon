@@ -674,19 +674,23 @@ device.label.toLowerCase().includes("back")
 ||
 devices[devices.length - 1].deviceId;
   
-codeReader.decodeFromVideoDevice(
 
-cameraId,
-
-document.getElementById("reader"),
-
-(result,error)=>{
   
 if(result){
 
 
 const couponNumber =
-result.text;
+result.text;const video =
+document.getElementById("reader");
+
+
+codeReader.decodeFromVideoDevice(
+
+cameraId,
+
+video,
+
+(result,error)=>{
 
 
 
