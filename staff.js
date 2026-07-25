@@ -1251,6 +1251,16 @@ snap.forEach((item)=>{
 const data =
 item.data();
 
+if(
+data.action !== "used" &&
+data.action !== "cancel"
+){
+
+return;
+
+}
+
+    
 let count = 0;
     
 const time =
