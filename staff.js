@@ -614,7 +614,7 @@ data.used
 }
 
 // =============================
-// CAMERA TEST
+// ZXing QR SCANNER
 // =============================
 
 const scanButton =
@@ -634,37 +634,79 @@ document.getElementById("reader");
 video.style.display="block";
 
 
+const codeReader =
+new ZXing.BrowserQRCodeReader();
+
+
+
 try{
 
 
-const stream =
-await navigator.mediaDevices.getUserMedia({
-
-video:{
-facingMode:{
-ideal:"environment"
-}
-},
-
-audio:false
-
-});
+const devices =
+await codeReader.listVideoInputDevices();
 
 
 
-video.srcObject = stream;
-
-video.setAttribute(
-"playsinline",
-true
+console.log(
+"카메라:",
+devices
 );
-  
-await video.play();
+
+
+
+let cameraId =
+devices[0].deviceId;
+
+
+
+codeReader.decodeFromVideoDevice(
+
+cameraId,
+
+video,
+
+(result,error)=>{
+
+
+if(result){
+
+
+const couponNumber =
+result.text;
 
 
 
 alert(
-"카메라 영상 성공"
+"QR 읽음 : "
++
+couponNumber
+);
+
+
+
+document.getElementById(
+"couponNumber"
+).value =
+couponNumber;
+
+
+
+codeReader.reset();
+
+
+
+document.getElementById(
+"checkButton"
+).click();
+
+
+
+}
+
+
+}
+
+
 );
 
 
@@ -678,7 +720,7 @@ console.error(error);
 
 
 alert(
-"카메라 실패 : "
+"QR 오류 : "
 +
 error.message
 );
