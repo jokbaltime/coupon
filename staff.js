@@ -644,8 +644,12 @@ true
 );
 
 const codeReader =
-new ZXing.BrowserQRCodeReader();
-
+new ZXing.BrowserQRCodeReader(
+    null,
+    {
+        delayBetweenScanAttempts:100
+    }
+);
 
 
 try{
@@ -660,11 +664,16 @@ console.log("카메라 목록", devices);
 
 
 
+
+
 let cameraId =
+devices.find(
+(device)=>
+device.label.toLowerCase().includes("back")
+)?.deviceId
+||
 devices[devices.length - 1].deviceId;
-
-
-
+  
 codeReader.decodeFromVideoDevice(
 
 cameraId,
