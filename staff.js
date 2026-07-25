@@ -11,10 +11,12 @@ auth,
 doc,
 getDoc,
 updateDoc,
+addDoc,
 collection,
 query,
 where,
-onSnapshot
+onSnapshot,
+serverTimestamp
 
 } from "./firebase.js";
 
@@ -610,3 +612,20 @@ data.used
 
 
 }
+await addDoc(
+
+    collection(db, "coupon_history"),
+
+    {
+
+        couponNumber: data.couponNumber,
+
+        approvedBy: auth.currentUser.email,
+
+        approvedTime: serverTimestamp(),
+
+        status: "approved"
+
+    }
+
+);
