@@ -492,38 +492,86 @@ config,
 
 // QR 성공
 
-console.log(
-"QR:",
-decodedText
-);
+const onScanSuccess = async (decodedText) => {
+
+    console.log(
+        "QR 스캔 성공:",
+        decodedText
+    );
 
 
-
-couponInput.value =
-decodedText;
-
+    // QR 번호 입력
+    couponInput.value = decodedText;
 
 
-stopScanner();
+    // 카메라 종료
+    await stopScanner();
 
 
+    // 자동 조회
+    const snap = await getDoc(
+        doc(
+            db,
+            "coupon_issue",
+            decodedText
+        )
+    );
 
-checkButton.click();
+
+    if(!snap.exists()){
+
+        resultDiv.innerHTML =
+        "❌ 없는 쿠폰";
+
+        return;
+
+    }
 
 
-
-},
-
-(error)=>{
+    const data = snap.data();
 
 
-// 계속 스캔중 무시
+    if(data.used){
+
+        resultDiv.innerHTML =
+        "❌ 이미 사용한 쿠폰";
+
+    }
+    else{
+
+        resultDiv.innerHTML =
+        "✅ 사용 가능한 쿠폰";
+
+    }
+
+async function stopScanner(){
+
+    if(html5QrCode){
+
+        try{
+
+            await html5QrCode.stop();
+
+            html5QrCode.clear();
+
+        }
+        catch(e){
+
+            console.log(e);
+
+        }
+
+    }
+
+
+    if(reader){
+
+        reader.style.display="none";
+
+    }
 
 }
-
-
-
-);
+};
 
 
 
@@ -540,51 +588,3 @@ checkButton.click();
 // ======================
 
 
-async function stopScanner(){
-
-
-if(html5QrCode){
-
-
-try{
-
-
-await html5QrCode.stop();
-
-
-}
-
-catch(e){}
-
-
-
-try{
-
-
-await html5QrCode.clear();
-
-
-}
-
-catch(e){}
-
-
-
-html5QrCode=null;
-
-
-}
-
-
-
-if(reader){
-
-
-reader.style.display="none";
-
-
-}
-
-
-
-}
