@@ -58,81 +58,6 @@ document.getElementById("checkButton");
 const useButton =
 document.getElementById("useButton");
 
-// =============================
-// 사용 완료 처리
-// =============================
-
-if (useButton) {
-
-    useButton.onclick = async()=>{
-
-
-        const number =
-        couponInput.value.trim();
-
-
-        console.log(
-            "사용완료 버튼 클릭",
-            number
-        );
-
-
-        if(!number){
-
-            alert(
-                "쿠폰번호를 입력하세요"
-            );
-
-            return;
-
-        }
-
-
-        try{
-
-
-            await updateDoc(
-
-                doc(
-                    db,
-                    "coupon_issue",
-                    number
-                ),
-
-                {
-                    used:true,
-                    usedTime:serverTimestamp()
-                }
-
-            );
-
-
-            alert(
-                "사용 완료 처리되었습니다."
-            );
-
-
-            resultDiv.innerHTML =
-            "❌ 사용 완료 쿠폰";
-
-
-        }
-
-        catch(error){
-
-            console.error(error);
-
-            alert(
-                "오류 : "
-                + error.message
-            );
-
-        }
-
-
-    };
-
-}
 
 const cancelButton =
 document.getElementById("cancelButton");
@@ -226,6 +151,7 @@ if(user){
 
 loginArea.style.display="none";
 
+
 staffArea.style.display="block";
 
 
@@ -239,7 +165,11 @@ else{
 
 loginArea.style.display="block";
 
+
 staffArea.style.display="none";
+
+
+stopScanner();
 
 
 }
@@ -268,6 +198,8 @@ await signOut(auth);
 
 
 };
+
+
 
 
 
@@ -320,7 +252,9 @@ document.createElement("div");
 
 div.innerHTML=`
 
-<h3>🔔 요청</h3>
+<h3>
+🔔 요청
+</h3>
 
 쿠폰번호 :
 <b>
@@ -378,7 +312,9 @@ approvedTime:serverTimestamp()
 );
 
 
-alert("승인 완료");
+alert(
+"승인 완료"
+);
 
 
 };
@@ -388,17 +324,13 @@ alert("승인 완료");
 list.appendChild(div);
 
 
-
 });
 
 
-
 });
-
 
 
 }
-
 
 
 
@@ -436,7 +368,6 @@ doc(
 db,
 "coupon_issue",
 number
-
 )
 
 );
@@ -475,11 +406,134 @@ else{
 
 
 resultDiv.innerHTML=
-"✅ 사용 가능 쿠폰";
+"✅ 사용 가능한 쿠폰";
 
 
 }
 
+
+};
+
+
+
+
+
+
+
+// ======================
+// 사용 완료
+// ======================
+
+
+useButton.onclick = async()=>{
+
+
+const number =
+couponInput.value.trim();
+
+
+
+if(!number){
+
+alert(
+"쿠폰번호 입력"
+);
+
+return;
+
+}
+
+
+
+await updateDoc(
+
+doc(
+db,
+"coupon_issue",
+number
+),
+
+{
+
+used:true,
+
+usedTime:serverTimestamp()
+
+}
+
+);
+
+
+
+resultDiv.innerHTML=
+"❌ 사용 완료 쿠폰";
+
+
+alert(
+"사용 완료 처리"
+);
+
+
+};
+
+
+
+
+
+
+
+// ======================
+// 사용 취소
+// ======================
+
+
+cancelButton.onclick = async()=>{
+
+
+const number =
+couponInput.value.trim();
+
+
+
+if(!number){
+
+alert(
+"쿠폰번호 입력"
+);
+
+return;
+
+}
+
+
+
+await updateDoc(
+
+doc(
+db,
+"coupon_issue",
+number
+),
+
+{
+
+used:false,
+
+usedTime:null
+
+}
+
+);
+
+
+
+resultDiv.innerHTML=
+"✅ 사용 가능 쿠폰";
+
+
+alert(
+"사용 취소 완료"
+);
 
 
 };
@@ -515,7 +569,6 @@ await startScanner();
 }
 
 
-
 };
 
 
@@ -527,9 +580,7 @@ await startScanner();
 async function startScanner(){
 
 
-
 reader.style.display="block";
-
 
 
 html5QrCode =
@@ -537,117 +588,56 @@ new Html5Qrcode("reader");
 
 
 
-const config={
-
+const config = {
 
 fps:10,
 
-
 qrbox:250
 
-
 };
-
-
 
 
 
 await html5QrCode.start(
 
 {
-
 facingMode:"environment"
-
 },
 
 config,
 
-(decodedText)=>{
+
+async(decodedText)=>{
 
 
-// QR 성공
-
-const onScanSuccess = async (decodedText) => {
-
-    console.log(
-        "QR 스캔 성공:",
-        decodedText
-    );
+console.log(
+"QR:",
+decodedText
+);
 
 
-    // QR 번호 입력
-    couponInput.value = decodedText;
+
+couponInput.value =
+decodedText;
 
 
-    // 카메라 종료
-    await stopScanner();
+
+await stopScanner();
 
 
-    // 자동 조회
-    const snap = await getDoc(
-        doc(
-            db,
-            "coupon_issue",
-            decodedText
-        )
-    );
+
+checkButton.click();
 
 
-    if(!snap.exists()){
-
-        resultDiv.innerHTML =
-        "❌ 없는 쿠폰";
-
-        return;
-
-    }
+},
 
 
-    const data = snap.data();
-
-
-    if(data.used){
-
-        resultDiv.innerHTML =
-        "❌ 이미 사용한 쿠폰";
-
-    }
-    else{
-
-        resultDiv.innerHTML =
-        "✅ 사용 가능한 쿠폰";
-
-    }
-
-async function stopScanner(){
-
-    if(html5QrCode){
-
-        try{
-
-            await html5QrCode.stop();
-
-            html5QrCode.clear();
-
-        }
-        catch(e){
-
-            console.log(e);
-
-        }
-
-    }
-
-
-    if(reader){
-
-        reader.style.display="none";
-
-    }
+(error)=>{
 
 }
-};
 
+
+);
 
 
 }
@@ -663,3 +653,44 @@ async function stopScanner(){
 // ======================
 
 
+async function stopScanner(){
+
+
+if(html5QrCode){
+
+
+try{
+
+
+await html5QrCode.stop();
+
+
+html5QrCode.clear();
+
+
+}
+
+catch(e){
+
+
+console.log(e);
+
+
+}
+
+
+html5QrCode=null;
+
+
+}
+
+
+
+if(reader){
+
+reader.style.display="none";
+
+}
+
+
+}
