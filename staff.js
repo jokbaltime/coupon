@@ -494,7 +494,7 @@ try{
 
 
 
-    
+const snap =
 await getDoc(
 
 doc(
