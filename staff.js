@@ -614,7 +614,7 @@ data.used
 }
 
 // =============================
-// QR SCANNER
+// HTML5 QR SCANNER
 // =============================
 
 const scanButton =
@@ -627,86 +627,46 @@ if(scanButton){
 scanButton.onclick = async()=>{
 
 
-const video =
+const reader =
 document.getElementById("reader");
 
 
-video.style.display="block";
+reader.style.display="block";
 
 
-const hints = new Map();
-
-
-hints.set(
-
-ZXing.DecodeHintType.POSSIBLE_FORMATS,
-
-[
-ZXing.BarcodeFormat.QR_CODE
-]
-
-);
-
-
-
-hints.set(
-
-ZXing.DecodeHintType.TRY_HARDER,
-
-true
-
-);
-
-
-
-const codeReader =
-new ZXing.BrowserMultiFormatReader(
-hints
-);
+const html5QrCode =
+new Html5Qrcode("reader");
 
 
 
 try{
 
 
-const devices =
-await codeReader.listVideoInputDevices();
+await html5QrCode.start(
+
+{
+facingMode:"environment"
+},
+
+{
+
+fps:10,
+
+qrbox:{
+width:250,
+height:250
+}
+
+},
 
 
-console.log(
-"카메라",
-devices
-);
-
-
-
-let cameraId =
-devices[0].deviceId;
-
-
-
-codeReader.decodeFromVideoDevice(
-
-cameraId,
-
-video,
-
-(result,error)=>{
-
-
-if(result){
-
-
-console.log(
-result.text
-);
-
+(decodedText)=>{
 
 
 alert(
 "QR 읽음 : "
 +
-result.text
+decodedText
 );
 
 
@@ -714,16 +674,27 @@ result.text
 document.getElementById(
 "couponNumber"
 ).value =
-result.text;
+decodedText;
 
 
 
-codeReader.reset();
+html5QrCode.stop();
 
 
 
-}
+document.getElementById(
+"checkButton"
+).click();
 
+
+
+},
+
+
+(errorMessage)=>{
+
+
+// 읽는 중 오류는 무시
 
 }
 
@@ -741,9 +712,9 @@ console.error(error);
 
 
 alert(
-"QR 오류 "
+"스캔 오류 : "
 +
-error.message
+error
 );
 
 
