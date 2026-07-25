@@ -179,6 +179,9 @@ startRequestListener();
 
 loadHistory();
 
+console.log("로그인 계정:", user.email);
+console.log("관리자 계정:", ADMIN_EMAIL);
+console.log("관리자 영역:", adminArea);
 
 if(user.email === ADMIN_EMAIL){
 
