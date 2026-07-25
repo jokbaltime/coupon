@@ -230,21 +230,17 @@ async function startScanner() {
 };
     try {
         // 해상도 옵션을 포함하여 카메라 실행
-        await html5QrCode.start(
-            cameraConstraints, 
-            config, 
-            onScanSuccess, 
-            () => {}
-        );
-    } catch (err1) {
-        console.warn("해상도 지정 후면 카메라 실패, 기본 설정으로 재시도:", err1);
-        try {
-            // 실패 시 기본 후면 카메라인 옵션으로 fallback
-            await html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, () => {});
-        } catch (err2) {
-            console.error("카메라 최종 실행 실패:", err2);
-            alert("카메라를 켤 수 없습니다. https 접속 여부 및 브라우저 권한을 확인하세요.");
-            await stopScanner();
-        }
-    }
-}
+       await html5QrCode.start(
+
+{
+    facingMode:"environment"
+},
+
+config,
+
+onScanSuccess,
+
+(errorMessage)=>{}
+
+);
+   
