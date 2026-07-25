@@ -93,6 +93,9 @@ document.getElementById("adminArea");
 const adminStats =
 document.getElementById("adminStats");
 
+const adminRequestArea =
+document.getElementById("adminRequestArea");
+
 const adminHistory =
 document.getElementById("adminHistory");
 
@@ -175,7 +178,8 @@ auth,
 if(user){
 
 console.log("현재 로그인:", user.email);
-    
+
+
 loginArea.style.display="none";
 
 staffArea.style.display="block";
@@ -185,17 +189,35 @@ startRequestListener();
 
 loadHistory();
 
+
 console.log("로그인 계정:", user.email);
 console.log("관리자 계정:", ADMIN_EMAIL);
 console.log("관리자 영역:", adminArea);
 
+
+
 if(user.email === ADMIN_EMAIL){
 
-adminArea.style.display="block";
 
-loadAdminStats();
+    adminArea.style.display="block";
+
+    adminRequestArea.style.display="block";
+
+
+    loadAdminStats();
+
 
 }
+else{
+
+
+    adminArea.style.display="none";
+
+    adminRequestArea.style.display="none";
+
+
+}
+
 
 }
 
@@ -217,7 +239,6 @@ stopScanner();
 }
 
 );
-
 
 
 
