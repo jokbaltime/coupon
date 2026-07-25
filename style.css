@@ -812,5 +812,21 @@ footer{
         height:240px;
 
     }
+#qrcode{
 
+margin:20px auto;
+
+width:180px;
+
+padding:12px;
+
+background:white;
+
+border-radius:12px;
+
+display:flex;
+
+justify-content:center;
+
+}
 }
