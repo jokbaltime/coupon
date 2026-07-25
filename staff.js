@@ -1211,8 +1211,8 @@ db,
 let used = 0;
 let cancel = 0;
 
-let staffCount = {};
 
+let staffData = {};
 
 let today =
 new Date()
@@ -1227,6 +1227,22 @@ const data =
 item.data();
 
 
+let date = "";
+
+if(data.usedTime){
+
+date =
+data.usedTime
+.toDate()
+.toLocaleDateString();
+
+}
+
+
+// 오늘 처리만 계산
+if(date === today){
+
+
 if(data.action==="used"){
 used++;
 }
@@ -1237,14 +1253,43 @@ cancel++;
 }
 
 
+}
+
+
+
+// 직원별 통계
 
 if(data.staff){
 
-if(!staffCount[data.staff]){
-staffCount[data.staff]=0;
+
+if(!staffData[data.staff]){
+
+staffData[data.staff]={
+
+used:0,
+
+cancel:0
+
+};
+
 }
 
-staffCount[data.staff]++;
+
+
+if(data.action==="used"){
+
+staffData[data.staff].used++;
+
+}
+
+
+
+if(data.action==="cancel"){
+
+staffData[data.staff].cancel++;
+
+}
+
 
 }
 
@@ -1253,45 +1298,70 @@ staffCount[data.staff]++;
 
 
 
-let staffHTML="";
+// 직원 HTML 생성
+
+let staffHTML = "";
 
 
-Object.keys(staffCount)
+Object.keys(staffData)
 .forEach((name)=>{
 
 
 staffHTML +=
+
 `
-<p>
-${name}
-:
-${staffCount[name]}건
-</p>
+
+<div style="
+padding:10px;
+border-bottom:1px solid #444;
+">
+
+<b>${name}</b>
+
+<br>
+
+사용 :
+${staffData[name].used}
+
+건
+
+<br>
+
+취소 :
+${staffData[name].cancel}
+
+건
+
+</div>
+
 `;
+
 
 });
 
 
+
+
+// 화면 출력
 
 adminStats.innerHTML =
 
 `
 
-<p>
-전체 쿠폰 :
-${snap.size}
-</p>
+<h3>
+📅 오늘 처리 현황
+</h3>
 
 
 <p>
 사용 완료 :
-${used}
+<b>${used}</b> 건
 </p>
 
 
 <p>
 취소 :
-${cancel}
+<b>${cancel}</b> 건
 </p>
 
 
@@ -1299,8 +1369,9 @@ ${cancel}
 
 
 <h3>
-직원별 처리
+👨‍🍳 직원별 처리
 </h3>
+
 
 ${staffHTML}
 
