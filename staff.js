@@ -298,7 +298,9 @@ snapshot.forEach(
 const data =
 item.data();
 
-
+if(data.status !== "waiting"){
+    return;
+}
 
 const div =
 document.createElement("div");
@@ -396,6 +398,8 @@ item.id
 status:
 "approved",
 
+
+    
 approvedTime:
 serverTimestamp(),
 
