@@ -618,32 +618,96 @@ data.used
 // =============================
 
 const scanButton =
+document.getElementById("scanButton");
+
+
+if(scanButton){
+
+
+scanButton.onclick = ()=>{
+
+
+const reader =
+document.getElementById("reader");
+
+
+reader.style.display="block";
+
+
+
+const html5QrCode =
+new Html5Qrcode("reader");
+
+
+
+html5QrCode.start(
+
+{ 
+facingMode:"environment" 
+},
+
+
+{
+
+fps:5,
+
+qrbox:{
+
+width:300,
+
+height:300
+
+}
+
+},
+
 
 async(decodedText)=>{
+
+
+alert(
+"QR 읽음 : "
++
+decodedText
+);
+
+
 
 document.getElementById(
 "couponNumber"
 ).value =
 decodedText;
 
+
+
 await html5QrCode.stop();
 
+
+
 reader.style.display="none";
+
+
 
 document.getElementById(
 "checkButton"
 ).click();
 
+
+
 },
+
 
 (error)=>{
 
-// 계속 스캔 중이라 무시
+// 스캔 중 오류는 무시
 
 }
 
+
 );
 
+
 };
+
 
 }
