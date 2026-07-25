@@ -1,5 +1,6 @@
 // ======================================
-// JOKBALTIME STAFF SYSTEM
+// JOKBALTIMESTAFF SYSTEM
+// staff.js FULL VERSION
 // ======================================
 
 
@@ -31,7 +32,10 @@ onAuthStateChanged
 
 
 
-// 요소
+// ======================
+// ELEMENT
+// ======================
+
 
 const loginArea =
 document.getElementById("loginArea");
@@ -42,7 +46,6 @@ document.getElementById("staffArea");
 
 const loginButton =
 document.getElementById("loginButton");
-
 
 const logoutButton =
 document.getElementById("logoutButton");
@@ -81,21 +84,24 @@ let html5QrCode = null;
 
 
 
-
 // ======================
-// 로그인
+// LOGIN
 // ======================
 
+
+if(loginButton){
 
 loginButton.onclick = async()=>{
 
 
 const email =
-document.getElementById("email").value.trim();
+document.getElementById("email")
+.value.trim();
 
 
 const password =
-document.getElementById("password").value.trim();
+document.getElementById("password")
+.value.trim();
 
 
 
@@ -113,17 +119,19 @@ password
 );
 
 
-alert("로그인 성공");
+alert(
+"로그인 성공"
+);
 
 
 }
 
-catch(e){
+catch(error){
 
 
 alert(
 "로그인 실패 : "
-+ e.message
++ error.message
 );
 
 
@@ -132,13 +140,12 @@ alert(
 
 };
 
-
-
+}
 
 
 
 // ======================
-// 로그인 상태
+// AUTH CHECK
 // ======================
 
 
@@ -185,12 +192,12 @@ stopScanner();
 
 
 
-
-
 // ======================
-// 로그아웃
+// LOGOUT
 // ======================
 
+
+if(logoutButton){
 
 logoutButton.onclick = async()=>{
 
@@ -201,17 +208,19 @@ await stopScanner();
 await signOut(auth);
 
 
+alert(
+"로그아웃"
+);
+
+
 };
 
-
-
-
-
+}
 
 
 
 // ======================
-// 요청 확인
+// REQUEST LISTENER
 // ======================
 
 
@@ -222,10 +231,17 @@ const list =
 document.getElementById("requestList");
 
 
+if(!list)return;
+
+
+
 const q =
 query(
 
-collection(db,"coupon_request"),
+collection(
+db,
+"coupon_request"
+),
 
 where(
 "status",
@@ -237,17 +253,24 @@ where(
 
 
 
-onSnapshot(q,(snap)=>{
+onSnapshot(
+
+q,
+
+(snapshot)=>{
 
 
 list.innerHTML="";
 
 
 
-snap.forEach((item)=>{
+snapshot.forEach(
+
+(item)=>{
 
 
-const data=item.data();
+const data =
+item.data();
 
 
 
@@ -255,16 +278,21 @@ const div =
 document.createElement("div");
 
 
-div.innerHTML=`
+
+div.innerHTML=
+
+`
 
 <h3>
-🔔 요청
+🔔 쿠폰 요청
 </h3>
 
+<p>
 쿠폰번호 :
 <b>
 ${data.couponNumber}
 </b>
+</p>
 
 <button>
 승인
@@ -274,8 +302,11 @@ ${data.couponNumber}
 
 
 
-div.querySelector("button").onclick =
-async()=>{
+div.querySelector("button")
+.onclick = async()=>{
+
+
+try{
 
 
 await updateDoc(
@@ -290,7 +321,8 @@ data.couponNumber
 
 used:true,
 
-usedTime:serverTimestamp()
+usedTime:
+serverTimestamp()
 
 }
 
@@ -300,17 +332,24 @@ usedTime:serverTimestamp()
 
 await addDoc(
 
-collection(db,"coupon_history"),
+collection(
+db,
+"coupon_history"
+),
 
 {
 
-couponNumber:data.couponNumber,
+couponNumber:
+data.couponNumber,
 
-action:"approved",
+action:
+"approved",
 
-usedTime:serverTimestamp(),
+usedTime:
+serverTimestamp(),
 
-staff:auth.currentUser.email
+staff:
+auth.currentUser.email
 
 }
 
@@ -328,9 +367,11 @@ item.id
 
 {
 
-status:"approved",
+status:
+"approved",
 
-approvedTime:serverTimestamp(),
+approvedTime:
+serverTimestamp(),
 
 approvedBy:
 auth.currentUser.email
@@ -340,9 +381,24 @@ auth.currentUser.email
 );
 
 
+
 alert(
 "승인 완료"
 );
+
+
+}
+
+catch(error){
+
+
+alert(
+"승인 오류 : "
++error.message
+);
+
+
+}
 
 
 };
@@ -352,24 +408,28 @@ alert(
 list.appendChild(div);
 
 
-});
+
+}
 
 
-});
+);
+
 
 
 }
 
 
+);
 
 
-
-
-
+}
 
 // ======================
-// 쿠폰 조회
+// COUPON CHECK
 // ======================
+
+
+if(checkButton){
 
 
 checkButton.onclick = async()=>{
@@ -382,13 +442,19 @@ couponInput.value.trim();
 
 if(!number){
 
-resultDiv.innerHTML=
+
+resultDiv.innerHTML =
 "쿠폰번호 입력";
+
 
 return;
 
+
 }
 
+
+
+try{
 
 
 const snap =
@@ -398,7 +464,6 @@ doc(
 db,
 "coupon_issue",
 number
-
 )
 
 );
@@ -408,7 +473,7 @@ number
 if(!snap.exists()){
 
 
-resultDiv.innerHTML=
+resultDiv.innerHTML =
 "❌ 없는 쿠폰";
 
 
@@ -427,7 +492,7 @@ snap.data();
 if(data.used){
 
 
-resultDiv.innerHTML=
+resultDiv.innerHTML =
 "❌ 사용 완료 쿠폰";
 
 
@@ -436,15 +501,31 @@ resultDiv.innerHTML=
 else{
 
 
-resultDiv.innerHTML=
+resultDiv.innerHTML =
 "✅ 사용 가능한 쿠폰";
 
 
 }
 
 
+}
+
+catch(error){
+
+
+resultDiv.innerHTML =
+"조회 오류 : "
++ error.message;
+
+
+}
+
+
+
 };
 
+
+}
 
 
 
@@ -453,7 +534,7 @@ resultDiv.innerHTML=
 
 
 // ======================
-// 사용 완료
+// USE COUPON
 // ======================
 
 
@@ -470,11 +551,14 @@ couponInput.value.trim();
 
 if(!number){
 
+
 alert(
 "쿠폰번호 입력"
 );
 
+
 return;
+
 
 }
 
@@ -483,7 +567,7 @@ return;
 try{
 
 
-const couponRef =
+const ref =
 doc(
 db,
 "coupon_issue",
@@ -493,7 +577,7 @@ number
 
 
 const snap =
-await getDoc(couponRef);
+await getDoc(ref);
 
 
 
@@ -501,7 +585,7 @@ if(!snap.exists()){
 
 
 alert(
-"존재하지 않는 쿠폰입니다."
+"없는 쿠폰입니다."
 );
 
 
@@ -512,12 +596,12 @@ return;
 
 
 
-const oldData =
+const data =
 snap.data();
 
 
 
-if(oldData.used){
+if(data.used){
 
 
 alert(
@@ -532,15 +616,19 @@ return;
 
 
 
+
+// 사용 처리
+
 await updateDoc(
 
-couponRef,
+ref,
 
 {
 
 used:true,
 
-usedTime:serverTimestamp()
+usedTime:
+serverTimestamp()
 
 }
 
@@ -548,11 +636,15 @@ usedTime:serverTimestamp()
 
 
 
-// 사용 기록 저장
+
+// 기록 저장
 
 await addDoc(
 
-collection(db,"coupon_history"),
+collection(
+db,
+"coupon_history"
+),
 
 {
 
@@ -560,9 +652,11 @@ couponNumber:number,
 
 action:"used",
 
-usedTime:serverTimestamp(),
+usedTime:
+serverTimestamp(),
 
-staff:auth.currentUser.email
+staff:
+auth.currentUser.email
 
 }
 
@@ -575,14 +669,16 @@ resultDiv.innerHTML =
 
 
 
+couponInput.value="";
+
+
+
 alert(
 "사용 완료 처리되었습니다."
 );
 
 
-
 }
-
 
 catch(error){
 
@@ -591,9 +687,8 @@ console.error(error);
 
 
 alert(
-"오류 : "
-+
-error.message
+"사용 처리 오류 : "
++error.message
 );
 
 
@@ -612,10 +707,12 @@ error.message
 
 
 
+// ======================
+// CANCEL COUPON
+// ======================
 
-// ======================
-// 사용 취소
-// ======================
+
+if(cancelButton){
 
 
 cancelButton.onclick = async()=>{
@@ -628,23 +725,55 @@ couponInput.value.trim();
 
 if(!number){
 
+
 alert(
 "쿠폰번호 입력"
 );
 
+
 return;
+
 
 }
 
 
 
-await updateDoc(
+try{
 
+
+const ref =
 doc(
 db,
 "coupon_issue",
 number
-),
+);
+
+
+
+const snap =
+await getDoc(ref);
+
+
+
+if(!snap.exists()){
+
+
+alert(
+"없는 쿠폰입니다."
+);
+
+
+return;
+
+
+}
+
+
+
+
+await updateDoc(
+
+ref,
 
 {
 
@@ -658,11 +787,14 @@ usedTime:null
 
 
 
-// 취소 기록 저장
+
 
 await addDoc(
 
-collection(db,"coupon_history"),
+collection(
+db,
+"coupon_history"
+),
 
 {
 
@@ -670,9 +802,11 @@ couponNumber:number,
 
 action:"cancel",
 
-usedTime:serverTimestamp(),
+usedTime:
+serverTimestamp(),
 
-staff:auth.currentUser.email
+staff:
+auth.currentUser.email
 
 }
 
@@ -680,8 +814,10 @@ staff:auth.currentUser.email
 
 
 
-resultDiv.innerHTML=
+
+resultDiv.innerHTML =
 "✅ 사용 가능 쿠폰";
+
 
 
 alert(
@@ -689,9 +825,27 @@ alert(
 );
 
 
+
+}
+
+catch(error){
+
+
+alert(
+"취소 오류 : "
++error.message
+);
+
+
+}
+
+
+
 };
 
 
+}
+
 
 
 
@@ -699,8 +853,11 @@ alert(
 
 
 // ======================
-// QR 시작
+// QR SCANNER START
 // ======================
+
+
+if(scanButton){
 
 
 scanButton.onclick = async()=>{
@@ -726,6 +883,9 @@ await startScanner();
 };
 
 
+}
+
+
 
 
 
@@ -734,34 +894,45 @@ await startScanner();
 async function startScanner(){
 
 
+
 reader.style.display="block";
 
 
+
 html5QrCode =
-new Html5Qrcode("reader");
+new Html5Qrcode(
+"reader"
+);
 
 
 
 const config = {
 
+
 fps:10,
+
 
 qrbox:250
 
+
 };
 
+
+
+
+try{
 
 
 await html5QrCode.start(
 
 {
 
-facingMode:"environment"
+facingMode:
+"environment"
 
 },
 
 config,
-
 
 async(decodedText)=>{
 
@@ -785,13 +956,34 @@ await stopScanner();
 checkButton.click();
 
 
+
 },
 
 
 (error)=>{}
 
 
+
 );
+
+
+
+}
+
+catch(error){
+
+
+alert(
+"카메라 오류 : "
++error.message
+);
+
+
+await stopScanner();
+
+
+}
+
 
 
 }
@@ -803,7 +995,7 @@ checkButton.click();
 
 
 // ======================
-// QR 종료
+// QR STOP
 // ======================
 
 
@@ -819,19 +1011,25 @@ try{
 await html5QrCode.stop();
 
 
+
 html5QrCode.clear();
 
 
-}
-
-catch(e){
-
-console.log(e);
 
 }
+
+catch(error){
+
+
+console.log(error);
+
+
+}
+
 
 
 html5QrCode=null;
+
 
 
 }
@@ -840,9 +1038,12 @@ html5QrCode=null;
 
 if(reader){
 
+
 reader.style.display="none";
 
+
 }
+
 
 
 }
