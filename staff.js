@@ -301,6 +301,15 @@ snapshot.forEach(
 const data =
 item.data();
 
+if(
+data.action !== "used" &&
+data.action !== "cancel"
+){
+
+return;
+
+}
+    
 if(data.status !== "waiting"){
     return;
 }   
