@@ -1224,7 +1224,7 @@ await getDocs(q);
 
 let used = 0;
 let cancel = 0;
-
+let count = 0;
 
 let staffData = {};
 
@@ -1242,6 +1242,8 @@ snap.forEach((item)=>{
 const data =
 item.data();
 
+let count = 0;
+    
 const time =
 data.usedTime
 ?
@@ -1316,6 +1318,14 @@ staffData[data.staff].cancel++;
 
 }
 
+if(count >= 10){
+
+return;
+
+}
+
+count++;
+    
 historyHTML +=
 
 `
