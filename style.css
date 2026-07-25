@@ -830,3 +830,10 @@ justify-content:center;
 
 }
 }
+/* QR 스캐너 영역 안의 카메라 비디오 비율 및 크기 보정 */
+#reader video {
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 8px;
+    object-fit: cover;
+}
