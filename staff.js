@@ -639,17 +639,6 @@ new ZXing.BrowserQRCodeReader();
 
 
 
-const video =
-document.createElement("video");
-
-
-video.style.width="100%";
-
-
-reader.appendChild(video);
-
-
-
 try{
 
 
@@ -657,37 +646,42 @@ const devices =
 await codeReader.listVideoInputDevices();
 
 
+
 console.log(devices);
 
 
 
+if(devices.length === 0){
+
+alert("카메라를 찾을 수 없습니다.");
+
+return;
+
+}
+
+
+
 const cameraId =
-devices[devices.length - 1].deviceId;
+devices[0].deviceId;
 
 
 
-await codeReader.decodeFromVideoDevice(
+codeReader.decodeFromVideoDevice(
 
 cameraId,
 
-video,
+"reader",
 
 (result,error)=>{
 
 
 if(result){
 
-console.log("스캔중:", result);
-  
-const number =
-result.text;
-
-
 
 alert(
 "QR 읽음 : "
 +
-number
+result.text
 );
 
 
@@ -695,7 +689,7 @@ number
 document.getElementById(
 "couponNumber"
 ).value =
-number;
+result.text;
 
 
 
@@ -712,11 +706,9 @@ document.getElementById(
 }
 
 
-
 }
 
 );
-
 
 
 }
@@ -724,7 +716,12 @@ document.getElementById(
 catch(error){
 
 
-console.log(error);
+console.error(error);
+
+
+alert(
+"카메라 실행 오류"
+);
 
 
 }
