@@ -217,7 +217,7 @@ async function startScanner() {
 };
 
     const onScanSuccess = async (decodedText) => {
-        alert(decodedText);
+        
         console.log("QR 스캔 성공:", decodedText);
         couponInput.value = decodedText;
         await stopScanner();
