@@ -614,7 +614,7 @@ data.used
 }
 
 // =============================
-// QR 스캔
+// ZXing QR 스캔
 // =============================
 
 const scanButton =
@@ -624,7 +624,7 @@ document.getElementById("scanButton");
 if(scanButton){
 
 
-scanButton.onclick = ()=>{
+scanButton.onclick = async()=>{
 
 
 const reader =
@@ -634,39 +634,47 @@ document.getElementById("reader");
 reader.style.display="block";
 
 
-
-const html5QrCode =
-new Html5Qrcode("reader");
-
+const codeReader =
+new ZXing.BrowserQRCodeReader();
 
 
-html5QrCode.start(
 
-{ 
-facingMode:{
-exact:"environment"
-}
-},
+const video =
+document.createElement("video");
 
 
-{
-
-fps:10,
-
-qrbox:250
-
-}
-
-},
+video.style.width="100%";
 
 
-async(decodedText)=>{
+reader.appendChild(video);
+
+
+
+try{
+
+
+const result =
+await codeReader.decodeFromVideoDevice(
+
+null,
+
+video,
+
+(result,error)=>{
+
+
+if(result){
+
+
+const number =
+result.text;
+
 
 
 alert(
 "QR 읽음 : "
 +
-decodedText
+number
 );
 
 
@@ -674,15 +682,11 @@ decodedText
 document.getElementById(
 "couponNumber"
 ).value =
-decodedText;
+number;
 
 
 
-await html5QrCode.stop();
-
-
-
-reader.style.display="none";
+codeReader.reset();
 
 
 
@@ -692,17 +696,25 @@ document.getElementById(
 
 
 
-},
-
-
-(error)=>{
-
-// 스캔 중 오류는 무시
-
 }
 
 
+
+}
+
 );
+
+
+
+}
+
+catch(error){
+
+
+console.log(error);
+
+
+}
 
 
 };
