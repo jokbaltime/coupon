@@ -612,23 +612,7 @@ data.used
 
 
 }
-await addDoc(
 
-    collection(db, "coupon_history"),
-
-    {
-
-        couponNumber: data.couponNumber,
-
-        approvedBy: auth.currentUser.email,
-
-        approvedTime: serverTimestamp(),
-
-        status: "approved"
-
-    }
-
-);
 // =============================
 // QR 스캔
 // =============================
