@@ -211,20 +211,13 @@ async function startScanner() {
     }
 
     // 1. QR 인식 영역 및 프레임 설정
-    const config = { 
-        fps: 20, // 인식 주기를 늘려 초점을 더 자주 잡도록 변경 (10 -> 20)
-        qrbox: (viewfinderWidth, viewfinderHeight) => {
-            // 박스 크기를 약간 더 크게 설정하여 인식률 향상
-            const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
-            return {
-                width: Math.floor(minEdge * 0.8),
-                height: Math.floor(minEdge * 0.8)
-            };
-        },
-        aspectRatio: 1.0
-    };
+   const config = {
+    fps: 10,
+    aspectRatio: 1.0
+};
 
     const onScanSuccess = async (decodedText) => {
+        alert(decodedText);
         console.log("QR 스캔 성공:", decodedText);
         couponInput.value = decodedText;
         await stopScanner();
@@ -233,11 +226,8 @@ async function startScanner() {
 
     // 2. 해상도 강제 지정 (선명한 초점을 위해 필수)
     const cameraConstraints = {
-        facingMode: "environment", // 후면 카메라
-        width: { min: 640, ideal: 1280, max: 1920 },
-        height: { min: 480, ideal: 720, max: 1080 }
-    };
-
+    facingMode:"environment"
+};
     try {
         // 해상도 옵션을 포함하여 카메라 실행
         await html5QrCode.start(
