@@ -500,9 +500,9 @@ function createQRCode(number){
 
         text:number,
 
-        width:180,
+        width:260,
 
-        height:180
+       height:260
 
     });
 
