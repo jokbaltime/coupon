@@ -634,8 +634,35 @@ document.getElementById("reader");
 video.style.display="block";
 
 
+const hints = new Map();
+
+
+hints.set(
+
+ZXing.DecodeHintType.POSSIBLE_FORMATS,
+
+[
+ZXing.BarcodeFormat.QR_CODE
+]
+
+);
+
+
+
+hints.set(
+
+ZXing.DecodeHintType.TRY_HARDER,
+
+true
+
+);
+
+
+
 const codeReader =
-new ZXing.BrowserMultiFormatReader();
+new ZXing.BrowserMultiFormatReader(
+hints
+);
 
 
 
@@ -647,13 +674,14 @@ await codeReader.listVideoInputDevices();
 
 
 console.log(
+"카메라",
 devices
 );
 
 
 
-const cameraId =
-devices[devices.length - 1].deviceId;
+let cameraId =
+devices[0].deviceId;
 
 
 
@@ -670,14 +698,13 @@ if(result){
 
 
 console.log(
-"결과:",
 result.text
 );
 
 
 
 alert(
-"QR 성공 : "
+"QR 읽음 : "
 +
 result.text
 );
@@ -714,6 +741,8 @@ console.error(error);
 
 
 alert(
+"QR 오류 "
++
 error.message
 );
 
