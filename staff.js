@@ -1164,5 +1164,3 @@ historyList.appendChild(div);
 
 
 }
-
-}
