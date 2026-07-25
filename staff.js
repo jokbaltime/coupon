@@ -643,19 +643,17 @@ new Html5Qrcode("reader");
 html5QrCode.start(
 
 { 
-facingMode:"environment" 
+facingMode:{
+exact:"environment"
+}
 },
 
 
 {
 
-fps:5,
+fps:10,
 
-qrbox:{
-
-width:300,
-
-height:300
+qrbox:250
 
 }
 
