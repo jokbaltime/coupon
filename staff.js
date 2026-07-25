@@ -300,6 +300,10 @@ item.data();
 
 if(data.status !== "waiting"){
     return;
+}   
+
+if(data.status !== "waiting"){
+    return;
 }
 
 const div =
@@ -333,7 +337,12 @@ ${data.couponNumber}
 div.querySelector("button")
 .onclick = async()=>{
 
+const btn =
+div.querySelector("button");
 
+btn.disabled = true;
+btn.innerHTML = "처리중...";
+    
 try{
 
 
@@ -488,6 +497,28 @@ try{
 
 
 const snap =
+
+const couponSnap =
+await getDoc(
+doc(
+db,
+"coupon_issue",
+data.couponNumber
+)
+);
+
+
+if(
+couponSnap.exists() &&
+couponSnap.data().used
+){
+
+alert("이미 사용 완료된 쿠폰입니다.");
+
+return;
+
+}
+    
 await getDoc(
 
 doc(
