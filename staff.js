@@ -93,6 +93,9 @@ document.getElementById("adminArea");
 const adminStats =
 document.getElementById("adminStats");
 
+const adminHistory =
+document.getElementById("adminHistory");
+
 let html5QrCode = null;
 
 
@@ -1214,6 +1217,8 @@ let cancel = 0;
 
 let staffData = {};
 
+let historyHTML = "";
+    
 let today =
 new Date()
 .toLocaleDateString();
@@ -1226,6 +1231,13 @@ snap.forEach((item)=>{
 const data =
 item.data();
 
+const time =
+data.usedTime
+?
+data.usedTime.toDate()
+.toLocaleString()
+:
+"";
 
 let date = "";
 
@@ -1293,9 +1305,42 @@ staffData[data.staff].cancel++;
 
 }
 
+historyHTML +=
+
+`
+
+<div style="
+padding:10px;
+border-bottom:1px solid #444;
+">
+
+<b>${data.couponNumber}</b>
+
+<br>
+
+처리 :
+${data.action}
+
+<br>
+
+직원 :
+${data.staff}
+
+<br>
+
+시간 :
+${time}
+
+</div>
+
+`;
+
+
+// ⭐ 여기까지 추가
+
 
 });
-
+    
 
 
 // 직원 HTML 생성
@@ -1378,4 +1423,20 @@ ${staffHTML}
 
 `;
 
+if(adminHistory){
+
+adminHistory.innerHTML =
+
+`
+
+<h3>
+🕒 최근 처리 내역
+</h3>
+
+${historyHTML}
+
+`;
+
+}
+    
 }
