@@ -255,4 +255,58 @@ onScanSuccess,
 (errorMessage)=>{}
 
 );
-   
+
+      }
+    catch(error){
+
+        console.error(
+            "카메라 오류:",
+            error
+        );
+
+        alert(
+            "카메라 실행 오류 : "
+            +
+            error.message
+        );
+
+        await stopScanner();
+
+    }
+
+}
+
+
+// QR 종료 함수
+
+async function stopScanner(){
+
+    if(html5QrCode){
+
+        try{
+
+            await html5QrCode.stop();
+
+            await html5QrCode.clear();
+
+        }
+        catch(error){
+
+            console.log(
+                "스캐너 종료:",
+                error
+            );
+
+        }
+
+        html5QrCode=null;
+
+    }
+
+    if(reader){
+
+        reader.style.display="none";
+
+    }
+
+}      
