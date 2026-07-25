@@ -1202,13 +1202,24 @@ async function loadAdminStats(){
 if(!adminStats) return;
 
 
-const snap =
-await getDocs(
+const q =
+query(
+
 collection(
 db,
 "coupon_history"
+),
+
+orderBy(
+"usedTime",
+"desc"
 )
+
 );
+
+
+const snap =
+await getDocs(q);
 
 
 let used = 0;
