@@ -20,6 +20,7 @@ serverTimestamp
 
 } from "./firebase.js";
 
+console.log("staff.js 정상 실행");
 
 import {
 
