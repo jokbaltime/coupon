@@ -1095,73 +1095,59 @@ return;
 
 snapshot.forEach((item)=>{
 
+    const data = item.data();
 
-const data =
-item.data();
+    let time="";
 
+    if(data.usedTime){
 
+        time =
+        data.usedTime
+        .toDate()
+        .toLocaleString();
 
-let time="";
-
-if(data.usedTime){
-
-time =
-data.usedTime
-.toDate()
-.toLocaleString();
-
-}
+    }
 
 
-
-const div =
-document.createElement("div");
-
-
-div.style.borderBottom =
-"1px solid #444";
+    const div =
+    document.createElement("div");
 
 
-div.style.padding =
-"10px 0";
+    div.style.borderBottom =
+    "1px solid #444";
 
 
-
-div.innerHTML = `
-
-<b>쿠폰번호</b> :
-${data.couponNumber}
-
-<br>
-
-<b>처리</b> :
-${data.action || "used"}
-
-<br>
-
-<b>직원</b> :
-${data.staff || ""}
-
-<br>
-
-<b>시간</b> :
-${time}
-
-`;
+    div.style.padding =
+    "10px 0";
 
 
+    div.innerHTML = `
 
-historyList.appendChild(div);
+    <b>쿠폰번호</b> :
+    ${data.couponNumber}
+
+    <br>
+
+    <b>처리</b> :
+    ${data.action || "used"}
+
+    <br>
+
+    <b>직원</b> :
+    ${data.staff || ""}
+
+    <br>
+
+    <b>시간</b> :
+    ${time}
+
+    `;
 
 
+    historyList.appendChild(div);
 
 });
 
+});   // onSnapshot 종료
 
-}
-
-
-);
-
-
-}
+}      // loadHistory 종료
