@@ -205,10 +205,38 @@ border-radius:15px;
 margin-bottom:15px;
 
 }
+#reader{
 
+width:300px;
+
+margin:20px auto;
+
+background:white;
+
+padding:10px;
+
+border-radius:12px;
+
+display:none;
+
+}
 
 </style>
+#reader{
 
+width:300px;
+
+margin:20px auto;
+
+background:white;
+
+padding:10px;
+
+border-radius:12px;
+
+display:none;
+
+}
 </head>
 
 
@@ -317,7 +345,15 @@ class="action">
 
 </button>
 
+<button
 
+id="scanButton"
+
+class="action">
+
+📷 QR 스캔
+
+</button>
 
 
 <button
@@ -352,7 +388,7 @@ id="cancelButton">
 
 </div>
 
-
+<div id="reader"></div>
 
 
 <div id="requestList">
@@ -374,14 +410,12 @@ id="cancelButton">
 
 
 
+<script src="https://unpkg.com/html5-qrcode"></script>
+
 <script
-
 type="module"
-
 src="staff.js">
-
 </script>
-
 
 
 </body>
