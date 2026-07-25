@@ -302,9 +302,6 @@ if(data.status !== "waiting"){
     return;
 }   
 
-if(data.status !== "waiting"){
-    return;
-}
 
 const div =
 document.createElement("div");
@@ -496,28 +493,7 @@ return;
 try{
 
 
-const snap =
 
-const couponSnap =
-await getDoc(
-doc(
-db,
-"coupon_issue",
-data.couponNumber
-)
-);
-
-
-if(
-couponSnap.exists() &&
-couponSnap.data().used
-){
-
-alert("이미 사용 완료된 쿠폰입니다.");
-
-return;
-
-}
     
 await getDoc(
 
