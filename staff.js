@@ -633,7 +633,15 @@ document.getElementById("reader");
 
 reader.style.display="block";
 
+reader.setAttribute(
+"autoplay",
+true
+);
 
+reader.setAttribute(
+"playsinline",
+true
+);
 
 const codeReader =
 new ZXing.BrowserQRCodeReader();
@@ -661,11 +669,10 @@ codeReader.decodeFromVideoDevice(
 
 cameraId,
 
-"reader",
+document.getElementById("reader"),
 
 (result,error)=>{
-
-
+  
 if(result){
 
 
