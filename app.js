@@ -243,7 +243,7 @@ document.getElementById(
 ).textContent =
 number;
 
-
+createQRCode(number);
 
 
 
@@ -483,7 +483,30 @@ clock,
 
 clock();
 
+// =============================
+// QR 코드 생성
+// =============================
 
+function createQRCode(number){
+
+    const qrBox =
+    document.getElementById("qrcode");
+
+    if(!qrBox) return;
+
+    qrBox.innerHTML = "";
+
+    new QRCode(qrBox,{
+
+        text:number,
+
+        width:180,
+
+        height:180
+
+    });
+
+}
 
 
 
