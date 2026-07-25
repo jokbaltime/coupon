@@ -58,6 +58,81 @@ document.getElementById("checkButton");
 const useButton =
 document.getElementById("useButton");
 
+// =============================
+// 사용 완료 처리
+// =============================
+
+if (useButton) {
+
+    useButton.onclick = async()=>{
+
+
+        const number =
+        couponInput.value.trim();
+
+
+        console.log(
+            "사용완료 버튼 클릭",
+            number
+        );
+
+
+        if(!number){
+
+            alert(
+                "쿠폰번호를 입력하세요"
+            );
+
+            return;
+
+        }
+
+
+        try{
+
+
+            await updateDoc(
+
+                doc(
+                    db,
+                    "coupon_issue",
+                    number
+                ),
+
+                {
+                    used:true,
+                    usedTime:serverTimestamp()
+                }
+
+            );
+
+
+            alert(
+                "사용 완료 처리되었습니다."
+            );
+
+
+            resultDiv.innerHTML =
+            "❌ 사용 완료 쿠폰";
+
+
+        }
+
+        catch(error){
+
+            console.error(error);
+
+            alert(
+                "오류 : "
+                + error.message
+            );
+
+        }
+
+
+    };
+
+}
 
 const cancelButton =
 document.getElementById("cancelButton");
