@@ -1182,56 +1182,117 @@ snapshot.forEach((item)=>{
 
 }
 
-function loadAdminStats(){
+async function loadAdminStats(){
 
 if(!adminStats) return;
 
 
-const q =
-query(
-collection(db,"coupon_issue")
+const snap =
+await getDocs(
+collection(
+db,
+"coupon_history"
+)
 );
 
 
-onSnapshot(q,(snap)=>{
-
-
-let total = snap.size;
-
 let used = 0;
+let cancel = 0;
+
+let staffCount = {};
 
 
-snap.forEach((doc)=>{
+let today =
+new Date()
+.toLocaleDateString();
 
-const data = doc.data();
 
 
-if(data.used){
+snap.forEach((item)=>{
 
+
+const data =
+item.data();
+
+
+if(data.action==="used"){
 used++;
+}
+
+
+if(data.action==="cancel"){
+cancel++;
+}
+
+
+
+if(data.staff){
+
+if(!staffCount[data.staff]){
+staffCount[data.staff]=0;
+}
+
+staffCount[data.staff]++;
 
 }
+
 
 });
 
 
-adminStats.innerHTML = `
 
+let staffHTML="";
+
+
+Object.keys(staffCount)
+.forEach((name)=>{
+
+
+staffHTML +=
+`
 <p>
-전체 쿠폰 : ${total}
+${name}
+:
+${staffCount[name]}건
 </p>
-
-<p>
-사용 완료 : ${used}
-</p>
-
-<p>
-사용 가능 : ${total-used}
-</p>
-
 `;
 
 });
 
+
+
+adminStats.innerHTML =
+
+`
+
+<p>
+전체 쿠폰 :
+${snap.size}
+</p>
+
+
+<p>
+사용 완료 :
+${used}
+</p>
+
+
+<p>
+취소 :
+${cancel}
+</p>
+
+
+<hr>
+
+
+<h3>
+직원별 처리
+</h3>
+
+${staffHTML}
+
+
+`;
 
 }
