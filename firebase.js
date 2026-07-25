@@ -1,13 +1,11 @@
 // ======================================
-// JOKBALTlME FIREBASE CONFIG
+// JOKBALTIME FIREBASE CONFIG v2
 // ======================================
 
-
 import {
-
 initializeApp
-
-} from
+}
+from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
@@ -17,13 +15,11 @@ import {
 getFirestore,
 
 doc,
-
 setDoc,
-
+addDoc,
 getDoc,
-
+getDocs,
 updateDoc,
-
 deleteDoc,
 
 collection,
@@ -32,15 +28,16 @@ query,
 
 where,
 
-getDocs,
+orderBy,
+
+limit,
 
 onSnapshot,
 
-addDoc,
+serverTimestamp
 
-orderBy
-
-} from
+}
+from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -49,94 +46,72 @@ import {
 
 getAuth
 
-} from
+}
+from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 
 
+// ===============================
+// Firebase Config
+// ===============================
 
-
-// Firebase 설정
-
-
-const firebaseConfig = {
-
+const firebaseConfig={
 
 apiKey:
 "AIzaSyAykACgg1IqU-8tawPLRAfP2pKYST-PWjQ",
 
-
 authDomain:
 "jokbaltime-coupon.firebaseapp.com",
-
 
 projectId:
 "jokbaltime-coupon",
 
-
 storageBucket:
 "jokbaltime-coupon.firebasestorage.app",
-
 
 messagingSenderId:
 "1077568919018",
 
-
 appId:
 "1:1077568919018:web:2205193cae7848ec518e93",
 
-
 measurementId:
 "G-BEHR2WZR0F"
-
 
 };
 
 
 
 
+// ===============================
+// Firebase Start
+// ===============================
 
-
-
-
-// Firebase 시작
-
-
-const app =
-
+const app=
 initializeApp(
 firebaseConfig
 );
 
 
 
-
-
-
-
-
+// ===============================
 // Firestore
+// ===============================
 
-
-const db =
-
+const db=
 getFirestore(
 app
 );
 
 
 
+// ===============================
+// Auth
+// ===============================
 
-
-
-
-
-// Authentication
-
-
-const auth =
-
+const auth=
 getAuth(
 app
 );
@@ -144,28 +119,29 @@ app
 
 
 
+// ===============================
+// Export
+// ===============================
 
-
-
-
-export {
-
+export{
 
 db,
 
 auth,
 
-
 doc,
 
 setDoc,
 
+addDoc,
+
 getDoc,
+
+getDocs,
 
 updateDoc,
 
 deleteDoc,
-
 
 collection,
 
@@ -173,14 +149,12 @@ query,
 
 where,
 
-getDocs,
+orderBy,
+
+limit,
 
 onSnapshot,
 
-
-addDoc,
-
-orderBy
-
+serverTimestamp
 
 };
