@@ -39,6 +39,9 @@ onAuthStateChanged
 // ======================
 
 
+const ADMIN_EMAIL =
+"admin@jokbaltime.com";
+
 const loginArea =
 document.getElementById("loginArea");
 
@@ -82,6 +85,12 @@ document.getElementById("reader");
 
 const historyList =
 document.getElementById("historyList");
+
+const adminArea =
+document.getElementById("adminArea");
+
+const adminStats =
+document.getElementById("adminStats");
 
 let html5QrCode = null;
 
@@ -161,9 +170,7 @@ auth,
 
 if(user){
 
-
 loginArea.style.display="none";
-
 
 staffArea.style.display="block";
 
@@ -171,6 +178,16 @@ staffArea.style.display="block";
 startRequestListener();
 
 loadHistory();
+
+
+if(user.email === ADMIN_EMAIL){
+
+adminArea.style.display="block";
+
+loadAdminStats();
+
+}
+
 }
 
 else{
@@ -1156,5 +1173,59 @@ snapshot.forEach((item)=>{
 }
 
 );
+
+}
+
+function loadAdminStats(){
+
+if(!adminStats) return;
+
+
+const q =
+query(
+collection(db,"coupon_issue")
+);
+
+
+onSnapshot(q,(snap)=>{
+
+
+let total = snap.size;
+
+let used = 0;
+
+
+snap.forEach((doc)=>{
+
+const data = doc.data();
+
+
+if(data.used){
+
+used++;
+
+}
+
+});
+
+
+adminStats.innerHTML = `
+
+<p>
+전체 쿠폰 : ${total}
+</p>
+
+<p>
+사용 완료 : ${used}
+</p>
+
+<p>
+사용 가능 : ${total-used}
+</p>
+
+`;
+
+});
+
 
 }
