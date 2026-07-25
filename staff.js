@@ -618,31 +618,6 @@ data.used
 // =============================
 
 const scanButton =
-document.getElementById("scanButton");
-
-if(scanButton){
-
-scanButton.onclick = ()=>{
-
-const reader =
-document.getElementById("reader");
-
-reader.style.display="block";
-
-const html5QrCode =
-new Html5Qrcode("reader");
-
-html5QrCode.start(
-
-{ facingMode:"environment" },
-
-{
-
-fps:10,
-
-qrbox:250
-
-},
 
 async(decodedText)=>{
 
