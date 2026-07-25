@@ -614,7 +614,7 @@ data.used
 }
 
 // =============================
-// ZXing QR SCANNER
+// QR SCANNER
 // =============================
 
 const scanButton =
@@ -635,7 +635,7 @@ video.style.display="block";
 
 
 const codeReader =
-new ZXing.BrowserQRCodeReader();
+new ZXing.BrowserMultiFormatReader();
 
 
 
@@ -646,16 +646,14 @@ const devices =
 await codeReader.listVideoInputDevices();
 
 
-
 console.log(
-"카메라:",
 devices
 );
 
 
 
-let cameraId =
-devices[0].deviceId;
+const cameraId =
+devices[devices.length - 1].deviceId;
 
 
 
@@ -671,15 +669,17 @@ video,
 if(result){
 
 
-const couponNumber =
-result.text;
+console.log(
+"결과:",
+result.text
+);
 
 
 
 alert(
-"QR 읽음 : "
+"QR 성공 : "
 +
-couponNumber
+result.text
 );
 
 
@@ -687,17 +687,11 @@ couponNumber
 document.getElementById(
 "couponNumber"
 ).value =
-couponNumber;
+result.text;
 
 
 
 codeReader.reset();
-
-
-
-document.getElementById(
-"checkButton"
-).click();
 
 
 
@@ -720,8 +714,6 @@ console.error(error);
 
 
 alert(
-"QR 오류 : "
-+
 error.message
 );
 
