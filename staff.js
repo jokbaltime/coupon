@@ -303,12 +303,16 @@ item.id
 
 {
 
+{
+
 status:"approved",
 
-approvedTime:serverTimestamp()
+approvedTime:serverTimestamp(),
+
+approvedBy:
+auth.currentUser.email
 
 }
-
 );
 
 
@@ -481,7 +485,21 @@ return;
 
 }
 
+const oldData = snap.data();
 
+
+if(oldData.used){
+
+
+alert(
+"이미 사용 완료된 쿠폰입니다."
+);
+
+
+return;
+
+
+}
 
 await updateDoc(
 
