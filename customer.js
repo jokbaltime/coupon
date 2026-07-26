@@ -1,15 +1,17 @@
-// customer.js FULL REPLACEMENT
-// 승인 완료 코드 자동 표시 + 요청/승인 상태 단일화 FIX
-
+// ======================================
+// CUSTOMER.JS FULL REPLACEMENT
+// REQUEST / APPROVAL STATUS SYNC FIX
+// ======================================
 
 import {
 db,
 doc,
-getDoc,
 setDoc,
+getDoc,
 onSnapshot,
 serverTimestamp
 } from "./firebase.js";
+
 
 
 const couponInput =
@@ -25,25 +27,19 @@ document.getElementById("result");
 
 
 
-let currentCoupon = "";
-
 let stopIssue = null;
 let stopRequest = null;
 
 
 
-
 // ==============================
-// 상태 감시
+// 쿠폰 상태 감시
 // ==============================
 
-function watchCoupon(code){
+function watchCoupon(couponNumber){
 
 
-if(!code)return;
-
-
-currentCoupon = code;
+if(!couponNumber) return;
 
 
 
@@ -57,20 +53,20 @@ stopRequest();
 
 
 
-// 승인 완료 쿠폰 감시
+// coupon_issue 감시
 
 stopIssue = onSnapshot(
 
 doc(
 db,
 "coupon_issue",
-code
+couponNumber
 ),
 
-(snap)=>{
+(snapshot)=>{
 
 
-if(!snap.exists()){
+if(!snapshot.exists()){
 
 result.innerHTML =
 "❌ 존재하지 않는 쿠폰";
@@ -82,15 +78,121 @@ return;
 
 
 const data =
-snap.data();
+snapshot.data();
 
 
 
 if(data.used){
 
+result.innerHTML =
+"❌ 사용 완료 쿠폰";
+
+
+requestButton.disabled=true;
+
+
+return;
+
+}
+
+
+
+if(data.approved){
 
 result.innerHTML =
-"❌ 이미 사용 완료된 쿠폰";
+
+`
+<b style="color:green">
+✅ 승인 완료
+</b>
+
+<br>
+
+사용 가능한 쿠폰번호
+
+<h2>
+${couponNumber}
+</h2>
+
+직원에게 보여주세요.
+`;
+
+
+requestButton.innerText =
+"✅ 승인 완료";
+
+
+requestButton.disabled=true;
+
+
+return;
+
+}
+
+
+
+result.innerHTML =
+"⏳ 직원 승인 대기";
+
+
+
+}
+
+);
+
+
+
+
+
+// coupon_request 감시
+
+stopRequest = onSnapshot(
+
+doc(
+db,
+"coupon_request",
+couponNumber
+),
+
+(snapshot)=>{
+
+
+if(!snapshot.exists()){
+
+
+if(result.innerHTML.includes("승인")){
+
+return;
+
+}
+
+
+return;
+
+}
+
+
+
+const data =
+snapshot.data();
+
+
+
+
+// 대기 상태
+
+if(
+data.status === "waiting"
+&&
+data.requestClosed !== true
+){
+
+result.innerHTML =
+"⏳ 직원 승인 요청 중";
+
+
+requestButton.innerText =
+"⏳ 승인 대기중";
 
 
 requestButton.disabled=true;
@@ -103,31 +205,47 @@ return;
 
 
 
-if(data.approved){
+
+// 승인 완료
+
+if(
+data.status === "approved"
+&&
+data.requestClosed === true
+){
+
+
+const newCode =
+data.approvedCoupon || couponNumber;
+
+
+
+couponInput.value =
+newCode;
+
+
+
+localStorage.setItem(
+"JT_COUPON_NUMBER",
+newCode
+);
+
 
 
 result.innerHTML =
 
 `
-
 <b style="color:green">
-
-✅ 승인 완료
-
+🎉 승인 완료
 </b>
 
 <br>
 
-사용 가능 쿠폰번호 :
+쿠폰번호
 
 <h2>
-
-${code}
-
+${newCode}
 </h2>
-
-직원에게 이 번호를 보여주세요.
-
 `;
 
 
@@ -139,116 +257,7 @@ requestButton.innerText =
 requestButton.disabled=true;
 
 
-
-return;
-
-}
-
-
-
-
-result.innerHTML =
-"⏳ 승인 대기 중";
-
-
-
-}
-
-);
-
-
-
-
-
-// 요청 상태 감시
-
-stopRequest = onSnapshot(
-
-doc(
-db,
-"coupon_request",
-code
-),
-
-(snap)=>{
-
-
-if(!snap.exists()){
-
-return;
-
-}
-
-
-const data =
-snap.data();
-
-
-
-if(data.status==="waiting"){
-
-
-result.innerHTML =
-"⏳ 직원 승인 요청 중";
-
-
-
-requestButton.innerText =
-"⏳ 요청 진행중";
-
-
-requestButton.disabled=true;
-
-
-
-}
-
-
-
-
-if(
-data.status==="approved"
-&&
-data.approvedCoupon
-){
-
-
-result.innerHTML =
-
-`
-
-<b style="color:green">
-
-🎉 승인 완료
-
-</b>
-
-<br>
-
-새 쿠폰번호 :
-
-<h2>
-
-${data.approvedCoupon}
-
-</h2>
-
-`;
-
-
-
-couponInput.value =
-data.approvedCoupon;
-
-
-localStorage.setItem(
-"JT_COUPON_NUMBER",
-data.approvedCoupon
-);
-
-
-
-watchCoupon(data.approvedCoupon);
+watchCoupon(newCode);
 
 
 
@@ -262,6 +271,7 @@ watchCoupon(data.approvedCoupon);
 
 
 }
+
 
 
 
@@ -279,20 +289,24 @@ couponInput.addEventListener(
 ()=>{
 
 
-const code =
+const num =
 couponInput.value.trim();
 
 
 
-if(code){
+if(num){
+
 
 localStorage.setItem(
 "JT_COUPON_NUMBER",
-code
+num
 );
 
 
-watchCoupon(code);
+
+watchCoupon(num);
+
+
 
 }
 
@@ -301,30 +315,32 @@ watchCoupon(code);
 
 );
 
-}
 
+}
 
 
 
 
 // ==============================
-// 페이지 시작
+// 초기 실행
 // ==============================
 
 
-const saved =
+const savedCoupon =
 localStorage.getItem(
 "JT_COUPON_NUMBER"
 );
 
 
 
-if(saved){
+if(savedCoupon){
 
 
-couponInput.value=saved;
+couponInput.value =
+savedCoupon;
 
-watchCoupon(saved);
+
+watchCoupon(savedCoupon);
 
 
 }
@@ -341,17 +357,20 @@ watchCoupon(saved);
 if(requestButton){
 
 
-requestButton.onclick=async()=>{
+requestButton.onclick =
+async()=>{
 
 
-const code =
+const couponNumber =
 couponInput.value.trim();
 
 
 
-if(!code){
+if(!couponNumber){
 
-alert("쿠폰번호 입력");
+alert(
+"쿠폰번호 입력"
+);
 
 return;
 
@@ -359,38 +378,28 @@ return;
 
 
 
+try{
 
-const issue =
+
+
+const issueSnap =
 await getDoc(
 
 doc(
 db,
 "coupon_issue",
-code
+couponNumber
 )
 
 );
 
 
 
-if(!issue.exists()){
+if(!issueSnap.exists()){
 
-alert("없는 쿠폰");
-
-return;
-
-}
-
-
-
-const data =
-issue.data();
-
-
-
-if(data.used){
-
-alert("사용 완료 쿠폰");
+alert(
+"존재하지 않는 쿠폰입니다."
+);
 
 return;
 
@@ -398,11 +407,91 @@ return;
 
 
 
-if(data.approved){
+const issue =
+issueSnap.data();
 
-alert("이미 승인 완료");
+
+
+if(issue.used){
+
+alert(
+"이미 사용 완료된 쿠폰입니다."
+);
 
 return;
+
+}
+
+
+
+if(issue.approved){
+
+alert(
+"이미 승인 완료된 쿠폰입니다."
+);
+
+return;
+
+}
+
+
+
+
+
+const reqSnap =
+await getDoc(
+
+doc(
+db,
+"coupon_request",
+couponNumber
+)
+
+);
+
+
+
+
+if(reqSnap.exists()){
+
+
+const req =
+reqSnap.data();
+
+
+
+if(
+req.status==="waiting"
+&&
+req.requestClosed!==true
+){
+
+alert(
+"이미 승인 요청 중입니다."
+);
+
+
+return;
+
+}
+
+
+if(
+req.status==="approved"
+&&
+req.requestClosed===true
+){
+
+alert(
+"이미 승인 완료되었습니다."
+);
+
+
+return;
+
+}
+
+
 
 }
 
@@ -415,12 +504,12 @@ await setDoc(
 doc(
 db,
 "coupon_request",
-code
+couponNumber
 ),
 
 {
 
-couponNumber:code,
+couponNumber:couponNumber,
 
 status:"waiting",
 
@@ -432,7 +521,6 @@ serverTimestamp()
 }
 
 );
-
 
 
 
@@ -449,7 +537,29 @@ requestButton.disabled=true;
 
 
 
-watchCoupon(code);
+watchCoupon(couponNumber);
+
+
+
+}
+
+catch(error){
+
+
+console.error(error);
+
+
+alert(
+"요청 오류 : "
++error.message
+);
+
+
+
+requestButton.disabled=false;
+
+
+}
 
 
 
