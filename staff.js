@@ -1288,10 +1288,9 @@ db,
 ),
 
 orderBy(
-"usedTime",
+"approvedTime",
 "desc"
 )
-
 );
 
 
@@ -1341,15 +1340,14 @@ const time =
 "";
 let date = "";
 
-if(data.usedTime){
+if(data.usedTime || data.approvedTime){
 
 date =
-data.usedTime
+(data.usedTime || data.approvedTime)
 .toDate()
 .toLocaleDateString();
 
 }
-
 
 // 오늘 처리만 계산
 if(date === today){
