@@ -13,7 +13,7 @@ serverTimestamp
 } from "./firebase.js";
 
 
-console.log("★★★★★ NEW CUSTOMER.JS ★★★★★");
+console.log("★★★★★ NEW CUSTOMER.JS 2026-07-26 ★★★★★");
 
 
 
