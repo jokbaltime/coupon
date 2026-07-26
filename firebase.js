@@ -1,147 +1,110 @@
-// ======================================
-// JOKBALTIME FIREBASE CONFIG v2
-// ======================================
+// firebase.js FULL CHECK VERSION
+// FIREBASE CONFIG / EXPORT ONLY
+
 
 import {
 initializeApp
-}
-from
+} from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
-
 import {
-
 getFirestore,
-
 doc,
+getDoc,
 setDoc,
 addDoc,
-getDoc,
 getDocs,
+collection,
+query,
+where,
+onSnapshot,
 updateDoc,
 deleteDoc,
-
-collection,
-
-query,
-
-where,
-
 orderBy,
-
-limit,
-
-onSnapshot,
-
 serverTimestamp
-
-}
-from
+} from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 
 import {
-
 getAuth
-
-}
-from
+} from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 
 
-// ===============================
-// Firebase Config
-// ===============================
+// Firebase 설정
 
-const firebaseConfig={
+const firebaseConfig = {
+
 
 apiKey:
-"AIzaSyAykACgg1IqU-8tawPLRAfP2pKYST-PWjQ",
+"YOUR_API_KEY",
+
 
 authDomain:
-"jokbaltime-coupon.firebaseapp.com",
+"YOUR_AUTH_DOMAIN",
+
 
 projectId:
-"jokbaltime-coupon",
+"YOUR_PROJECT_ID",
+
 
 storageBucket:
-"jokbaltime-coupon.firebasestorage.app",
+"YOUR_STORAGE_BUCKET",
+
 
 messagingSenderId:
-"1077568919018",
+"YOUR_MESSAGING_SENDER_ID",
+
 
 appId:
-"1:1077568919018:web:2205193cae7848ec518e93",
+"YOUR_APP_ID"
 
-measurementId:
-"G-BEHR2WZR0F"
 
 };
 
 
 
 
-// ===============================
-// Firebase Start
-// ===============================
 
-const app=
-initializeApp(
-firebaseConfig
-);
+const app =
+initializeApp(firebaseConfig);
 
 
 
-// ===============================
-// Firestore
-// ===============================
-
-const db=
-getFirestore(
-app
-);
+const db =
+getFirestore(app);
 
 
 
-// ===============================
-// Auth
-// ===============================
-
-const auth=
-getAuth(
-app
-);
+const auth =
+getAuth(app);
 
 
 
 
-// ===============================
-// Export
-// ===============================
 
-export{
+export {
+
 
 db,
 
 auth,
 
+
 doc,
+
+getDoc,
 
 setDoc,
 
 addDoc,
 
-getDoc,
-
 getDocs,
-
-updateDoc,
-
-deleteDoc,
 
 collection,
 
@@ -149,12 +112,15 @@ query,
 
 where,
 
-orderBy,
-
-limit,
-
 onSnapshot,
 
+updateDoc,
+
+deleteDoc,
+
+orderBy,
+
 serverTimestamp
+
 
 };
