@@ -288,7 +288,10 @@ function startRequestListener(){
 
 
 
-const q = collection(db, "coupon_request");
+const q = query(
+    collection(db, "coupon_request"),
+    where("status","==","waiting")
+);
 
 
 
