@@ -367,8 +367,44 @@ btn.innerHTML = "처리중...";
 try{
 
 
-await updateDoc(
+// 승인 중복 확인
 
+const historyQuery =
+query(
+collection(db,"coupon_history"),
+where(
+"couponNumber",
+"==",
+data.couponNumber
+),
+where(
+"action",
+"==",
+"approved"
+)
+);
+
+
+const historySnap =
+await getDocs(historyQuery);
+
+
+if(!historySnap.empty){
+
+alert(
+"이미 승인 처리된 쿠폰입니다."
+);
+
+btn.disabled = false;
+btn.innerHTML = "승인";
+
+return;
+
+}
+
+
+
+await updateDoc(
 doc(
 db,
 "coupon_issue",
@@ -452,15 +488,15 @@ alert(
 
 catch(error){
 
+btn.disabled = false;
+btn.innerHTML = "승인";
 
 alert(
 "승인 오류 : "
 +error.message
 );
 
-
 }
-
 
 };
 
