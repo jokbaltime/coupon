@@ -1,155 +1,92 @@
 // ======================================
 // FIREBASE.JS FULL REPLACEMENT
-// REAL CONFIG REQUIRED
 // ======================================
 
-
 import {
-
 initializeApp
-
-}
-
-from
-
+} from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
-
 import {
-
 getFirestore,
-
 doc,
-
 getDoc,
-
 setDoc,
-
 deleteDoc,
-
 addDoc,
-
 getDocs,
-
 collection,
-
 query,
-
 where,
-
 onSnapshot,
-
 orderBy,
-
 serverTimestamp
-
-}
-
-from
-
+} from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-
 import {
-
 getAuth
-
-}
-
-from
-
+} from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 
-
 // ======================================
-// Firebase Console
-// 프로젝트 설정 → 웹 앱 설정값 입력
+// 여기에 Firebase 콘솔 실제 설정값 입력
 // ======================================
-
 
 const firebaseConfig = {
 
-
 apiKey:
-"여기에 실제 API KEY 입력",
-
-
+"YOUR_REAL_API_KEY",
 
 authDomain:
-"여기에 실제 AUTH DOMAIN 입력",
-
-
+"YOUR_PROJECT.firebaseapp.com",
 
 projectId:
-"여기에 실제 PROJECT ID 입력",
-
-
+"YOUR_PROJECT_ID",
 
 storageBucket:
-"여기에 실제 STORAGE BUCKET 입력",
-
-
+"YOUR_PROJECT.appspot.com",
 
 messagingSenderId:
-"여기에 실제 MESSAGING SENDER ID 입력",
-
-
+"YOUR_MESSAGING_SENDER_ID",
 
 appId:
-"여기에 실제 APP ID 입력"
-
-
+"YOUR_APP_ID"
 
 };
 
 
 
-
-
-// Firebase 시작
+// Firebase 초기화
 
 const app =
-
 initializeApp(firebaseConfig);
 
 
 
-
-
-// Firestore
+// Firestore 연결
 
 const db =
-
 getFirestore(app);
 
 
 
-
-
-// Authentication
+// 로그인 연결
 
 const auth =
-
 getAuth(app);
-
-
-
-
-
 
 
 
 export {
 
-
 db,
 
 auth,
-
 
 doc,
 
@@ -174,6 +111,5 @@ onSnapshot,
 orderBy,
 
 serverTimestamp
-
 
 };
