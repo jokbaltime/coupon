@@ -434,7 +434,27 @@ return;
 const data =
 couponSnap.data();
 
+const useCount =
+data.useCount || 0;
 
+
+const maxUseCount =
+data.maxUseCount || 1;
+
+
+
+if(useCount >= maxUseCount){
+
+
+alert(
+"❌ 사용 횟수를 초과한 쿠폰입니다."
+);
+
+
+return;
+
+
+}
 
 
 
@@ -497,9 +517,10 @@ number
 
 {
 
+status:"waiting",
 
-status:"waiting"
-
+useCount:
+useCount + 1
 
 },
 
@@ -510,7 +531,6 @@ merge:true
 }
 
 );
-
 
 
 
