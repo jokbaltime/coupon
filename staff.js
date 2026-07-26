@@ -117,7 +117,9 @@ function startRequestListener() {
             timestamp: serverTimestamp(),
             staff: staffEmail
           });
-
+         if(couponInput){
+    couponInput.value = num;
+}
           alert(`[${num}] 쿠폰이 정상적으로 승인 처리되었습니다.`);
         } catch (e) {
           btn.disabled = false;
