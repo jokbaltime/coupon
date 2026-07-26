@@ -72,6 +72,8 @@ document.getElementById("couponTitle");
 const discount =
 document.getElementById("discount");
 
+const maxUseCount =
+document.getElementById("maxUseCount");
 
 const notice =
 document.getElementById("notice");
@@ -307,6 +309,8 @@ couponTitle.value.trim(),
 discount:
 Number(discount.value),
 
+maxUseCount:
+Number(maxUseCount.value),  
 
 notice:
 notice.value.trim(),
