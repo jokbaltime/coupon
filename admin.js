@@ -286,7 +286,11 @@ number
 const oldCoupon =
 await getDoc(couponRef);
 
-
+console.log(
+"날짜 확인:",
+startDate.value,
+endDate.value
+);
 
 
 
