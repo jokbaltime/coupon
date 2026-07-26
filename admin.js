@@ -887,18 +887,35 @@ historyList.innerHTML +=
 
 `
 
+<div class="history-card">
+
 <p>
-
-${data.couponNumber}
-
--
-
-${data.action}
-
+쿠폰번호 :
+<b>${data.couponNumber}</b>
 </p>
 
-`;
 
+<p>
+처리 :
+${data.action}
+</p>
+
+
+<p>
+시간 :
+${
+data.time
+?
+data.time.toDate().toLocaleString()
+:
+"처리 시간 없음"
+}
+</p>
+
+
+</div>
+
+`;
 
 
 });
