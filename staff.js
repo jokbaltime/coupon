@@ -117,6 +117,21 @@ function startRequestListener() {
             timestamp: serverTimestamp(),
             staff: staffEmail
           });
+
+// 새 쿠폰 생성
+const newCoupon =
+"JT" + Date.now();
+
+await setDoc(
+  doc(db, "coupon_issue", newCoupon),
+  {
+    couponNumber:newCoupon,
+    used:false,
+    approved:false,
+    createdTime:serverTimestamp()
+  }
+);
+          
          if(couponInput){
     couponInput.value = num;
 }
@@ -177,7 +192,9 @@ if (useBtn) {
         staff: staffEmail
       });
 
-      alert(`[${num}] 쿠폰이 사용 완료 처리되었습니다.`);
+    alert(
+`[${num}] 사용 완료\n새 쿠폰 : ${newCoupon}`
+);
       couponInput.value = "";
       if (resultDiv) resultDiv.innerText = "";
     } catch (e) {
