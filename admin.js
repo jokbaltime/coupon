@@ -1,5 +1,7 @@
-// admin.js FULL REPLACEMENT
-// ADMIN CONTROL / COUPON STATUS MANAGEMENT VERSION
+// ======================================
+// ADMIN.JS FULL REPLACEMENT
+// ADMIN SETTING / HISTORY VERSION
+// ======================================
 
 
 import {
@@ -9,7 +11,6 @@ doc,
 getDoc,
 setDoc,
 getDocs,
-addDoc,
 collection,
 query,
 orderBy,
@@ -18,11 +19,18 @@ serverTimestamp
 
 
 import {
+
 signInWithEmailAndPassword,
 signOut,
 onAuthStateChanged
-} from
+
+}
+
+from
+
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
 
 
 
@@ -66,6 +74,10 @@ document.getElementById("notice");
 
 
 let adminMode=false;
+
+
+
+
 
 
 
@@ -131,7 +143,9 @@ alert(
 
 
 
-// 인증 확인
+
+
+// 관리자 인증
 
 onAuthStateChanged(
 
@@ -159,10 +173,24 @@ return;
 
 
 
+if(user.email!==ADMIN_EMAIL){
 
-if(
-user.email === ADMIN_EMAIL
-){
+
+alert(
+"관리자 권한 없음"
+);
+
+
+signOut(auth);
+
+
+return;
+
+
+}
+
+
+
 
 
 adminMode=true;
@@ -173,7 +201,6 @@ if(loginBox)
 loginBox.style.display="none";
 
 
-
 if(adminPanel)
 adminPanel.classList.remove("hidden");
 
@@ -182,33 +209,15 @@ adminPanel.classList.remove("hidden");
 loadSetting();
 
 
+
 loadHistory();
 
 
 
 }
 
-else{
-
-
-adminMode=false;
-
-
-alert(
-"관리자 권한이 없습니다."
 );
 
-
-signOut(auth);
-
-
-}
-
-
-
-}
-
-);
 
 
 
@@ -223,16 +232,17 @@ if(logoutButton){
 
 
 logoutButton.onclick =
-async()=>{
+()=>{
 
 
-await signOut(auth);
+signOut(auth);
 
 
 };
 
 
 }
+
 
 
 
@@ -265,7 +275,6 @@ db,
 
 {
 
-
 title:
 titleInput.value,
 
@@ -278,7 +287,7 @@ notice:
 noticeInput.value,
 
 
-updatedTime:
+updateTime:
 serverTimestamp()
 
 
@@ -307,10 +316,10 @@ alert(
 
 
 
-
 // 설정 불러오기
 
 async function loadSetting(){
+
 
 
 const snap =
@@ -331,24 +340,28 @@ return;
 
 
 
+
 const data =
 snap.data();
 
 
 
 if(titleInput)
+
 titleInput.value =
 data.title || "";
 
 
 
 if(discountInput)
+
 discountInput.value =
 data.discount || 0;
 
 
 
 if(noticeInput)
+
 noticeInput.value =
 data.notice || "";
 
@@ -364,7 +377,7 @@ data.notice || "";
 
 
 
-// 처리 기록
+// 기록 불러오기
 
 async function loadHistory(){
 
@@ -372,6 +385,10 @@ async function loadHistory(){
 
 const historyBox =
 document.getElementById("adminHistory");
+
+
+const stats =
+document.getElementById("adminStats");
 
 
 
@@ -397,14 +414,17 @@ orderBy(
 
 
 
-const snap =
+const snapshot =
 await getDocs(q);
+
 
 
 
 let html="";
 
+
 let approved=0;
+
 
 let used=0;
 
@@ -412,7 +432,8 @@ let used=0;
 
 
 
-snap.forEach(
+
+snapshot.forEach(
 
 (item)=>{
 
@@ -423,8 +444,10 @@ item.data();
 
 
 
+
 if(data.action==="approved")
 approved++;
+
 
 
 if(data.action==="used")
@@ -439,13 +462,15 @@ html +=
 `
 
 <div style="
-padding:10px;
+padding:12px;
 border-bottom:1px solid #444;
 ">
 
 
 <b>
+
 ${data.couponNumber}
+
 </b>
 
 
@@ -478,11 +503,6 @@ ${data.staff || ""}
 
 
 
-const stats =
-document.getElementById("adminStats");
-
-
-
 if(stats){
 
 
@@ -508,6 +528,7 @@ ${used}
 건
 </p>
 
+
 `;
 
 
@@ -518,12 +539,12 @@ ${used}
 
 
 
-historyBox.innerHTML =
+historyBox.innerHTML=
 
 `
 
 <h3>
-최근 처리 내역
+처리 기록
 </h3>
 
 ${html}
