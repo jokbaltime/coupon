@@ -545,3 +545,17 @@ result.innerHTML =
 
 
 };
+
+console.log(
+"requestBtn 확인:",
+requestBtn
+);
+
+
+requestBtn.onclick = ()=>{
+
+console.log(
+"버튼 눌림 확인"
+);
+
+};
