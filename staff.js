@@ -1,5 +1,5 @@
 // ======================================
-// STAFF.JS - 직원용 전체 통합 로직
+// STAFF.JS - 직원용 전체 통합 로직 (DB 구조 완벽 동기화)
 // ======================================
 import {
   db,
@@ -8,7 +8,6 @@ import {
   getDoc,
   updateDoc,
   addDoc,
-  deleteDoc,
   collection,
   query,
   where,
@@ -60,12 +59,16 @@ if (logoutBtn) {
   logoutBtn.onclick = () => signOut(auth);
 }
 
-// 2. 실시간 요청 목록 수신 및 승인 처리 (승인 시 요청 DB 즉시 완전 삭제)
+// 2. 실시간 요청 목록 수신 및 승인 처리
 function startRequestListener() {
   const list = document.getElementById("requestList");
   if (!list) return;
 
-  const q = query(collection(db, "coupon_request"), where("status", "==", "waiting"));
+  // status가 'waiting'인 대기 요청만 실시간 수신
+  const q = query(
+    collection(db, "coupon_request"),
+    where("status", "==", "waiting")
+  );
 
   onSnapshot(q, (snapshot) => {
     list.innerHTML = "";
@@ -76,6 +79,10 @@ function startRequestListener() {
 
     snapshot.forEach((item) => {
       const data = item.data();
+
+      // 이미 requestClosed가 true 처리된 항목은 스킵
+      if (data.requestClosed) return;
+
       const div = document.createElement("div");
       div.style.cssText = "background:#222; padding:15px; border-radius:8px; margin-bottom:10px; border:1px solid #d4af37;";
 
@@ -91,25 +98,31 @@ function startRequestListener() {
 
         try {
           const num = data.couponNumber;
+          const staffEmail = auth.currentUser ? auth.currentUser.email : "staff";
 
-          // Step 1: 발급 쿠폰의 approved 상태 변경
+          // Step 1: 발급 DB(coupon_issue) 승인 상태 업데이트
           await updateDoc(doc(db, "coupon_issue", num), {
             approved: true,
             approvedTime: serverTimestamp()
           });
 
-          // Step 2: 히스토리 기록
+          // Step 2: 요청 DB(coupon_request) 승인 완료 및 종료 처리
+          await updateDoc(doc(db, "coupon_request", item.id), {
+            status: "approved",
+            requestClosed: true,
+            approvedBy: staffEmail,
+            approvedTime: serverTimestamp()
+          });
+
+          // Step 3: 히스토리 기록
           await addDoc(collection(db, "coupon_history"), {
             couponNumber: num,
             action: "approved",
             timestamp: serverTimestamp(),
-            staff: auth.currentUser.email
+            staff: staffEmail
           });
 
-          // Step 3: 요청 DB(coupon_request)에서 즉시 완전 삭제 (락 및 중복 현상 해결)
-          await deleteDoc(doc(db, "coupon_request", item.id));
-
-          alert(`[${num}] 쿠폰이 승인되었습니다.`);
+          alert(`[${num}] 쿠폰이 승인 처리되었습니다.`);
         } catch (e) {
           btn.disabled = false;
           btn.innerText = "✅ 승인하기";
@@ -151,16 +164,20 @@ if (useBtn) {
     if (!num) return alert("쿠폰 번호를 입력하세요.");
 
     try {
+      const staffEmail = auth.currentUser ? auth.currentUser.email : "staff";
+
+      // coupon_issue 사용 완료 업데이트
       await updateDoc(doc(db, "coupon_issue", num), {
         used: true,
         usedTime: serverTimestamp()
       });
 
+      // 히스토리 기록
       await addDoc(collection(db, "coupon_history"), {
         couponNumber: num,
         action: "used",
         timestamp: serverTimestamp(),
-        staff: auth.currentUser.email
+        staff: staffEmail
       });
 
       alert(`[${num}] 쿠폰이 사용 완료 처리되었습니다.`);
