@@ -467,17 +467,23 @@ auth.currentUser.email
 
 
 
-
-await deleteDoc(
+await updateDoc(
 
 doc(
 db,
 "coupon_request",
 item.id
+),
 
-)
+{
+status:"approved",
+requestClosed:true,
+approvedTime:serverTimestamp(),
+approvedBy:auth.currentUser.email
+}
 
 );
+
 
 
 
