@@ -1,1535 +1,451 @@
 // ======================================
-// JOKBALTIMESTAFF SYSTEM
-// staff.js FULL VERSION
+// JOKBALTIME STAFF SYSTEM
+// staff.js FIX VERSION
 // ======================================
 
+import {
+  db,
+  auth,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  addDoc,
+  collection,
+  query,
+  where,
+  onSnapshot,
+  orderBy,
+  serverTimestamp
+} from "./firebase.js";
 
 import {
-
-db,
-auth,
-doc,
-getDoc,
-getDocs,
-updateDoc,
-addDoc,
-collection,
-deleteDoc,
-query,
-where,
-onSnapshot,
-orderBy,
-serverTimestamp
-
-} from "./firebase.js";
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 console.log("staff.js 정상 실행");
 
-import {
-
-signInWithEmailAndPassword,
-signOut,
-onAuthStateChanged
-
-} from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
-
 // ======================
-// ELEMENT
+// ELEMENTS
 // ======================
+const ADMIN_EMAIL = "admin@jokbaltime.com";
 
-
-const ADMIN_EMAIL =
-"admin@jokbaltime.com";
-
-const loginArea =
-document.getElementById("loginArea");
-
-const staffArea =
-document.getElementById("staffArea");
-
-
-const loginButton =
-document.getElementById("loginButton");
-
-const logoutButton =
-document.getElementById("logoutButton");
-
-
-const couponInput =
-document.getElementById("couponNumber");
-
-
-const checkButton =
-document.getElementById("checkButton");
-
-
-const useButton =
-document.getElementById("useButton");
-
-
-const cancelButton =
-document.getElementById("cancelButton");
+const loginArea = document.getElementById("loginArea");
+const staffArea = document.getElementById("staffArea");
+const loginButton = document.getElementById("loginButton");
+const logoutButton = document.getElementById("logoutButton");
+const couponInput = document.getElementById("couponNumber");
+const checkButton = document.getElementById("checkButton");
+const useButton = document.getElementById("useButton");
+const cancelButton = document.getElementById("cancelButton");
+const scanButton = document.getElementById("scanButton");
+const resultDiv = document.getElementById("result");
+const reader = document.getElementById("reader");
+const historyList = document.getElementById("historyList");
+const adminArea = document.getElementById("adminArea");
+const adminStats = document.getElementById("adminStats");
+const adminRequestArea = document.getElementById("adminRequestArea");
+const adminHistory = document.getElementById("adminHistory");
 
 let currentUserIsAdmin = false;
-
-const scanButton =
-document.getElementById("scanButton");
-
-
-const resultDiv =
-document.getElementById("result");
-
-
-const reader =
-document.getElementById("reader");
-
-const historyList =
-document.getElementById("historyList");
-
-const adminArea =
-document.getElementById("adminArea");
-
-const adminStats =
-document.getElementById("adminStats");
-
-const adminRequestArea =
-document.getElementById("adminRequestArea");
-
-const adminHistory =
-document.getElementById("adminHistory");
-
 let html5QrCode = null;
-
-
 
 // ======================
 // LOGIN
 // ======================
+if (loginButton) {
+  loginButton.onclick = async () => {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-
-if(loginButton){
-
-loginButton.onclick = async()=>{
-
-
-const email =
-document.getElementById("email")
-.value.trim();
-
-
-const password =
-document.getElementById("password")
-.value.trim();
-
-
-
-try{
-
-
-await signInWithEmailAndPassword(
-
-auth,
-
-email,
-
-password
-
-);
-
-
-alert(
-"로그인 성공"
-);
-
-
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      alert("로그인 성공");
+    } catch (error) {
+      alert("로그인 실패 : " + error.message);
+    }
+  };
 }
-
-catch(error){
-
-
-alert(
-"로그인 실패 : "
-+ error.message
-);
-
-
-}
-
-
-};
-
-}
-
-
 
 // ======================
 // AUTH CHECK
 // ======================
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("현재 로그인:", user.email);
+    loginArea.style.display = "none";
+    staffArea.style.display = "block";
 
+    loadHistory();
+    startRequestListener();
 
-onAuthStateChanged(
-
-auth,
-
-(user)=>{
-
-
-if(user){
-
-console.log("현재 로그인:", user.email);
-
-
-loginArea.style.display="none";
-
-staffArea.style.display="block";
-    
-loadHistory();
-
-startRequestListener();
-
-console.log("로그인 계정:", user.email);
-console.log("관리자 계정:", ADMIN_EMAIL);
-console.log("관리자 영역:", adminArea);
-
-
-
-if(user.email === ADMIN_EMAIL){
-
-    currentUserIsAdmin = true;
-
-    adminArea.style.display="block";
-
-    adminRequestArea.style.display="block";
-
-
-    loadAdminStats();
-
-
-}
-else{
-
-
-    currentUserIsAdmin = false;
-
-    adminArea.style.display="none";
-
-    adminRequestArea.style.display="none";
-
-
-}
-
-}
-
-else{
-
-
-loginArea.style.display="block";
-
-
-staffArea.style.display="none";
-
-
-stopScanner();
-
-
-}
-
-
-}
-
-);
-
-
+    if (user.email === ADMIN_EMAIL) {
+      currentUserIsAdmin = true;
+      if (adminArea) adminArea.style.display = "block";
+      if (adminRequestArea) adminRequestArea.style.display = "block";
+      loadAdminStats();
+    } else {
+      currentUserIsAdmin = false;
+      if (adminArea) adminArea.style.display = "none";
+    }
+  } else {
+    loginArea.style.display = "block";
+    staffArea.style.display = "none";
+    stopScanner();
+  }
+});
 
 // ======================
 // LOGOUT
 // ======================
-
-
-if(logoutButton){
-
-logoutButton.onclick = async()=>{
-
-
-await stopScanner();
-
-
-await signOut(auth);
-
-
-alert(
-"로그아웃"
-);
-
-
-};
-
+if (logoutButton) {
+  logoutButton.onclick = async () => {
+    await stopScanner();
+    await signOut(auth);
+    alert("로그아웃 되었습니다.");
+  };
 }
 
-
-
 // ======================
-// REQUEST LISTENER
+// REQUEST LISTENER (실시간 요청)
 // ======================
+function startRequestListener() {
+  const list = document.getElementById("requestList");
+  if (!list) return;
 
-
-function startRequestListener(){
-
-    console.log("startRequestListener 실행");
-
-    const list = document.getElementById("requestList");
-
-    console.log(list);
-
-    if(!list) return;
-
-
-
-const q = query(
+  const q = query(
     collection(db, "coupon_request"),
-    where("status","==","waiting")
-);
-
-
-
-onSnapshot(
-
-q,
-
-(snapshot)=>{
-
-console.log("실시간 요청 수 :", snapshot.size);
-
-// 추가 ↓↓↓
-snapshot.forEach((docItem) => {
-    console.log("문서ID:", docItem.id);
-    console.log("데이터:", docItem.data());
-});
-// 추가 ↑↑↑
-
-list.innerHTML="";
-
-snapshot.forEach(
-
-(item)=>{
-
-
-const data =
-item.data();
-
-
-    
-if(
-data.status !== "waiting" ||
-data.requestClosed === true ||
-data.deleted === true
-){
-    return;
-}
-
-
-const div =
-document.createElement("div");
-
-
-
-div.innerHTML=
-
-`
-
-<h3>
-🔔 쿠폰 요청
-</h3>
-
-<p>
-쿠폰번호 :
-<b>
-${data.couponNumber}
-</b>
-</p>
-
-<button>
-승인
-</button>
-
-`;
-
-
-
-div.querySelector("button")
-.onclick = async()=>{
-
-const btn =
-div.querySelector("button");
-
-btn.disabled = true;
-btn.innerHTML = "처리중...";
-
-// 관리자만 승인 가능
-
-if(
-!currentUserIsAdmin
-){
-
-alert(
-"관리자만 승인 가능합니다."
-);
-
-return;
-
-}
-    
-try{
-
-
-// 승인 중복 확인
-
-const historyQuery =
-query(
-collection(db,"coupon_history"),
-where(
-"couponNumber",
-"==",
-data.couponNumber
-),
-where(
-"action",
-"==",
-"approved"
-)
-);
-
-
-const historySnap =
-await getDocs(historyQuery);
-
-
-if(!historySnap.empty){
-
-alert(
-"이미 승인 처리된 쿠폰입니다."
-);
-
-btn.disabled = false;
-btn.innerHTML = "승인";
-
-return;
-
-}
-
-
-
-await updateDoc(
-doc(
-db,
-"coupon_issue",
-data.couponNumber
-),
-
-{
-
-approved:true,
-approvedTime:serverTimestamp()
-
-}
-
-);
-
-
-
-await addDoc(
-
-collection(
-db,
-"coupon_history"
-),
-
-{
-
-couponNumber:
-data.couponNumber,
-
-action:
-"approved",
-
-approvedTime:
-serverTimestamp(),
-
-staff:
-auth.currentUser.email
-
-}
-
-);
-
-
-
-await updateDoc(
-
-doc(
-db,
-"coupon_request",
-item.id
-),
-
-{
-status:"approved",
-requestClosed:true,
-approvedTime:serverTimestamp(),
-approvedBy:auth.currentUser.email
-}
-
-);
-
-
-
-
-// 화면에서 제거
-list.innerHTML = "";
-
-
-alert(
-"승인 완료"
-);
-
-
-}
-
-catch(error){
-
-btn.disabled = false;
-btn.innerHTML = "승인";
-
-alert(
-"승인 오류 : "
-+error.message
-);
-
-}
-
-};
-
-
-
-list.appendChild(div);
-
-
-
-}
-
-
-);
-
-
-
-}
-
-
-);
-
-
+    where("status", "==", "waiting")
+  );
+
+  onSnapshot(q, (snapshot) => {
+    list.innerHTML = "";
+
+    if (snapshot.empty) {
+      list.innerHTML = "<p style='color:#888;'>대기 중인 요청이 없습니다.</p>";
+      return;
+    }
+
+    snapshot.forEach((item) => {
+      const data = item.data();
+      if (data.requestClosed === true || data.deleted === true) return;
+
+      const div = document.createElement("div");
+      div.style.background = "#222";
+      div.style.padding = "15px";
+      div.style.borderRadius = "8px";
+      div.style.marginBottom = "10px";
+      div.style.border = "1px solid var(--gold, #d4af37)";
+
+      div.innerHTML = `
+        <h3 style="margin:0 0 8px 0; color:#fff;">🔔 쿠폰 요청</h3>
+        <p style="margin:0 0 12px 0;">쿠폰번호 : <b>${data.couponNumber}</b></p>
+        <button class="approve-btn" style="padding:8px 16px; background:#2e7d32; color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">승인 처리</button>
+      `;
+
+      div.querySelector(".approve-btn").onclick = async (e) => {
+        const btn = e.target;
+        btn.disabled = true;
+        btn.innerText = "처리 중...";
+
+        try {
+          // 1. 쿠폰 발행 정보 승인 상태로 업데이트
+          await updateDoc(doc(db, "coupon_issue", data.couponNumber), {
+            approved: true,
+            approvedTime: serverTimestamp()
+          });
+
+          // 2. 히스토리 기록
+          await addDoc(collection(db, "coupon_history"), {
+            couponNumber: data.couponNumber,
+            action: "approved",
+            timestamp: serverTimestamp(),
+            staff: auth.currentUser.email
+          });
+
+          // 3. 요청 상태 업데이트
+          await updateDoc(doc(db, "coupon_request", item.id), {
+            status: "approved",
+            requestClosed: true,
+            approvedTime: serverTimestamp(),
+            approvedBy: auth.currentUser.email
+          });
+
+          alert("승인 완료되었습니다.");
+        } catch (error) {
+          btn.disabled = false;
+          btn.innerText = "승인 처리";
+          alert("승인 오류 : " + error.message);
+        }
+      };
+
+      list.appendChild(div);
+    });
+  });
 }
 
 // ======================
 // COUPON CHECK
 // ======================
+if (checkButton) {
+  checkButton.onclick = async () => {
+    const number = couponInput.value.trim();
+    if (!number) {
+      resultDiv.innerHTML = "쿠폰번호를 입력해주세요.";
+      return;
+    }
 
+    try {
+      const snap = await getDoc(doc(db, "coupon_issue", number));
+      if (!snap.exists()) {
+        resultDiv.innerHTML = "<span style='color:#ff4444;'>❌ 존재하지 않는 쿠폰</span>";
+        return;
+      }
 
-if(checkButton){
-
-
-checkButton.onclick = async()=>{
-
-
-const number =
-couponInput.value.trim();
-
-
-
-if(!number){
-
-
-resultDiv.innerHTML =
-"쿠폰번호 입력";
-
-
-return;
-
-
+      const data = snap.data();
+      if (data.used) {
+        resultDiv.innerHTML = "<span style='color:#ff4444;'>❌ 이미 사용 완료된 쿠폰</span>";
+      } else if (data.approved) {
+        resultDiv.innerHTML = "<span style='color:#ffbb33;'>⚠️ 승인 완료된 쿠폰 (결제 진행 가능)</span>";
+      } else {
+        resultDiv.innerHTML = "<span style='color:#00C851;'>✅ 사용 가능한 쿠폰</span>";
+      }
+    } catch (error) {
+      resultDiv.innerHTML = "조회 오류 : " + error.message;
+    }
+  };
 }
-
-
-
-try{
-
-
-
-const snap =
-await getDoc(
-
-doc(
-db,
-"coupon_issue",
-number
-)
-
-);
-
-
-
-if(!snap.exists()){
-
-
-resultDiv.innerHTML =
-"❌ 없는 쿠폰";
-
-
-return;
-
-
-}
-
-
-
-const data =
-snap.data();
-
-
-
-if(data.used){
-
-resultDiv.innerHTML =
-"❌ 사용 완료 쿠폰";
-
-}
-else if(data.approved){
-
-resultDiv.innerHTML =
-"❌ 승인 완료 쿠폰";
-
-}
-else{
-
-resultDiv.innerHTML =
-"✅ 사용 가능한 쿠폰";
-
-}
-
-}
-
-catch(error){
-
-
-resultDiv.innerHTML =
-"조회 오류 : "
-+ error.message;
-
-
-}
-
-
-
-};
-
-
-}
-
-
-
-
-
-
 
 // ======================
-// USE COUPON
+// USE COUPON (사용 완료)
 // ======================
+if (useButton) {
+  useButton.onclick = async () => {
+    const number = couponInput.value.trim();
+    if (!number) {
+      alert("쿠폰번호를 입력하세요.");
+      return;
+    }
 
+    try {
+      const ref = doc(db, "coupon_issue", number);
+      const snap = await getDoc(ref);
 
-if(useButton){
+      if (!snap.exists()) {
+        alert("존재하지 않는 쿠폰입니다.");
+        return;
+      }
 
+      const data = snap.data();
+      if (data.used) {
+        alert("이미 사용된 쿠폰입니다.");
+        return;
+      }
 
-useButton.onclick = async()=>{
+      await updateDoc(ref, {
+        used: true,
+        usedTime: serverTimestamp()
+      });
 
+      await addDoc(collection(db, "coupon_history"), {
+        couponNumber: number,
+        action: "used",
+        timestamp: serverTimestamp(),
+        staff: auth.currentUser.email
+      });
 
-const number =
-couponInput.value.trim();
-
-
-
-if(!number){
-
-
-alert(
-"쿠폰번호 입력"
-);
-
-
-return;
-
-
+      resultDiv.innerHTML = "<span style='color:#ff4444;'>❌ 사용 완료 처리됨</span>";
+      couponInput.value = "";
+      alert("사용 완료 처리되었습니다.");
+    } catch (error) {
+      alert("사용 처리 오류 : " + error.message);
+    }
+  };
 }
-
-
-
-try{
-
-
-const ref =
-doc(
-db,
-"coupon_issue",
-number
-);
-
-
-
-const snap =
-await getDoc(ref);
-
-
-
-if(!snap.exists()){
-
-
-alert(
-"없는 쿠폰입니다."
-);
-
-
-return;
-
-
-}
-
-
-
-const data =
-snap.data();
-
-
-
-if(data.used){
-
-alert(
-"사용 불가 쿠폰입니다."
-);
-
-return;
-
-}
-
-
-
-// 사용 처리
-
-await updateDoc(
-
-ref,
-
-{
-
-used:true,
-
-usedTime:
-serverTimestamp()
-
-}
-
-);
-
-
-
-
-// 기록 저장
-
-await addDoc(
-
-collection(
-db,
-"coupon_history"
-),
-
-{
-
-couponNumber:number,
-
-action:"used",
-
-usedTime:
-serverTimestamp(),
-
-staff:
-auth.currentUser.email
-
-}
-
-);
-
-
-
-resultDiv.innerHTML =
-"❌ 사용 완료 쿠폰";
-
-
-
-couponInput.value="";
-
-
-
-alert(
-"사용 완료 처리되었습니다."
-);
-
-
-}
-
-catch(error){
-
-
-console.error(error);
-
-
-alert(
-"사용 처리 오류 : "
-+error.message
-);
-
-
-}
-
-
-
-};
-
-
-}
-
-
-
-
-
-
 
 // ======================
-// CANCEL COUPON
+// CANCEL COUPON (사용 취소)
 // ======================
+if (cancelButton) {
+  cancelButton.onclick = async () => {
+    if (!currentUserIsAdmin) {
+      alert("관리자만 취소 권한이 있습니다.");
+      return;
+    }
 
+    const number = couponInput.value.trim();
+    if (!number) {
+      alert("쿠폰번호를 입력하세요.");
+      return;
+    }
 
-if(cancelButton){
+    try {
+      const ref = doc(db, "coupon_issue", number);
+      const snap = await getDoc(ref);
 
+      if (!snap.exists()) {
+        alert("존재하지 않는 쿠폰입니다.");
+        return;
+      }
 
-cancelButton.onclick = async()=>{
+      await updateDoc(ref, {
+        used: false,
+        usedTime: null,
+        approved: false,
+        approvedTime: null
+      });
 
-if(!currentUserIsAdmin){
+      await addDoc(collection(db, "coupon_history"), {
+        couponNumber: number,
+        action: "cancel",
+        timestamp: serverTimestamp(),
+        staff: auth.currentUser.email
+      });
 
-alert(
-"관리자만 취소할 수 있습니다."
-);
-
-return;
-
+      resultDiv.innerHTML = "<span style='color:#00C851;'>✅ 사용 가능 상태로 복원됨</span>";
+      alert("사용 취소가 완료되었습니다.");
+    } catch (error) {
+      alert("취소 오류 : " + error.message);
+    }
+  };
 }
-
-const number =
-couponInput.value.trim();
-
-
-
-if(!number){
-
-
-alert(
-"쿠폰번호 입력"
-);
-
-
-return;
-
-
-}
-
-
-
-try{
-
-
-const ref =
-doc(
-db,
-"coupon_issue",
-number
-);
-
-
-
-const snap =
-await getDoc(ref);
-
-
-
-if(!snap.exists()){
-
-
-alert(
-"없는 쿠폰입니다."
-);
-
-
-return;
-
-
-}
-
-
-
-
-await updateDoc(
-
-ref,
-
-{
-
-used:false,
-usedTime:null,
-approved:false,
-approvedTime:null
-
-}
-
-);
-
-
-
-
-
-await addDoc(
-
-collection(
-db,
-"coupon_history"
-),
-
-{
-
-couponNumber:number,
-
-action:"cancel",
-
-usedTime:
-serverTimestamp(),
-
-staff:
-auth.currentUser.email
-
-}
-
-);
-
-
-
-
-resultDiv.innerHTML =
-"✅ 사용 가능 쿠폰";
-
-
-
-alert(
-"사용 취소 완료"
-);
-
-
-
-}
-
-catch(error){
-
-
-alert(
-"취소 오류 : "
-+error.message
-);
-
-
-}
-
-
-
-};
-
-
-}
-
-
-
-
-
-
 
 // ======================
-// QR SCANNER START
+// QR SCANNER
 // ======================
-
-
-if(scanButton){
-
-
-scanButton.onclick = async()=>{
-
-
-if(html5QrCode){
-
-
-await stopScanner();
-
-
+if (scanButton) {
+  scanButton.onclick = async () => {
+    if (html5QrCode) {
+      await stopScanner();
+    } else {
+      await startScanner();
+    }
+  };
 }
 
-else{
+async function startScanner() {
+  if (!reader) return;
+  reader.style.display = "block";
+  html5QrCode = new Html5Qrcode("reader");
 
-
-await startScanner();
-
-
+  try {
+    await html5QrCode.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: 250 },
+      async (decodedText) => {
+        couponInput.value = decodedText;
+        await stopScanner();
+        checkButton.click();
+      },
+      () => {}
+    );
+  } catch (error) {
+    alert("카메라 접근 오류 : " + error.message);
+    await stopScanner();
+  }
 }
 
-
-};
-
-
+async function stopScanner() {
+  if (html5QrCode) {
+    try {
+      await html5QrCode.stop();
+      html5QrCode.clear();
+    } catch (error) {
+      console.log(error);
+    }
+    html5QrCode = null;
+  }
+  if (reader) reader.style.display = "none";
 }
-
-
-
-
-
-
-
-async function startScanner(){
-
-
-
-reader.style.display="block";
-
-
-
-html5QrCode =
-new Html5Qrcode(
-"reader"
-);
-
-
-
-const config = {
-
-
-fps:10,
-
-
-qrbox:250
-
-
-};
-
-
-
-
-try{
-
-
-await html5QrCode.start(
-
-{
-
-facingMode:
-"environment"
-
-},
-
-config,
-
-async(decodedText)=>{
-
-
-console.log(
-"QR:",
-decodedText
-);
-
-
-
-couponInput.value =
-decodedText;
-
-
-
-await stopScanner();
-
-
-
-checkButton.click();
-
-
-
-},
-
-
-(error)=>{}
-
-
-
-);
-
-
-
-}
-
-catch(error){
-
-
-alert(
-"카메라 오류 : "
-+error.message
-);
-
-
-await stopScanner();
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-// ======================
-// QR STOP
-// ======================
-
-
-async function stopScanner(){
-
-
-if(html5QrCode){
-
-
-try{
-
-
-await html5QrCode.stop();
-
-
-
-html5QrCode.clear();
-
-
-
-}
-
-catch(error){
-
-
-console.log(error);
-
-
-}
-
-
-
-html5QrCode=null;
-
-
-
-}
-
-
-
-if(reader){
-
-
-reader.style.display="none";
-
-
-}
-
-}  
 
 // ======================
 // HISTORY LIST
 // ======================
+function loadHistory() {
+  if (!historyList) return;
 
-function loadHistory(){
+  const q = query(
+    collection(db, "coupon_history"),
+    orderBy("timestamp", "desc")
+  );
 
+  onSnapshot(q, (snapshot) => {
+    historyList.innerHTML = "";
 
-if(!historyList) return;
+    if (snapshot.empty) {
+      historyList.innerHTML = "<p style='color:#888;'>처리 기록이 없습니다.</p>";
+      return;
+    }
 
+    snapshot.forEach((item) => {
+      const data = item.data();
+      const time = data.timestamp ? data.timestamp.toDate().toLocaleString("ko-KR") : "시간 정보 없음";
 
+      const div = document.createElement("div");
+      div.style.borderBottom = "1px solid #444";
+      div.style.padding = "10px 0";
 
-const q =
-query(
-collection(db,"coupon_history"),
-orderBy("approvedTime","desc")
-);
-
-
-onSnapshot(
-
-q,
-
-(snapshot)=>{
-
-
-historyList.innerHTML="";
-
-
-
-if(snapshot.empty){
-
-historyList.innerHTML =
-"기록이 없습니다.";
-
-return;
-
+      div.innerHTML = `
+        <b>쿠폰번호</b> : ${data.couponNumber}<br>
+        <b>처리구분</b> : ${data.action}<br>
+        <b>담당직원</b> : ${data.staff || "-"}<br>
+        <b>처리시간</b> : ${time}
+      `;
+      historyList.appendChild(div);
+    });
+  });
 }
 
+// ======================
+// ADMIN STATS
+// ======================
+async function loadAdminStats() {
+  if (!adminStats) return;
 
+  try {
+    const q = query(collection(db, "coupon_history"), orderBy("timestamp", "desc"));
+    const snap = await getDocs(q);
 
-snapshot.forEach((item)=>{
+    let used = 0;
+    let cancel = 0;
+    let staffData = {};
+    let today = new Date().toLocaleDateString("ko-KR");
 
-    const data = item.data();
+    snap.forEach((item) => {
+      const data = item.data();
+      const itemDate = data.timestamp ? data.timestamp.toDate().toLocaleDateString("ko-KR") : "";
 
-    let time="";
+      if (itemDate === today) {
+        if (data.action === "used") used++;
+        if (data.action === "cancel") cancel++;
+      }
 
-    if(data.usedTime || data.approvedTime){
+      if (data.staff) {
+        if (!staffData[data.staff]) staffData[data.staff] = { used: 0, cancel: 0 };
+        if (data.action === "used") staffData[data.staff].used++;
+        if (data.action === "cancel") staffData[data.staff].cancel++;
+      }
+    });
 
-time =
-(data.usedTime || data.approvedTime)
-.toDate()
-.toLocaleString();
+    let staffHTML = "";
+    Object.keys(staffData).forEach((email) => {
+      staffHTML += `
+        <div style="padding:8px 0; border-bottom:1px solid #333;">
+          <b>${email}</b><br>
+          사용: ${staffData[email].used}건 | 취소: ${staffData[email].cancel}건
+        </div>`;
+    });
 
-}
-
-    const div =
-    document.createElement("div");
-
-
-    div.style.borderBottom =
-    "1px solid #444";
-
-
-    div.style.padding =
-    "10px 0";
-
-
-    div.innerHTML = `
-
-    <b>쿠폰번호</b> :
-    ${data.couponNumber}
-
-    <br>
-
-    <b>처리</b> :
-    ${data.action || "used"}
-
-    <br>
-
-    <b>직원</b> :
-    ${data.staff || ""}
-
-    <br>
-
-    <b>시간</b> :
-    ${time}
-
+    adminStats.innerHTML = `
+      <h3>📅 오늘 처리 현황</h3>
+      <p>사용 완료: <b>${used}</b>건 | 취소: <b>${cancel}</b>건</p>
+      <hr style="border-color:#444;">
+      <h3>👨‍🍳 직원별 실적</h3>
+      ${staffHTML || "<p>실적 데이터가 없습니다.</p>"}
     `;
-
-
-   historyList.appendChild(div);
-
-});
-
-}
-
-);
-
-}
-
-async function loadAdminStats(){
-
-if(!adminStats) return;
-
-
-const q =
-query(
-
-collection(
-db,
-"coupon_history"
-),
-
-orderBy(
-"approvedTime",
-"desc"
-)
-);
-
-
-const snap =
-await getDocs(q);
-
-
-let used = 0;
-let cancel = 0;
-let count = 0;
-let staffData = {};
-
-let historyHTML = "";
-    
-let today =
-new Date()
-.toLocaleDateString();
-
-
-
-snap.forEach((item)=>{
-
-
-const data =
-item.data();
-
-if(
-data.action !== "used" &&
-data.action !== "cancel" &&
-data.action !== "approved"
-){
-
-return;
-
-}
-
-    
-    
-const time =
-(data.usedTime || data.approvedTime)
-?
-(data.usedTime || data.approvedTime)
-.toDate()
-.toLocaleString()
-:
-"";
-let date = "";
-
-if(data.usedTime || data.approvedTime){
-
-date =
-(data.usedTime || data.approvedTime)
-.toDate()
-.toLocaleDateString();
-
-}
-
-// 오늘 처리만 계산
-if(date === today){
-
-
-if(data.action==="used"){
-used++;
-}
-
-
-if(data.action==="cancel"){
-cancel++;
-}
-
-
-}
-
-
-
-// 직원별 통계
-
-if(data.staff){
-
-
-if(!staffData[data.staff]){
-
-staffData[data.staff]={
-
-used:0,
-
-cancel:0
-
-};
-
-}
-
-
-
-if(data.action==="used"){
-
-staffData[data.staff].used++;
-
-}
-
-
-
-if(data.action==="cancel"){
-
-staffData[data.staff].cancel++;
-
-}
-
-
-}
-
-if(count >= 10){
-
-return;
-
-}
-
-count++;
-    
-historyHTML +=
-
-`
-
-<div style="
-padding:10px;
-border-bottom:1px solid #444;
-">
-
-<b>${data.couponNumber}</b>
-
-<br>
-
-처리 :
-${data.action}
-
-<br>
-
-직원 :
-${data.staff}
-
-<br>
-
-시간 :
-${time}
-
-</div>
-
-`;
-
-
-// ⭐ 여기까지 추가
-
-
-});
-    
-
-
-// 직원 HTML 생성
-
-let staffHTML = "";
-
-
-Object.keys(staffData)
-.forEach((name)=>{
-
-
-staffHTML +=
-
-`
-
-<div style="
-padding:10px;
-border-bottom:1px solid #444;
-">
-
-<b>${name}</b>
-
-<br>
-
-사용 :
-${staffData[name].used}
-
-건
-
-<br>
-
-취소 :
-${staffData[name].cancel}
-
-건
-
-</div>
-
-`;
-
-
-});
-
-
-
-
-// 화면 출력
-
-adminStats.innerHTML =
-
-`
-
-<h3>
-📅 오늘 처리 현황
-</h3>
-
-
-<p>
-사용 완료 :
-<b>${used}</b> 건
-</p>
-
-
-<p>
-취소 :
-<b>${cancel}</b> 건
-</p>
-
-
-<hr>
-
-
-<h3>
-👨‍🍳 직원별 처리
-</h3>
-
-
-${staffHTML}
-
-
-`;
-
-if(adminHistory){
-
-adminHistory.innerHTML =
-
-`
-
-<h3>
-🕒 최근 처리 내역
-</h3>
-
-${historyHTML}
-
-`;
-
-}
-    
+  } catch (err) {
+    console.error("통계 로딩 실패:", err);
+  }
 }
