@@ -6,7 +6,8 @@
 
 import {
     initializeApp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+} from 
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
 import {
@@ -24,55 +25,67 @@ import {
     orderBy,
     onSnapshot,
     serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+} from 
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 import {
     getAuth
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+} from 
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 
 // ======================================
-// Firebase 설정값 입력
-// Firebase Console
-// 프로젝트 설정 → 웹 앱
+// Firebase 실제 설정
 // ======================================
 
 
 const firebaseConfig = {
 
-    apiKey: "YOUR_API_KEY",
+    apiKey:
+    "AIzaSyAykACgg1IqU-8tawPLRAfP2pKYST-PWjQ",
 
-    authDomain: "YOUR_AUTH_DOMAIN",
+    authDomain:
+    "jokbaltime-coupon.firebaseapp.com",
 
-    projectId: "YOUR_PROJECT_ID",
+    projectId:
+    "jokbaltime-coupon",
 
-    storageBucket: "YOUR_STORAGE_BUCKET",
+    storageBucket:
+    "jokbaltime-coupon.firebasestorage.app",
 
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    messagingSenderId:
+    "1077568919018",
 
-    appId: "YOUR_APP_ID"
+    appId:
+    "1:1077568919018:web:2205193cae7848ec518e93"
 
 };
 
 
 
+
 // Firebase 시작
 
-const app = initializeApp(firebaseConfig);
+const app =
+initializeApp(firebaseConfig);
+
 
 
 
 // Firestore
 
-const db = getFirestore(app);
+const db =
+getFirestore(app);
+
 
 
 
 // Authentication
 
-const auth = getAuth(app);
+const auth =
+getAuth(app);
 
 
 
