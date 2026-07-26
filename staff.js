@@ -423,8 +423,10 @@ data.couponNumber
 
 {
 
+used:true,
+usedTime:
+serverTimestamp(),
 approved:true,
-
 approvedTime:
 serverTimestamp()
 
@@ -1320,7 +1322,8 @@ item.data();
 
 if(
 data.action !== "used" &&
-data.action !== "cancel"
+data.action !== "cancel" &&
+data.action !== "approved"
 ){
 
 return;
