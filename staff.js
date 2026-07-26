@@ -14,6 +14,7 @@ getDocs,
 updateDoc,
 addDoc,
 collection,
+deleteDoc,
 query,
 where,
 onSnapshot,
@@ -461,8 +462,6 @@ auth.currentUser.email
 
 );
 
-
-
 await updateDoc(
 
 doc(
@@ -472,22 +471,27 @@ item.id
 ),
 
 {
-
 status:"approved",
-
 requestClosed:true,
-
-approvedTime:
-serverTimestamp(),
-
-approvedBy:
-auth.currentUser.email,
-
-deleted:true
-
+approvedTime:serverTimestamp(),
+approvedBy:auth.currentUser.email
 }
 
 );
+
+
+await deleteDoc(
+
+doc(
+db,
+"coupon_request",
+item.id
+
+)
+
+);
+
+
 
 // 화면에서 제거
 div.remove();
@@ -714,19 +718,15 @@ snap.data();
 
 
 
-if(data.used){
-
+if(data.used || data.approved !== true){
 
 alert(
-"이미 사용 완료된 쿠폰입니다."
+"사용 불가 쿠폰입니다."
 );
-
 
 return;
 
-
 }
-
 
 
 
@@ -900,8 +900,9 @@ ref,
 {
 
 used:false,
-
-usedTime:null
+usedTime:null,
+approved:false,
+approvedTime:null
 
 }
 
