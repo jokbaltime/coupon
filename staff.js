@@ -1,5 +1,7 @@
-// staff.js FULL REPLACEMENT
-// STAFF APPROVAL / USE PROCESS SYNC VERSION
+// ======================================
+// STAFF.JS FULL REPLACEMENT
+// APPROVAL / USE SYNC VERSION
+// ======================================
 
 
 import {
@@ -9,6 +11,7 @@ doc,
 getDoc,
 setDoc,
 addDoc,
+deleteDoc,
 collection,
 query,
 where,
@@ -18,11 +21,18 @@ serverTimestamp
 
 
 import {
+
 signInWithEmailAndPassword,
 signOut,
 onAuthStateChanged
-} from
+
+}
+
+from
+
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
 
 
 
@@ -74,13 +84,15 @@ let isAdmin=false;
 
 
 
+
+
+
 // 로그인
 
 if(loginButton){
 
 
-loginButton.onclick =
-async()=>{
+loginButton.onclick = async()=>{
 
 
 const email =
@@ -100,7 +112,6 @@ auth,
 email,
 password
 );
-
 
 
 }
@@ -129,7 +140,9 @@ alert(
 
 
 
-// 인증 상태
+
+
+// 인증
 
 onAuthStateChanged(
 
@@ -149,11 +162,12 @@ staffArea.style.display="block";
 
 
 isAdmin =
-user.email === ADMIN_EMAIL;
+user.email===ADMIN_EMAIL;
 
 
 
 startRequestListener();
+
 
 
 }
@@ -174,6 +188,9 @@ staffArea.style.display="none";
 }
 
 );
+
+
+
 
 
 
@@ -210,9 +227,9 @@ signOut(auth);
 function startRequestListener(){
 
 
-
 if(!requestList)
 return;
+
 
 
 
@@ -257,10 +274,8 @@ item.data();
 
 
 
-if(
-data.requestClosed===true
-)
-return;
+const number =
+data.couponNumber;
 
 
 
@@ -281,7 +296,7 @@ div.innerHTML=
 
 <b>
 
-${data.couponNumber}
+${number}
 
 </b>
 
@@ -290,7 +305,7 @@ ${data.couponNumber}
 
 <button>
 
-✅ 승인
+승인 처리
 
 </button>
 
@@ -301,8 +316,7 @@ ${data.couponNumber}
 
 
 div.querySelector("button")
-.onclick =
-async()=>{
+.onclick = async()=>{
 
 
 if(!isAdmin){
@@ -319,17 +333,12 @@ return;
 
 
 
-const number =
-data.couponNumber;
-
-
-
 
 try{
 
 
 
-// 1. 쿠폰 승인 상태 변경
+// 1. coupon_issue 승인 변경
 
 await setDoc(
 
@@ -341,10 +350,13 @@ number
 
 {
 
+
 approved:true,
+
 
 approvedTime:
 serverTimestamp()
+
 
 },
 
@@ -361,34 +373,15 @@ merge:true
 
 
 
+// 2. 요청 삭제
 
-// 2. 고객 요청 종료
-
-await setDoc(
+await deleteDoc(
 
 doc(
 db,
 "coupon_request",
 number
-),
-
-{
-
-status:"approved",
-
-requestClosed:true,
-
-approvedTime:
-serverTimestamp()
-
-
-},
-
-{
-
-merge:true
-
-}
+)
 
 );
 
@@ -397,8 +390,7 @@ merge:true
 
 
 
-
-// 3. 승인 기록
+// 3. 기록 저장
 
 await addDoc(
 
@@ -409,19 +401,30 @@ db,
 
 {
 
-couponNumber:number,
+couponNumber:
 
-action:"approved",
+number,
+
+
+action:
+
+"approved",
+
 
 approvedTime:
+
 serverTimestamp(),
 
+
 staff:
+
 auth.currentUser.email
+
 
 }
 
 );
+
 
 
 
@@ -443,12 +446,13 @@ alert(
 );
 
 
-
 }
 
 
 
 };
+
+
 
 
 
@@ -460,6 +464,7 @@ requestList.appendChild(div);
 
 
 );
+
 
 
 }
@@ -510,10 +515,11 @@ number
 
 
 
+
 if(!snap.exists()){
 
 
-result.innerHTML =
+result.innerHTML=
 "❌ 없는 쿠폰";
 
 
@@ -524,8 +530,11 @@ return;
 
 
 
+
+
 const data =
 snap.data();
+
 
 
 
@@ -533,7 +542,7 @@ snap.data();
 if(data.used){
 
 
-result.innerHTML =
+result.innerHTML=
 "❌ 사용 완료";
 
 
@@ -542,7 +551,7 @@ result.innerHTML =
 else if(data.approved){
 
 
-result.innerHTML =
+result.innerHTML=
 "✅ 승인 완료 / 사용 가능";
 
 
@@ -551,7 +560,7 @@ result.innerHTML =
 else{
 
 
-result.innerHTML =
+result.innerHTML=
 "⏳ 승인 전";
 
 
@@ -591,20 +600,20 @@ return;
 
 
 
-
 try{
 
 
-const snap =
-await getDoc(
-
+const ref =
 doc(
 db,
 "coupon_issue",
 number
-)
-
 );
+
+
+
+const snap =
+await getDoc(ref);
 
 
 
@@ -661,21 +670,20 @@ return;
 
 
 
-
 await setDoc(
 
-doc(
-db,
-"coupon_issue",
-number
-),
+ref,
 
 {
 
+
 used:true,
 
+
 usedTime:
+
 serverTimestamp()
+
 
 },
 
@@ -701,15 +709,22 @@ db,
 
 {
 
+
 couponNumber:number,
+
 
 action:"used",
 
+
 usedTime:
+
 serverTimestamp(),
 
+
 staff:
+
 auth.currentUser.email
+
 
 }
 
@@ -719,14 +734,17 @@ auth.currentUser.email
 
 
 
+
 alert(
-"사용 완료"
+"사용 완료 처리"
 );
 
 
 
 couponInput.value="";
 
+
+result.innerHTML="";
 
 
 }
