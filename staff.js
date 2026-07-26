@@ -320,7 +320,8 @@ item.data();
     
 if(
 data.status !== "waiting" ||
-data.approved === true
+data.requestClosed === true ||
+data.deleted === true
 ){
     return;
 }
@@ -475,17 +476,18 @@ item.id
 status:"approved",
 
 requestClosed:true,
-    
+
 approvedTime:
 serverTimestamp(),
 
 approvedBy:
-auth.currentUser.email
+auth.currentUser.email,
+
+deleted:true
 
 }
 
 );
-
 
 // 화면에서 제거
 div.remove();
