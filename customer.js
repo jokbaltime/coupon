@@ -1,6 +1,8 @@
 import {
 
 db,
+doc,
+getDoc,
 addDoc,
 collection,
 serverTimestamp
@@ -31,7 +33,25 @@ requestButton.onclick = async()=>{
 const number =
 couponInput.value.trim();
 
+const snap =
+await getDoc(
 
+doc(
+db,
+"coupon_issue",
+number
+)
+
+);
+
+if(!snap.exists()){
+
+result.innerHTML =
+"❌ 존재하지 않는 쿠폰입니다.";
+
+return;
+
+}
 
 if(!number){
 
