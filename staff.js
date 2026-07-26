@@ -603,22 +603,22 @@ snap.data();
 
 if(data.used){
 
-
 resultDiv.innerHTML =
 "❌ 사용 완료 쿠폰";
 
+}
+else if(data.approved){
+
+resultDiv.innerHTML =
+"❌ 승인 완료 쿠폰";
 
 }
-
 else{
-
 
 resultDiv.innerHTML =
 "✅ 사용 가능한 쿠폰";
 
-
 }
-
 
 }
 
