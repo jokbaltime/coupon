@@ -1,1 +1,221 @@
+<!-- ======================================
+     staff.html
+     JOKBAL TIME STAFF SYSTEM
+     ====================================== -->
 
+
+<!DOCTYPE html>
+
+<html lang="ko">
+
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+족발타임 직원관리
+</title>
+
+
+<link rel="stylesheet" href="./style.css">
+
+
+</head>
+
+
+
+<body>
+
+
+
+<header class="header">
+
+
+<h1>
+🍖 직원 관리
+</h1>
+
+
+<p>
+쿠폰 승인 및 사용 처리
+</p>
+
+
+</header>
+
+
+
+
+
+
+
+<main class="staff-container">
+
+
+
+
+
+
+<section id="loginBox" class="box">
+
+
+<h2>
+직원 로그인
+</h2>
+
+
+
+<input
+
+id="staffEmail"
+
+type="email"
+
+placeholder="직원 이메일"
+
+>
+
+
+<input
+
+id="staffPassword"
+
+type="password"
+
+placeholder="비밀번호"
+
+>
+
+
+
+<button id="loginBtn">
+
+로그인
+
+</button>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<section id="staffBox" class="box hidden">
+
+
+
+
+
+<button id="logoutBtn">
+
+로그아웃
+
+</button>
+
+
+
+
+
+
+
+<h2>
+승인 요청
+</h2>
+
+
+
+
+<div id="requestList">
+
+</div>
+
+
+
+
+
+
+
+
+<h2>
+쿠폰 사용 처리
+</h2>
+
+
+
+
+<input
+
+id="useCouponNumber"
+
+placeholder="쿠폰번호 입력"
+
+>
+
+
+
+
+
+<button id="checkBtn">
+
+조회
+
+</button>
+
+
+
+
+<div id="couponInfo">
+
+</div>
+
+
+
+
+
+<button id="useBtn">
+
+사용 완료 처리
+
+</button>
+
+
+
+
+
+
+</section>
+
+
+
+
+
+</main>
+
+
+
+
+
+
+<script
+
+type="module"
+
+src="./staff.js">
+
+</script>
+
+
+
+</body>
+
+
+</html>
