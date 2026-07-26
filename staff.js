@@ -185,7 +185,6 @@ loginArea.style.display="none";
 staffArea.style.display="block";
 
 
-startRequestListener();
 
 loadHistory();
 
@@ -203,7 +202,8 @@ if(user.email === ADMIN_EMAIL){
 
     adminRequestArea.style.display="block";
 
-
+    startRequestListener();
+    
     loadAdminStats();
 
 
@@ -322,14 +322,7 @@ snapshot.forEach(
 const data =
 item.data();
 
-if(
-data.action !== "used" &&
-data.action !== "cancel"
-){
 
-return;
-
-}
     
 if(data.status !== "waiting"){
     return;
