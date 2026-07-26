@@ -1,5 +1,5 @@
 // staff.js FULL REPLACEMENT
-// REQUEST APPROVAL / COUPON STATUS SYNC VERSION
+// STAFF APPROVAL / USE PROCESS SYNC VERSION
 
 
 import {
@@ -68,11 +68,13 @@ document.getElementById("result");
 
 
 
-let isAdmin = false;
+let isAdmin=false;
 
 
 
-// LOGIN
+
+
+// 로그인
 
 if(loginButton){
 
@@ -101,11 +103,6 @@ password
 
 
 
-alert(
-"로그인 성공"
-);
-
-
 }
 
 catch(error){
@@ -130,7 +127,9 @@ alert(
 
 
 
-// AUTH
+
+
+// 인증 상태
 
 onAuthStateChanged(
 
@@ -142,11 +141,9 @@ auth,
 if(user){
 
 
-if(loginArea)
 loginArea.style.display="none";
 
 
-if(staffArea)
 staffArea.style.display="block";
 
 
@@ -159,21 +156,19 @@ user.email === ADMIN_EMAIL;
 startRequestListener();
 
 
-
 }
 
 else{
 
 
-if(loginArea)
 loginArea.style.display="block";
 
 
-if(staffArea)
 staffArea.style.display="none";
 
 
 }
+
 
 
 }
@@ -184,16 +179,17 @@ staffArea.style.display="none";
 
 
 
-// LOGOUT
+
+// 로그아웃
 
 if(logoutButton){
 
 
 logoutButton.onclick =
-async()=>{
+()=>{
 
 
-await signOut(auth);
+signOut(auth);
 
 
 };
@@ -206,9 +202,13 @@ await signOut(auth);
 
 
 
-// 요청 목록
+
+
+
+// 고객 요청 표시
 
 function startRequestListener(){
+
 
 
 if(!requestList)
@@ -216,7 +216,8 @@ return;
 
 
 
-const q = query(
+const q =
+query(
 
 collection(
 db,
@@ -230,6 +231,8 @@ where(
 )
 
 );
+
+
 
 
 
@@ -250,14 +253,15 @@ snapshot.forEach(
 
 
 const data =
-(item.data());
+item.data();
 
 
 
 if(
-data.requestClosed === true
+data.requestClosed===true
 )
 return;
+
 
 
 
@@ -267,7 +271,7 @@ document.createElement("div");
 
 
 
-div.innerHTML =
+div.innerHTML=
 
 `
 
@@ -286,7 +290,7 @@ ${data.couponNumber}
 
 <button>
 
-승인
+✅ 승인
 
 </button>
 
@@ -311,13 +315,11 @@ alert(
 
 return;
 
-
 }
 
 
 
-
-const code =
+const number =
 data.couponNumber;
 
 
@@ -326,14 +328,15 @@ data.couponNumber;
 try{
 
 
-// coupon_issue 승인
+
+// 1. 쿠폰 승인 상태 변경
 
 await setDoc(
 
 doc(
 db,
 "coupon_issue",
-code
+number
 ),
 
 {
@@ -358,14 +361,15 @@ merge:true
 
 
 
-// coupon_request 유지
+
+// 2. 고객 요청 종료
 
 await setDoc(
 
 doc(
 db,
 "coupon_request",
-item.id
+number
 ),
 
 {
@@ -375,10 +379,8 @@ status:"approved",
 requestClosed:true,
 
 approvedTime:
-serverTimestamp(),
+serverTimestamp()
 
-approvedBy:
-auth.currentUser.email
 
 },
 
@@ -395,7 +397,8 @@ merge:true
 
 
 
-// history 기록
+
+// 3. 승인 기록
 
 await addDoc(
 
@@ -406,7 +409,7 @@ db,
 
 {
 
-couponNumber:code,
+couponNumber:number,
 
 action:"approved",
 
@@ -440,6 +443,7 @@ alert(
 );
 
 
+
 }
 
 
@@ -463,7 +467,11 @@ requestList.appendChild(div);
 );
 
 
+
 }
+
+
+
 
 
 
@@ -479,12 +487,12 @@ checkButton.onclick =
 async()=>{
 
 
-const code =
+const number =
 couponInput.value.trim();
 
 
 
-if(!code)
+if(!number)
 return;
 
 
@@ -495,7 +503,7 @@ await getDoc(
 doc(
 db,
 "coupon_issue",
-code
+number
 )
 
 );
@@ -521,6 +529,7 @@ snap.data();
 
 
 
+
 if(data.used){
 
 
@@ -534,7 +543,7 @@ else if(data.approved){
 
 
 result.innerHTML =
-"✅ 승인 완료 사용 가능";
+"✅ 승인 완료 / 사용 가능";
 
 
 }
@@ -543,7 +552,7 @@ else{
 
 
 result.innerHTML =
-"⏳ 승인 대기";
+"⏳ 승인 전";
 
 
 }
@@ -560,6 +569,9 @@ result.innerHTML =
 
 
 
+
+
+
 // 사용 처리
 
 if(useButton){
@@ -569,17 +581,85 @@ useButton.onclick =
 async()=>{
 
 
-const code =
+const number =
 couponInput.value.trim();
 
 
 
-if(!code)
+if(!number)
 return;
 
 
 
+
 try{
+
+
+const snap =
+await getDoc(
+
+doc(
+db,
+"coupon_issue",
+number
+)
+
+);
+
+
+
+if(!snap.exists()){
+
+
+alert(
+"없는 쿠폰"
+);
+
+
+return;
+
+
+}
+
+
+
+
+const data =
+snap.data();
+
+
+
+if(!data.approved){
+
+
+alert(
+"승인되지 않은 쿠폰"
+);
+
+
+return;
+
+
+}
+
+
+
+if(data.used){
+
+
+alert(
+"이미 사용 완료"
+);
+
+
+return;
+
+
+}
+
+
+
+
 
 
 await setDoc(
@@ -587,7 +667,7 @@ await setDoc(
 doc(
 db,
 "coupon_issue",
-code
+number
 ),
 
 {
@@ -610,6 +690,8 @@ merge:true
 
 
 
+
+
 await addDoc(
 
 collection(
@@ -619,7 +701,7 @@ db,
 
 {
 
-couponNumber:code,
+couponNumber:number,
 
 action:"used",
 
@@ -632,6 +714,8 @@ auth.currentUser.email
 }
 
 );
+
+
 
 
 
