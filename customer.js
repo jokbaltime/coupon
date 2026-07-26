@@ -128,6 +128,16 @@ new Date()
 .split("T")[0];
 
 
+let expired = false;
+
+
+const today =
+new Date()
+.toISOString()
+.split("T")[0];
+
+
+
 if(data.startDate && data.endDate){
 
 
@@ -137,12 +147,7 @@ today > data.endDate
 ){
 
 
-alert(
-"⛔ 사용 기간이 아닌 쿠폰입니다."
-);
-
-
-return;
+expired = true;
 
 
 }
