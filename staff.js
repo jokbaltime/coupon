@@ -426,12 +426,8 @@ data.couponNumber
 
 {
 
-used:true,
-usedTime:
-serverTimestamp(),
 approved:true,
-approvedTime:
-serverTimestamp()
+approvedTime:serverTimestamp()
 
 }
 
