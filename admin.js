@@ -901,7 +901,7 @@ ${data.action}
 
 
 deleteCouponBtn.onclick = async()=>{
-
+console.log("삭제 버튼 클릭됨");
 
 const number =
 searchCoupon.value.trim();
