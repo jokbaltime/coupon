@@ -318,9 +318,12 @@ item.data();
 
 
     
-if(data.status !== "waiting"){
+if(
+data.status !== "waiting" ||
+data.approved === true
+){
     return;
-}   
+}
 
 
 const div =
