@@ -7,19 +7,13 @@
 import {
 
 db,
-
 doc,
-
 getDoc,
-
 setDoc,
-
 onSnapshot,
-
 serverTimestamp
 
 } from "./firebase.js";
-
 
 
 
@@ -41,7 +35,6 @@ const result =
 document.getElementById("result");
 
 
-
 const couponTitle =
 document.getElementById("couponTitle");
 
@@ -60,27 +53,12 @@ document.getElementById("mainImage");
 
 
 
-
-
-
-let currentCoupon = "";
-
-
-
-
-
-
-
-
-
-
 // ================================
 // COUPON LOAD
 // ================================
 
 
 async function loadCoupon(number){
-
 
 
 if(!number)
@@ -101,8 +79,6 @@ number
 
 
 
-
-
 if(!snap.exists()){
 
 
@@ -117,12 +93,9 @@ return;
 
 
 
-
-
 const data =
 snap.data();
 
-let expired = false;
 
 
 const today =
@@ -141,15 +114,20 @@ today > data.endDate
 ){
 
 
-expired = true;
+result.innerHTML =
+"⛔ 사용 기간 만료";
+
+
+requestBtn.disabled=true;
+
+
+return;
 
 
 }
 
 
 }
-
-currentCoupon = number;
 
 
 
@@ -160,21 +138,14 @@ data.title || "족발타임 쿠폰";
 
 
 discount.innerText =
-(data.discount || 0) + "%";
+(data.discount || 0)+"%";
 
 
 
 notice.innerText =
 data.notice || "";
 
-if(expired){
 
-result.innerHTML =
-"⛔ 사용 기간 만료";
-
-requestBtn.disabled = true;
-
-}
 
 
 
@@ -186,7 +157,6 @@ data.image;
 
 
 }
-
 
 
 
@@ -203,14 +173,12 @@ listenCoupon(number);
 
 
 
-
 // ================================
 // REALTIME STATUS
 // ================================
 
 
 function listenCoupon(number){
-
 
 
 onSnapshot(
@@ -224,20 +192,21 @@ number
 (snapshot)=>{
 
 
-
 if(!snapshot.exists())
 return;
-
 
 
 
 const data =
 snapshot.data();
 
+
+
 const today =
 new Date()
 .toISOString()
 .split("T")[0];
+
 
 
 if(data.startDate && data.endDate){
@@ -262,6 +231,8 @@ return;
 }
 
 }
+
+
 
 
 if(data.status==="waiting"){
@@ -319,18 +290,13 @@ requestBtn.disabled=false;
 }
 
 
-
-
 }
-
 
 
 );
 
 
-
 }
-
 
 
 
@@ -355,15 +321,12 @@ const number =
 couponNumber.value.trim();
 
 
-
 loadCoupon(number);
-
 
 
 }
 
 );
-
 
 
 
@@ -378,7 +341,16 @@ loadCoupon(number);
 
 
 requestBtn.onclick = async()=>{
-console.log("사용 요청 버튼 클릭됨");
+
+
+console.log(
+"사용 요청 버튼 클릭됨"
+);
+
+
+
+try{
+
 
 const number =
 couponNumber.value.trim();
@@ -397,6 +369,7 @@ return;
 
 
 }
+
 
 
 
@@ -436,27 +409,6 @@ return;
 const data =
 couponSnap.data();
 
-const useCount =
-data.useCount || 0;
-
-
-const maxUseCount =
-data.maxUseCount || 1;
-
-
-
-if(useCount >= maxUseCount){
-
-
-alert(
-"❌ 사용 횟수를 초과한 쿠폰입니다."
-);
-
-
-return;
-
-
-}
 
 
 
@@ -474,6 +426,13 @@ return;
 }
 
 
+
+
+
+
+console.log(
+"요청 저장 시작"
+);
 
 
 
@@ -502,8 +461,18 @@ serverTimestamp()
 
 }
 
-
 );
+
+
+
+
+
+
+console.log(
+"요청 저장 완료"
+);
+
+
 
 
 
@@ -519,7 +488,9 @@ number
 
 {
 
+
 status:"waiting"
+
 
 },
 
@@ -536,15 +507,48 @@ merge:true
 
 
 
+console.log(
+"쿠폰 상태 변경 완료"
+);
+
+
+
+
+
 result.innerHTML =
 "⏳ 직원 승인 요청 완료";
 
 
 
+}
+
+catch(error){
+
+
+console.error(
+"요청 오류:",
+error
+);
+
+
+alert(
+"요청 처리 오류 : "
++
+error.message
+);
+
+
+}
+
+
+
 };
+
+
+
+
 
 console.log(
 "requestBtn 확인:",
 requestBtn
 );
-
