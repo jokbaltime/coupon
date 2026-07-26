@@ -255,11 +255,17 @@ return;
 
 }
 
-
+console.log("저장 시작", {
+number: couponNumber.value,
+title: couponTitle.value,
+discount: discount.value
+});
 
 
 await setDoc(
 
+console.log("Firestore 저장 완료");
+  
 doc(
 db,
 "coupons",
