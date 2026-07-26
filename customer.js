@@ -378,7 +378,7 @@ loadCoupon(number);
 
 
 requestBtn.onclick = async()=>{
-
+console.log("사용 요청 버튼 클릭됨");
 
 const number =
 couponNumber.value.trim();
