@@ -1,3 +1,7 @@
+<!-- ======================================
+     ADMIN.HTML FULL REPLACEMENT
+     ====================================== -->
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -9,11 +13,11 @@
 
 
 <title>
-족발타임 관리자
+JOKBAL TIME ADMIN
 </title>
 
 
-<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="./admin.css">
 
 
 </head>
@@ -23,16 +27,18 @@
 <body>
 
 
+
 <div class="admin-wrap">
 
 
 
-<!-- =========================
-     로그인
-========================= -->
 
 
-<section class="admin-card login-box">
+<section
+
+class="admin-card login-box"
+
+>
 
 
 <h1>
@@ -40,9 +46,12 @@
 </h1>
 
 
+
 <p>
 관리자 로그인
 </p>
+
+
 
 
 
@@ -52,7 +61,9 @@ id="adminEmail"
 
 type="email"
 
-placeholder="관리자 이메일">
+placeholder="관리자 이메일"
+
+>
 
 
 
@@ -64,13 +75,19 @@ id="adminPassword"
 
 type="password"
 
-placeholder="비밀번호">
+placeholder="비밀번호"
+
+>
 
 
 
 
 
-<button id="loginButton">
+<button
+
+id="loginButton"
+
+>
 
 로그인
 
@@ -88,16 +105,13 @@ placeholder="비밀번호">
 
 
 
-<!-- =========================
-     관리자 화면
-========================= -->
-
-
 <section
 
 id="adminPanel"
 
-class="admin-card hidden">
+class="admin-card hidden"
+
+>
 
 
 
@@ -116,10 +130,10 @@ class="admin-card hidden">
 
 
 
+
 <label>
 쿠폰 제목
 </label>
-
 
 
 <input
@@ -128,9 +142,7 @@ id="title"
 
 type="text"
 
-value="">
-
-
+>
 
 
 
@@ -140,14 +152,15 @@ value="">
 </label>
 
 
-
 <input
 
 id="discount"
 
 type="number"
 
-value="0">
+value="0"
+
+>
 
 
 
@@ -164,9 +177,8 @@ value="0">
 
 id="notice"
 
-rows="5">
+></textarea>
 
-</textarea>
 
 
 
@@ -175,11 +187,14 @@ rows="5">
 
 <button
 
-id="saveButton">
+id="saveButton"
+
+>
 
 저장
 
 </button>
+
 
 
 
@@ -193,32 +208,49 @@ id="saveButton">
 
 
 
+
 <h2>
-사용 관리
+쿠폰 현황
 </h2>
 
 
 
-<p>
-직원 페이지에서 쿠폰 확인 및 사용 처리
-</p>
+<div
 
+id="adminStats"
 
+>
 
+불러오는 중...
 
-
-<a href="staff.html">
-
-직원 페이지 이동
-
-</a>
+</div>
 
 
 
 
 
 
-<br><br>
+<hr>
+
+
+
+
+
+<h2>
+처리 기록
+</h2>
+
+
+
+<div
+
+id="adminHistory"
+
+>
+
+</div>
+
+
 
 
 
@@ -227,7 +259,9 @@ id="saveButton">
 
 <button
 
-id="logoutButton">
+id="logoutButton"
+
+>
 
 로그아웃
 
@@ -252,12 +286,13 @@ id="logoutButton">
 
 
 
-
 <script
 
 type="module"
 
-src="admin.js">
+src="./admin.js"
+
+>
 
 </script>
 
