@@ -300,7 +300,8 @@ serverTimestamp()
 
 if(oldCoupon.exists()){
 
-
+console.log("기존쿠폰 데이터", oldCoupon.data());
+  
 const oldData =
 oldCoupon.data();
 
