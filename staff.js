@@ -185,6 +185,8 @@ loginArea.style.display="none";
 
 staffArea.style.display="block";
 
+startRequestListener();
+    
 loadHistory();
 
 
