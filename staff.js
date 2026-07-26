@@ -488,8 +488,7 @@ item.id
 
 
 // 화면에서 제거
-div.remove();
-
+list.innerHTML = "";
 
 
 alert(
