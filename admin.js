@@ -1,204 +1,52 @@
-// ======================================
-// JOKBALTlME ADMIN
-// LOGIN + FIRESTORE SETTING
-// ======================================
+// admin.js FULL REPLACEMENT
+// ADMIN APPROVAL / COUPON STATUS MANAGEMENT VERSION
 
 
 import {
-
-auth,
-
 db,
-
+auth,
 doc,
-
+getDoc,
 setDoc,
-
-getDoc
-
+getDocs,
+addDoc,
+collection,
+query,
+orderBy,
+serverTimestamp
 } from "./firebase.js";
 
 
-
 import {
-
-signInWithEmailAndPassword,
-
-onAuthStateChanged,
-
-signOut
-
+onAuthStateChanged
 } from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 
+const ADMIN_EMAIL =
+"admin@jokbaltime.com";
 
-// Firestore 위치
 
-const couponRef = doc(
-    db,
-    "coupon",
-    "setting"
-);
 
+const adminArea =
+document.getElementById("adminArea");
 
 
+const adminStats =
+document.getElementById("adminStats");
 
-// 화면 요소
 
-const loginButton =
-document.getElementById(
-    "loginButton"
-);
+const adminHistory =
+document.getElementById("adminHistory");
 
 
-const loginBox =
-document.querySelector(
-    ".login-box"
-);
 
+let isAdmin = false;
 
-const adminPanel =
-document.getElementById(
-    "adminPanel"
-);
 
 
-
-
-
-// =============================
-// 관리자 화면 표시
-// =============================
-
-
-function showAdmin(){
-
-
-    if(loginBox){
-
-        loginBox.classList.add(
-            "hidden"
-        );
-
-    }
-
-
-    if(adminPanel){
-
-        adminPanel.classList.remove(
-            "hidden"
-        );
-
-    }
-
-
-    loadSetting();
-
-
-}
-
-
-
-
-
-
-
-
-// =============================
-// 로그인
-// =============================
-
-
-if(loginButton){
-
-
-loginButton.onclick = async()=>{
-
-
-    const email =
-    document.getElementById(
-        "adminEmail"
-    )
-    .value
-    .trim();
-
-
-
-    const password =
-    document.getElementById(
-        "adminPassword"
-    )
-    .value
-    .trim();
-
-
-
-
-    try{
-
-
-        await signInWithEmailAndPassword(
-
-            auth,
-
-            email,
-
-            password
-
-        );
-
-
-
-        alert(
-            "로그인 성공"
-        );
-
-
-
-        showAdmin();
-
-
-
-    }
-
-
-    catch(error){
-
-
-        console.error(
-            error
-        );
-
-
-        alert(
-            "로그인 실패 : "
-            +
-            error.code
-        );
-
-
-    }
-
-
-};
-
-
-}
-
-
-
-
-
-
-
-
-
-// =============================
-// 로그인 상태 유지
-// =============================
-
+// 관리자 확인
 
 onAuthStateChanged(
 
@@ -207,19 +55,47 @@ auth,
 (user)=>{
 
 
-    if(user){
+if(!user){
+
+if(adminArea)
+adminArea.style.display="none";
 
 
-        console.log(
-            "로그인 사용자:",
-            user.email
-        );
+return;
+
+}
 
 
-        showAdmin();
+
+if(
+user.email === ADMIN_EMAIL
+){
 
 
-    }
+isAdmin=true;
+
+
+if(adminArea)
+adminArea.style.display="block";
+
+
+loadAdminData();
+
+
+}
+
+else{
+
+
+isAdmin=false;
+
+
+if(adminArea)
+adminArea.style.display="none";
+
+
+}
+
 
 
 }
@@ -231,253 +107,284 @@ auth,
 
 
 
+// 관리자 데이터
+
+async function loadAdminData(){
+
+
+if(!isAdmin)
+return;
 
 
 
-// =============================
-// 설정 불러오기
-// =============================
+const q = query(
 
+collection(
+db,
+"coupon_history"
+),
 
-async function loadSetting(){
+orderBy(
+"approvedTime",
+"desc"
+)
 
-
-try{
-
-
-console.log(
-    "설정 불러오기"
 );
 
 
 
 const snap =
-
-await getDoc(
-    couponRef
-);
+await getDocs(q);
 
 
 
+let used=0;
 
-console.log(
-    "문서 존재:",
-    snap.exists()
-);
+let cancel=0;
 
-
+let approved=0;
 
 
+let html="";
 
-if(snap.exists()){
+
+
+
+snap.forEach(
+
+(item)=>{
 
 
 const data =
-snap.data();
+item.data();
 
 
 
-console.log(
-    "Firebase 데이터:",
-    data
+if(
+data.action==="used"
+)
+used++;
+
+
+
+if(
+data.action==="cancel"
+)
+cancel++;
+
+
+
+if(
+data.action==="approved"
+)
+approved++;
+
+
+
+
+html +=
+
+`
+
+<div style="
+border-bottom:1px solid #444;
+padding:10px;
+">
+
+
+<b>
+${data.couponNumber}
+</b>
+
+<br>
+
+
+처리 :
+${data.action}
+
+
+<br>
+
+
+직원 :
+${data.staff || ""}
+
+
+</div>
+
+
+`;
+
+
+
+}
+
 );
 
 
 
 
+if(adminStats){
 
 
-const titleBox =
-document.getElementById(
-    "title"
+adminStats.innerHTML =
+
+`
+
+<h3>
+관리자 현황
+</h3>
+
+
+<p>
+승인 :
+${approved}
+건
+</p>
+
+
+<p>
+사용 :
+${used}
+건
+</p>
+
+
+<p>
+취소 :
+${cancel}
+건
+</p>
+
+`;
+
+}
+
+
+
+if(adminHistory){
+
+
+adminHistory.innerHTML =
+
+`
+
+<h3>
+최근 처리 내역
+</h3>
+
+${html}
+
+`;
+
+}
+
+
+
+}
+
+
+
+
+
+// 관리자 강제 승인 기능
+
+window.adminApproveCoupon =
+async function(couponNumber){
+
+
+
+if(!isAdmin){
+
+
+alert(
+"관리자 권한 필요"
 );
 
 
-const discountBox =
-document.getElementById(
-    "discount"
-);
-
-
-const noticeBox =
-document.getElementById(
-    "notice"
-);
-
-
-
-
-
-if(titleBox){
-
-titleBox.value =
-data.title || "";
-
-}
-
-
-
-if(discountBox){
-
-discountBox.value =
-data.discount || 0;
-
-}
-
-
-
-if(noticeBox){
-
-noticeBox.value =
-data.notice || "";
-
-}
-
-
+return;
 
 
 }
-
-
-
-}
-
-catch(error){
-
-
-console.error(
-    "불러오기 오류:",
-    error
-);
-
-
-}
-
-
-}
-
-
-
-
-
-
-
-
-
-// =============================
-// 저장
-// =============================
-
-
-const saveButton =
-
-document.getElementById(
-    "saveButton"
-);
-
-
-
-
-
-if(saveButton){
-
-
-
-saveButton.onclick = async()=>{
 
 
 
 try{
 
 
-
-const saveData = {
-
-
-title:
-
-document.getElementById(
-    "title"
-).value,
-
-
-
-discount:
-
-Number(
-
-document.getElementById(
-    "discount"
-).value
-
-),
-
-
-
-notice:
-
-document.getElementById(
-    "notice"
-).value
-
-
-
-};
-
-
-
-
-
-console.log(
-    "저장 데이터:",
-    saveData
-);
-
-
-
-
-
-
 await setDoc(
 
-    couponRef,
+doc(
+db,
+"coupon_issue",
+couponNumber
+),
 
-    saveData
+{
+
+approved:true,
+
+approvedTime:
+serverTimestamp()
+
+},
+
+{
+
+merge:true
+
+}
 
 );
 
 
+
+
+
+await addDoc(
+
+collection(
+db,
+"coupon_history"
+),
+
+{
+
+couponNumber:couponNumber,
+
+action:"approved",
+
+approvedTime:
+serverTimestamp(),
+
+staff:
+auth.currentUser.email
+
+}
+
+);
 
 
 
 alert(
-    "저장 완료"
+"승인 완료"
 );
 
 
 
+loadAdminData();
+
+
 
 }
-
-
 
 catch(error){
 
 
-
-console.error(
-    "저장 오류:",
-    error
-);
-
-
-
 alert(
-    "저장 실패 : "
-    +
-    error.code
+"관리자 승인 오류 : "
++error.message
 );
-
 
 
 }
@@ -485,49 +392,3 @@ alert(
 
 
 };
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// =============================
-// 로그아웃
-// =============================
-
-
-const logoutButton =
-
-document.getElementById(
-    "logoutButton"
-);
-
-
-
-if(logoutButton){
-
-
-
-logoutButton.onclick = async()=>{
-
-
-await signOut(
-    auth
-);
-
-
-location.reload();
-
-
-};
-
-
-
-}
