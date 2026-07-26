@@ -287,21 +287,7 @@ function startRequestListener(){
 
 
 
-const q =
-query(
-
-collection(
-db,
-"coupon_request"
-),
-
-where(
-"status",
-"==",
-"waiting"
-)
-
-);
+const q = collection(db, "coupon_request");
 
 
 
@@ -312,6 +298,13 @@ q,
 (snapshot)=>{
 
 console.log("실시간 요청 수 :", snapshot.size);
+
+// 추가 ↓↓↓
+snapshot.forEach((docItem) => {
+    console.log("문서ID:", docItem.id);
+    console.log("데이터:", docItem.data());
+});
+// 추가 ↑↑↑
 
 list.innerHTML="";
 
