@@ -1,13 +1,12 @@
-// ======================================
-// CUSTOMER.JS FULL REPLACEMENT
-// REQUEST / APPROVAL STATUS SYNC FIX
-// ======================================
+// customer.js FULL REPLACEMENT
+// CUSTOMER REQUEST / APPROVAL SYNC VERSION
+
 
 import {
 db,
 doc,
-setDoc,
 getDoc,
+setDoc,
 onSnapshot,
 serverTimestamp
 } from "./firebase.js";
@@ -27,19 +26,22 @@ document.getElementById("result");
 
 
 
+let currentCoupon = "";
+
 let stopIssue = null;
 let stopRequest = null;
 
 
 
-// ==============================
-// 쿠폰 상태 감시
-// ==============================
+// 상태 감시
 
 function watchCoupon(couponNumber){
 
 
 if(!couponNumber) return;
+
+
+currentCoupon = couponNumber;
 
 
 
@@ -53,7 +55,7 @@ stopRequest();
 
 
 
-// coupon_issue 감시
+// coupon_issue 상태
 
 stopIssue = onSnapshot(
 
@@ -82,7 +84,9 @@ snapshot.data();
 
 
 
+
 if(data.used){
+
 
 result.innerHTML =
 "❌ 사용 완료 쿠폰";
@@ -97,18 +101,20 @@ return;
 
 
 
+
 if(data.approved){
+
 
 result.innerHTML =
 
 `
-<b style="color:green">
+<h3 style="color:green">
 ✅ 승인 완료
-</b>
+</h3>
 
-<br>
-
+<p>
 사용 가능한 쿠폰번호
+</p>
 
 <h2>
 ${couponNumber}
@@ -118,8 +124,9 @@ ${couponNumber}
 `;
 
 
+
 requestButton.innerText =
-"✅ 승인 완료";
+"승인 완료";
 
 
 requestButton.disabled=true;
@@ -131,9 +138,9 @@ return;
 
 
 
-result.innerHTML =
-"⏳ 직원 승인 대기";
 
+result.innerHTML =
+"⏳ 승인 대기 중";
 
 
 }
@@ -144,7 +151,7 @@ result.innerHTML =
 
 
 
-// coupon_request 감시
+// coupon_request 상태
 
 stopRequest = onSnapshot(
 
@@ -159,14 +166,6 @@ couponNumber
 
 if(!snapshot.exists()){
 
-
-if(result.innerHTML.includes("승인")){
-
-return;
-
-}
-
-
 return;
 
 }
@@ -179,7 +178,6 @@ snapshot.data();
 
 
 
-// 대기 상태
 
 if(
 data.status === "waiting"
@@ -187,12 +185,13 @@ data.status === "waiting"
 data.requestClosed !== true
 ){
 
+
 result.innerHTML =
 "⏳ 직원 승인 요청 중";
 
 
 requestButton.innerText =
-"⏳ 승인 대기중";
+"승인 대기중";
 
 
 requestButton.disabled=true;
@@ -206,8 +205,6 @@ return;
 
 
 
-// 승인 완료
-
 if(
 data.status === "approved"
 &&
@@ -215,52 +212,18 @@ data.requestClosed === true
 ){
 
 
-const newCode =
-data.approvedCoupon || couponNumber;
-
-
-
-couponInput.value =
-newCode;
-
-
-
-localStorage.setItem(
-"JT_COUPON_NUMBER",
-newCode
-);
-
-
-
 result.innerHTML =
-
-`
-<b style="color:green">
-🎉 승인 완료
-</b>
-
-<br>
-
-쿠폰번호
-
-<h2>
-${newCode}
-</h2>
-`;
+"🎉 직원 승인 완료";
 
 
 
 requestButton.innerText =
-"✅ 승인 완료";
+"승인 완료";
 
 
 requestButton.disabled=true;
 
 
-watchCoupon(newCode);
-
-
-
 }
 
 
@@ -270,16 +233,14 @@ watchCoupon(newCode);
 );
 
 
+
 }
 
 
 
 
 
-// ==============================
-// 입력 감지
-// ==============================
-
+// 입력 감시
 
 if(couponInput){
 
@@ -307,7 +268,6 @@ num
 watchCoupon(num);
 
 
-
 }
 
 
@@ -321,10 +281,8 @@ watchCoupon(num);
 
 
 
-// ==============================
-// 초기 실행
-// ==============================
 
+// 초기 실행
 
 const savedCoupon =
 localStorage.getItem(
@@ -349,10 +307,7 @@ watchCoupon(savedCoupon);
 
 
 
-// ==============================
 // 승인 요청
-// ==============================
-
 
 if(requestButton){
 
@@ -381,7 +336,6 @@ return;
 try{
 
 
-
 const issueSnap =
 await getDoc(
 
@@ -397,11 +351,14 @@ couponNumber
 
 if(!issueSnap.exists()){
 
+
 alert(
-"존재하지 않는 쿠폰입니다."
+"없는 쿠폰입니다."
 );
 
+
 return;
+
 
 }
 
@@ -412,23 +369,29 @@ issueSnap.data();
 
 
 
+
 if(issue.used){
 
+
 alert(
-"이미 사용 완료된 쿠폰입니다."
+"사용 완료 쿠폰입니다."
 );
+
 
 return;
 
 }
+
 
 
 
 if(issue.approved){
 
+
 alert(
 "이미 승인 완료된 쿠폰입니다."
 );
+
 
 return;
 
@@ -438,7 +401,7 @@ return;
 
 
 
-const reqSnap =
+const requestSnap =
 await getDoc(
 
 doc(
@@ -452,19 +415,20 @@ couponNumber
 
 
 
-if(reqSnap.exists()){
+if(requestSnap.exists()){
 
 
-const req =
-reqSnap.data();
+const request =
+requestSnap.data();
 
 
 
 if(
-req.status==="waiting"
+request.status==="waiting"
 &&
-req.requestClosed!==true
+request.requestClosed!==true
 ){
+
 
 alert(
 "이미 승인 요청 중입니다."
@@ -476,11 +440,11 @@ return;
 }
 
 
+
 if(
-req.status==="approved"
-&&
-req.requestClosed===true
+request.status==="approved"
 ){
+
 
 alert(
 "이미 승인 완료되었습니다."
@@ -492,9 +456,7 @@ return;
 }
 
 
-
 }
-
 
 
 
@@ -528,9 +490,8 @@ result.innerHTML =
 "⏳ 직원 승인 요청 완료";
 
 
-
 requestButton.innerText =
-"⏳ 승인 대기중";
+"승인 대기중";
 
 
 requestButton.disabled=true;
@@ -542,6 +503,7 @@ watchCoupon(couponNumber);
 
 
 }
+
 
 catch(error){
 
