@@ -1297,7 +1297,6 @@ await getDocs(q);
 
 let used = 0;
 let cancel = 0;
-let count = 0;
 
 let staffData = {};
 
