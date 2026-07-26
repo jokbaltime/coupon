@@ -423,9 +423,9 @@ data.couponNumber
 
 {
 
-used:true,
+approved:true,
 
-usedTime:
+approvedTime:
 serverTimestamp()
 
 }
@@ -449,7 +449,7 @@ data.couponNumber,
 action:
 "approved",
 
-usedTime:
+approvedTime:
 serverTimestamp(),
 
 staff:
@@ -1185,7 +1185,7 @@ db,
 ),
 
 orderBy(
-"usedTime",
+"approvedTime",
 "desc"
 )
 );
@@ -1220,15 +1220,14 @@ snapshot.forEach((item)=>{
 
     let time="";
 
-    if(data.usedTime){
+    if(data.usedTime || data.approvedTime){
 
-        time =
-        data.usedTime
-        .toDate()
-        .toLocaleString();
+    time =
+    (data.usedTime || data.approvedTime)
+    .toDate()
+    .toLocaleString();
 
-    }
-
+}
 
     const div =
     document.createElement("div");
@@ -1333,13 +1332,13 @@ return;
 let count = 0;
     
 const time =
-data.usedTime
+(data.usedTime || data.approvedTime)
 ?
-data.usedTime.toDate()
+(data.usedTime || data.approvedTime)
+.toDate()
 .toLocaleString()
 :
 "";
-
 let date = "";
 
 if(data.usedTime){
