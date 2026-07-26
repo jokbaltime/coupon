@@ -1,5 +1,6 @@
 // staff.js FULL REPLACEMENT
-// 승인 → 신규 쿠폰 코드 생성 → 요청 종료 → 고객 동기화 FIX
+// REQUEST APPROVAL / COUPON STATUS SYNC VERSION
+
 
 import {
 db,
@@ -15,34 +16,59 @@ onSnapshot,
 serverTimestamp
 } from "./firebase.js";
 
+
 import {
 signInWithEmailAndPassword,
 signOut,
 onAuthStateChanged
-}
-from
+} from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
-const ADMIN_EMAIL = "admin@jokbaltime.com";
+
+const ADMIN_EMAIL =
+"admin@jokbaltime.com";
 
 
-const loginArea = document.getElementById("loginArea");
-const staffArea = document.getElementById("staffArea");
 
-const loginButton = document.getElementById("loginButton");
-const logoutButton = document.getElementById("logoutButton");
-
-const requestList = document.getElementById("requestList");
-
-const couponInput = document.getElementById("couponNumber");
-const checkButton = document.getElementById("checkButton");
-const useButton = document.getElementById("useButton");
-
-const resultDiv = document.getElementById("result");
+const loginArea =
+document.getElementById("loginArea");
 
 
-let currentUserIsAdmin = false;
+const staffArea =
+document.getElementById("staffArea");
+
+
+const loginButton =
+document.getElementById("loginButton");
+
+
+const logoutButton =
+document.getElementById("logoutButton");
+
+
+const requestList =
+document.getElementById("requestList");
+
+
+const couponInput =
+document.getElementById("couponNumber");
+
+
+const checkButton =
+document.getElementById("checkButton");
+
+
+const useButton =
+document.getElementById("useButton");
+
+
+const result =
+document.getElementById("result");
+
+
+
+let isAdmin = false;
 
 
 
@@ -50,16 +76,22 @@ let currentUserIsAdmin = false;
 
 if(loginButton){
 
-loginButton.onclick = async()=>{
+
+loginButton.onclick =
+async()=>{
+
 
 const email =
 document.getElementById("email").value.trim();
+
 
 const password =
 document.getElementById("password").value.trim();
 
 
+
 try{
+
 
 await signInWithEmailAndPassword(
 auth,
@@ -67,45 +99,88 @@ email,
 password
 );
 
-}
-catch(e){
 
-alert(e.message);
+
+alert(
+"로그인 성공"
+);
+
 
 }
+
+catch(error){
+
+
+alert(
+"로그인 실패 : "
++error.message
+);
+
+
+}
+
+
 
 };
 
+
 }
+
+
 
 
 
 // AUTH
 
-onAuthStateChanged(auth,(user)=>{
+onAuthStateChanged(
+
+auth,
+
+(user)=>{
+
 
 if(user){
 
+
+if(loginArea)
 loginArea.style.display="none";
+
+
+if(staffArea)
 staffArea.style.display="block";
 
 
-currentUserIsAdmin =
+
+isAdmin =
 user.email === ADMIN_EMAIL;
+
 
 
 startRequestListener();
 
 
+
 }
+
 else{
 
+
+if(loginArea)
 loginArea.style.display="block";
+
+
+if(staffArea)
 staffArea.style.display="none";
+
 
 }
 
-});
+
+}
+
+);
+
+
 
 
 
@@ -113,152 +188,157 @@ staffArea.style.display="none";
 
 if(logoutButton){
 
-logoutButton.onclick=async()=>{
+
+logoutButton.onclick =
+async()=>{
+
 
 await signOut(auth);
 
+
 };
+
 
 }
 
 
 
-// ==============================
+
+
+
 // 요청 목록
-// ==============================
 
 function startRequestListener(){
 
-if(!requestList)return;
+
+if(!requestList)
+return;
 
 
-const q=query(
-collection(db,"coupon_request"),
-where("status","==","waiting")
+
+const q = query(
+
+collection(
+db,
+"coupon_request"
+),
+
+where(
+"status",
+"==",
+"waiting"
+)
+
 );
 
 
 
-onSnapshot(q,(snapshot)=>{
+onSnapshot(
+
+q,
+
+(snapshot)=>{
 
 
 requestList.innerHTML="";
 
 
-snapshot.forEach((item)=>{
+
+snapshot.forEach(
+
+(item)=>{
 
 
-const data=item.data();
+const data =
+(item.data());
 
 
-const div=document.createElement("div");
+
+if(
+data.requestClosed === true
+)
+return;
 
 
-div.innerHTML=
+
+
+const div =
+document.createElement("div");
+
+
+
+div.innerHTML =
 
 `
 
 <p>
+
 쿠폰번호 :
-<b>${data.couponNumber}</b>
+
+<b>
+
+${data.couponNumber}
+
+</b>
+
 </p>
 
+
 <button>
+
 승인
+
 </button>
 
 `;
 
 
 
+
+
 div.querySelector("button")
-.onclick=async()=>{
+.onclick =
+async()=>{
 
 
-if(!currentUserIsAdmin){
+if(!isAdmin){
 
-alert("관리자만 승인 가능합니다.");
+
+alert(
+"관리자만 승인 가능합니다."
+);
+
 
 return;
+
 
 }
 
 
-const btn =
-div.querySelector("button");
 
 
-btn.disabled=true;
+const code =
+data.couponNumber;
+
 
 
 
 try{
 
 
-const oldCode =
-data.couponNumber;
-
-
-
-// 신규 사용 코드 생성
-
-const newCode =
-"JT" + Date.now();
-
-
-
-
-// 신규 쿠폰 생성
+// coupon_issue 승인
 
 await setDoc(
 
 doc(
 db,
 "coupon_issue",
-newCode
+code
 ),
 
 {
-
-couponNumber:newCode,
 
 approved:true,
-
-used:false,
-
-sourceRequest:oldCode,
-
-createdTime:
-serverTimestamp(),
-
-approvedTime:
-serverTimestamp()
-
-}
-
-);
-
-
-
-
-
-// 요청 종료
-
-await setDoc(
-
-doc(
-db,
-"coupon_request",
-item.id
-),
-
-{
-
-status:"approved",
-
-requestClosed:true,
-
-approvedCoupon:newCode,
 
 approvedTime:
 serverTimestamp()
@@ -278,23 +358,63 @@ merge:true
 
 
 
-// 기록
+// coupon_request 유지
 
-await addDoc(
+await setDoc(
 
-collection(db,"coupon_history"),
+doc(
+db,
+"coupon_request",
+item.id
+),
 
 {
 
-couponNumber:newCode,
+status:"approved",
+
+requestClosed:true,
+
+approvedTime:
+serverTimestamp(),
+
+approvedBy:
+auth.currentUser.email
+
+},
+
+{
+
+merge:true
+
+}
+
+);
+
+
+
+
+
+
+// history 기록
+
+await addDoc(
+
+collection(
+db,
+"coupon_history"
+),
+
+{
+
+couponNumber:code,
 
 action:"approved",
 
-staff:
-auth.currentUser.email,
-
 approvedTime:
-serverTimestamp()
+serverTimestamp(),
+
+staff:
+auth.currentUser.email
 
 }
 
@@ -302,24 +422,23 @@ serverTimestamp()
 
 
 
+
 alert(
-
-"승인 완료\n새 쿠폰 : "+newCode
-
+"승인 완료"
 );
 
 
 
 }
 
-catch(e){
+catch(error){
+
 
 alert(
-"승인 오류 : "+e.message
+"승인 오류 : "
++error.message
 );
 
-
-btn.disabled=false;
 
 }
 
@@ -333,31 +452,41 @@ requestList.appendChild(div);
 
 
 
-});
+}
 
 
-});
+);
+
+
+}
+
+);
 
 
 }
 
 
 
-// ==============================
+
+
+
 // 쿠폰 조회
-// ==============================
 
 if(checkButton){
 
 
-checkButton.onclick=async()=>{
+checkButton.onclick =
+async()=>{
 
 
-const num =
+const code =
 couponInput.value.trim();
 
 
-if(!num)return;
+
+if(!code)
+return;
+
 
 
 const snap =
@@ -366,7 +495,7 @@ await getDoc(
 doc(
 db,
 "coupon_issue",
-num
+code
 )
 
 );
@@ -375,33 +504,47 @@ num
 
 if(!snap.exists()){
 
-resultDiv.innerHTML="❌ 없는 쿠폰";
+
+result.innerHTML =
+"❌ 없는 쿠폰";
+
 
 return;
+
 
 }
 
 
 
-const data=snap.data();
+const data =
+snap.data();
 
 
 
 if(data.used){
 
-resultDiv.innerHTML="❌ 사용 완료";
+
+result.innerHTML =
+"❌ 사용 완료";
+
 
 }
 
 else if(data.approved){
 
-resultDiv.innerHTML="✅ 승인 완료 사용 가능";
+
+result.innerHTML =
+"✅ 승인 완료 사용 가능";
+
 
 }
 
 else{
 
-resultDiv.innerHTML="⏳ 승인 대기";
+
+result.innerHTML =
+"⏳ 승인 대기";
+
 
 }
 
@@ -414,67 +557,38 @@ resultDiv.innerHTML="⏳ 승인 대기";
 
 
 
-// ==============================
-// 사용 처리
-// ==============================
 
+
+
+// 사용 처리
 
 if(useButton){
 
 
-useButton.onclick=async()=>{
+useButton.onclick =
+async()=>{
 
 
-const num =
+const code =
 couponInput.value.trim();
 
 
 
-if(!num)return;
-
-
-
-const ref =
-doc(
-db,
-"coupon_issue",
-num
-);
-
-
-
-const snap =
-await getDoc(ref);
-
-
-
-if(!snap.exists()){
-
-alert("없는 쿠폰");
-
+if(!code)
 return;
 
-}
 
 
-
-const data=snap.data();
-
-
-
-if(data.used){
-
-alert("이미 사용");
-
-return;
-
-}
-
+try{
 
 
 await setDoc(
 
-ref,
+doc(
+db,
+"coupon_issue",
+code
+),
 
 {
 
@@ -495,21 +609,25 @@ merge:true
 
 
 
+
 await addDoc(
 
-collection(db,"coupon_history"),
+collection(
+db,
+"coupon_history"
+),
 
 {
 
-couponNumber:num,
+couponNumber:code,
 
 action:"used",
 
-staff:
-auth.currentUser.email,
-
 usedTime:
-serverTimestamp()
+serverTimestamp(),
+
+staff:
+auth.currentUser.email
 
 }
 
@@ -517,10 +635,29 @@ serverTimestamp()
 
 
 
-alert("사용 완료");
+alert(
+"사용 완료"
+);
+
 
 
 couponInput.value="";
+
+
+
+}
+
+catch(error){
+
+
+alert(
+"사용 오류 : "
++error.message
+);
+
+
+}
+
 
 
 };
