@@ -80,6 +80,35 @@ try{
 
 const requestQuery = query(
 
+const couponSnap = await getDoc(
+ doc(db,"coupon_issue",number)
+);
+
+if(!couponSnap.exists()){
+
+alert("없는 쿠폰입니다.");
+return;
+
+}
+
+const couponData = couponSnap.data();
+
+
+if(couponData.approved === true){
+
+alert("이미 승인된 쿠폰입니다.");
+return;
+
+}
+
+
+if(couponData.used === true){
+
+alert("사용 완료 쿠폰입니다.");
+return;
+
+}
+  
 collection(db,"coupon_request"),
 
 where(
