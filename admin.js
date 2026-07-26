@@ -80,6 +80,12 @@ document.getElementById("notice");
 const imageUrl =
 document.getElementById("imageUrl");
 
+const startDate =
+document.getElementById("startDate");
+
+
+const endDate =
+document.getElementById("endDate");
 
 const saveCouponBtn =
 document.getElementById("saveCouponBtn");
@@ -305,6 +311,12 @@ notice.value.trim(),
 image:
 imageUrl.value.trim(),
 
+startDate:
+startDate.value,
+
+
+endDate:
+endDate.value,  
 
 updatedAt:
 serverTimestamp()
