@@ -1,33 +1,128 @@
+<!-- ======================================
+     CUSTOMER.HTML FULL REPLACEMENT
+     ====================================== -->
+
 <!DOCTYPE html>
-<html>
+<html lang="ko">
+
 <head>
-<title>JOKBAL TIME COUPON</title>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>
+JOKBAL TIME COUPON
+</title>
+
+<link rel="stylesheet" href="./style.css">
+
 </head>
+
 
 <body>
 
+
+<header class="header">
 
 <h1>
 JOKBAL TIME COUPON
 </h1>
 
+<p class="subtitle">
+쿠폰 승인 요청 시스템
+</p>
 
-<input 
+</header>
+
+
+
+
+
+<main class="staff">
+
+
+
+<section class="store-item">
+
+
+<h2 style="color:#D4AF37;">
+쿠폰 사용 요청
+</h2>
+
+
+
+<input
+
 id="couponNumber"
-placeholder="쿠폰번호 입력">
+
+type="text"
+
+placeholder="쿠폰번호 입력"
+
+autocomplete="off"
+
+>
 
 
-<button id="requestButton">
+
+
+<button
+
+id="requestButton"
+
+class="staff-btn"
+
+>
+
 사용 요청
+
 </button>
 
 
-<div id="result">
+
+
+
+<div
+
+id="result"
+
+style="
+margin-top:20px;
+font-size:18px;
+font-weight:bold;
+"
+
+>
 
 </div>
 
 
-<script type="module" src="customer.js"></script>
+
+</section>
+
+
+
+</main>
+
+
+
+
+
+
+<script
+
+type="module"
+
+src="./customer.js"
+
+>
+
+</script>
+
+
 
 </body>
+
+
 </html>
