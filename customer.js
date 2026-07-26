@@ -115,6 +115,8 @@ return;
 
 }
 
+console.log("요청 시작");
+
 await setDoc(
 
 doc(
@@ -135,6 +137,8 @@ requestTime: serverTimestamp()
 
 );
 
+console.log("저장 성공");
+
 
 result.innerHTML =
 "✅ 직원 승인 요청 완료";
@@ -148,14 +152,11 @@ couponInput.value="";
 
 catch(error){
 
-
-console.error(error);
-
+console.error("저장 실패", error);
 
 result.innerHTML =
 "요청 오류 : "
 +error.message;
-
 
 }
 
