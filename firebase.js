@@ -1,6 +1,6 @@
 // ======================================
 // FIREBASE.JS FULL REPLACEMENT
-// FIREBASE CONNECTION CONFIG
+// REAL CONFIG REQUIRED
 // ======================================
 
 
@@ -65,41 +65,43 @@ from
 
 
 
-
-
+// ======================================
+// Firebase Console
+// 프로젝트 설정 → 웹 앱 설정값 입력
+// ======================================
 
 
 const firebaseConfig = {
 
 
 apiKey:
+"여기에 실제 API KEY 입력",
 
-"YOUR_API_KEY",
 
 
 authDomain:
+"여기에 실제 AUTH DOMAIN 입력",
 
-"YOUR_AUTH_DOMAIN",
 
 
 projectId:
+"여기에 실제 PROJECT ID 입력",
 
-"YOUR_PROJECT_ID",
 
 
 storageBucket:
+"여기에 실제 STORAGE BUCKET 입력",
 
-"YOUR_STORAGE_BUCKET",
 
 
 messagingSenderId:
+"여기에 실제 MESSAGING SENDER ID 입력",
 
-"YOUR_MESSAGING_SENDER_ID",
 
 
 appId:
+"여기에 실제 APP ID 입력"
 
-"YOUR_APP_ID"
 
 
 };
@@ -108,8 +110,7 @@ appId:
 
 
 
-
-
+// Firebase 시작
 
 const app =
 
@@ -119,6 +120,8 @@ initializeApp(firebaseConfig);
 
 
 
+// Firestore
+
 const db =
 
 getFirestore(app);
@@ -126,6 +129,8 @@ getFirestore(app);
 
 
 
+
+// Authentication
 
 const auth =
 
@@ -143,42 +148,30 @@ export {
 
 db,
 
-
 auth,
 
 
 doc,
 
-
 getDoc,
-
 
 setDoc,
 
-
 deleteDoc,
-
 
 addDoc,
 
-
 getDocs,
-
 
 collection,
 
-
 query,
-
 
 where,
 
-
 onSnapshot,
 
-
 orderBy,
-
 
 serverTimestamp
 
