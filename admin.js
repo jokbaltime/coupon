@@ -219,12 +219,8 @@ signOut(auth);
 
 
 
-
-
-
-
 // ================================
-// COUPON SAVE / UPDATE
+// COUPON SAVE / UPDATE (상태 유지)
 // ================================
 
 
@@ -254,16 +250,10 @@ return;
 
 const couponRef =
 doc(
-
 db,
-
 "coupons",
-
 number
-
 );
-
-
 
 
 
@@ -274,14 +264,39 @@ await getDoc(couponRef);
 
 
 
-let status = "issued";
+let saveData = {
 
-let createdAt =
-serverTimestamp();
-
+couponNumber:number,
 
 
+title:
+couponTitle.value.trim(),
 
+
+discount:
+Number(discount.value),
+
+
+notice:
+notice.value.trim(),
+
+
+image:
+imageUrl.value.trim(),
+
+
+updatedAt:
+serverTimestamp()
+
+};
+
+
+
+
+
+
+
+// 기존 쿠폰이면 상태 유지
 
 if(oldCoupon.exists()){
 
@@ -291,12 +306,30 @@ oldCoupon.data();
 
 
 
-status =
-oldData.status || "issued";
+saveData.status =
+oldData.status;
 
 
-createdAt =
-oldData.createdAt || serverTimestamp();
+
+saveData.createdAt =
+oldData.createdAt;
+
+
+
+}
+
+
+// 신규 쿠폰
+
+else{
+
+
+saveData.status =
+"issued";
+
+
+saveData.createdAt =
+serverTimestamp();
 
 
 }
@@ -310,40 +343,13 @@ await setDoc(
 
 couponRef,
 
+saveData,
+
 {
 
-
-couponNumber:number,
-
-
-title:
-couponTitle.value,
-
-
-discount:
-Number(discount.value),
-
-
-notice:
-notice.value,
-
-
-image:
-imageUrl.value,
-
-
-status:status,
-
-
-createdAt:createdAt,
-
-
-updatedAt:
-serverTimestamp()
-
+merge:true
 
 }
-
 
 );
 
@@ -358,6 +364,10 @@ alert(
 
 
 };
+
+
+
+
 
 
 
