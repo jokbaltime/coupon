@@ -1,11 +1,12 @@
 // ======================================
-// STAFF.JS - 직원용 전체 통합 로직 (DB 구조 완벽 동기화)
+// STAFF.JS - 직원용 전체 통합 로직 (문서 미존재 에러 방지 적용)
 // ======================================
 import {
   db,
   auth,
   doc,
   getDoc,
+  setDoc,
   updateDoc,
   addDoc,
   collection,
@@ -101,18 +102,19 @@ function startRequestListener() {
           const staffEmail = auth.currentUser ? auth.currentUser.email : "staff";
 
           // Step 1: 발급 DB(coupon_issue) 승인 상태 업데이트
-          await updateDoc(doc(db, "coupon_issue", num), {
+          // 💡 setDoc(..., { merge: true })를 사용하여 coupon_issue 문서가 없더라도 자동 생성 후 승인 처리
+          await setDoc(doc(db, "coupon_issue", num), {
             approved: true,
             approvedTime: serverTimestamp()
-          });
+          }, { merge: true });
 
           // Step 2: 요청 DB(coupon_request) 승인 완료 및 종료 처리
-          await updateDoc(doc(db, "coupon_request", item.id), {
+          await setDoc(doc(db, "coupon_request", item.id), {
             status: "approved",
             requestClosed: true,
             approvedBy: staffEmail,
             approvedTime: serverTimestamp()
-          });
+          }, { merge: true });
 
           // Step 3: 히스토리 기록
           await addDoc(collection(db, "coupon_history"), {
@@ -122,7 +124,7 @@ function startRequestListener() {
             staff: staffEmail
           });
 
-          alert(`[${num}] 쿠폰이 승인 처리되었습니다.`);
+          alert(`[${num}] 쿠폰이 정상적으로 승인 처리되었습니다.`);
         } catch (e) {
           btn.disabled = false;
           btn.innerText = "✅ 승인하기";
@@ -166,11 +168,11 @@ if (useBtn) {
     try {
       const staffEmail = auth.currentUser ? auth.currentUser.email : "staff";
 
-      // coupon_issue 사용 완료 업데이트
-      await updateDoc(doc(db, "coupon_issue", num), {
+      // coupon_issue 사용 완료 업데이트 (문서 미 존재 시 생성 포함)
+      await setDoc(doc(db, "coupon_issue", num), {
         used: true,
         usedTime: serverTimestamp()
-      });
+      }, { merge: true });
 
       // 히스토리 기록
       await addDoc(collection(db, "coupon_history"), {
