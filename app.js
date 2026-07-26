@@ -10,9 +10,12 @@ db,
 doc,
 setDoc,
 getDoc,
+getDocs,
 onSnapshot,
 collection,
-addDoc
+query,
+where,
+serverTimestamp
 
 } from "./firebase.js";
 
@@ -392,31 +395,29 @@ return;
 
 
 
-await addDoc(
+const waitingQuery = query(
+    collection(db, "coupon_request"),
+    where("couponNumber", "==", number),
+    where("status", "==", "waiting")
+);
 
-collection(
+const waitingSnap = await getDocs(waitingQuery);
 
-db,
-
-"coupon_request"
-
-),
-
-{
-
-
-couponNumber:number,
-
-
-status:"waiting",
-
-
-createdTime:new Date()
-
-
+if (!waitingSnap.empty) {
+    alert("이미 직원 호출 중입니다.");
+    return;
 }
 
+await setDoc(
+    doc(db, "coupon_request", number),
+    {
+        couponNumber: number,
+        status: "waiting",
+        createdTime: serverTimestamp()
+    }
 );
+
+alert("직원에게 확인 요청을 보냈습니다.");
 
 
 
