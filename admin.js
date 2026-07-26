@@ -11,7 +11,6 @@ auth,
 collection,
 doc,
 getDoc,
-getDocs,
 setDoc,
 updateDoc,
 addDoc,
@@ -84,11 +83,10 @@ document.getElementById("imageUrl");
 const saveCouponBtn =
 document.getElementById("saveCouponBtn");
 
-console.log("save button:", saveCouponBtn);
+
 
 const requestList =
 document.getElementById("requestList");
-
 
 
 const searchCoupon =
@@ -107,10 +105,8 @@ const cancelUseBtn =
 document.getElementById("cancelUseBtn");
 
 
-
 const historyList =
 document.getElementById("historyList");
-
 
 
 
@@ -148,7 +144,6 @@ email,
 password
 
 );
-
 
 
 }
@@ -203,7 +198,6 @@ adminBox.classList.add("hidden");
 }
 
 
-
 });
 
 
@@ -230,12 +224,12 @@ signOut(auth);
 
 
 // ================================
-// COUPON SAVE
+// COUPON SAVE / UPDATE
 // ================================
 
 
 saveCouponBtn.onclick = async()=>{
-alert("저장 버튼 연결됨");
+
 
 const number =
 couponNumber.value.trim();
@@ -255,22 +249,66 @@ return;
 
 }
 
-console.log("저장 시작", {
-number: couponNumber.value,
-title: couponTitle.value,
-discount: discount.value
-});
+
+
+
+const couponRef =
+doc(
+
+db,
+
+"coupons",
+
+number
+
+);
+
+
+
+
+
+const oldCoupon =
+await getDoc(couponRef);
+
+
+
+
+
+let status = "issued";
+
+let createdAt =
+serverTimestamp();
+
+
+
+
+
+if(oldCoupon.exists()){
+
+
+const oldData =
+oldCoupon.data();
+
+
+
+status =
+oldData.status || "issued";
+
+
+createdAt =
+oldData.createdAt || serverTimestamp();
+
+
+}
+
+
+
+
 
 
 await setDoc(
 
-console.log("Firestore 저장 완료");
-  
-doc(
-db,
-"coupons",
-number
-),
+couponRef,
 
 {
 
@@ -294,18 +332,22 @@ image:
 imageUrl.value,
 
 
-status:"issued",
+status:status,
 
 
-createdAt:
+createdAt:createdAt,
+
+
+updatedAt:
 serverTimestamp()
 
 
 }
 
 
-
 );
+
+
 
 
 
@@ -335,6 +377,7 @@ function loadRequests(){
 
 
 const q =
+
 query(
 
 collection(
@@ -374,7 +417,8 @@ document.createElement("div");
 
 
 
-div.className="request-card";
+div.className =
+"request-card";
 
 
 
@@ -391,9 +435,7 @@ div.innerHTML=
 
 
 <button>
-
 승인
-
 </button>
 
 `;
@@ -472,7 +514,6 @@ serverTimestamp()
 
 
 
-
 await updateDoc(
 
 doc(
@@ -540,7 +581,7 @@ alert(
 
 
 // ================================
-// SEARCH COUPON
+// SEARCH
 // ================================
 
 
@@ -582,6 +623,7 @@ return;
 
 
 
+
 const data =
 snap.data();
 
@@ -593,20 +635,17 @@ couponResult.innerHTML=
 `
 
 <p>
-번호 :
-${data.couponNumber}
+번호 : ${data.couponNumber}
 </p>
 
 
 <p>
-상태 :
-${data.status}
+상태 : ${data.status}
 </p>
 
 
 <p>
-할인 :
-${data.discount}%
+할인 : ${data.discount}%
 </p>
 
 `;
@@ -621,133 +660,3 @@ ${data.discount}%
 
 
 
-
-
-// ================================
-// CANCEL USE
-// ================================
-
-
-cancelUseBtn.onclick = async()=>{
-
-
-const number =
-searchCoupon.value.trim();
-
-
-
-if(!number)
-return;
-
-
-
-
-await updateDoc(
-
-doc(
-db,
-"coupons",
-number
-),
-
-{
-
-
-status:"approved",
-
-
-cancelledAt:
-serverTimestamp()
-
-
-}
-
-
-);
-
-
-
-alert(
-"사용 취소 복구 완료"
-);
-
-
-
-};
-
-
-
-
-
-
-
-
-
-// ================================
-// HISTORY
-// ================================
-
-
-async function loadHistory(){
-
-
-
-const q =
-query(
-
-collection(
-db,
-"coupon_history"
-),
-
-orderBy(
-"time",
-"desc"
-)
-
-);
-
-
-
-
-onSnapshot(q,(snapshot)=>{
-
-
-historyList.innerHTML="";
-
-
-
-snapshot.forEach((item)=>{
-
-
-const data =
-item.data();
-
-
-
-historyList.innerHTML +=
-
-`
-
-<p>
-
-${data.couponNumber}
-
--
-
-${data.action}
-
-</p>
-
-`;
-
-
-
-});
-
-
-});
-
-
-
-}
