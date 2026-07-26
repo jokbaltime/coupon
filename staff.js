@@ -365,6 +365,20 @@ div.querySelector("button");
 
 btn.disabled = true;
 btn.innerHTML = "처리중...";
+
+// 관리자만 승인 가능
+
+if(
+auth.currentUser.email !== ADMIN_EMAIL
+){
+
+alert(
+"관리자만 승인 가능합니다."
+);
+
+return;
+
+}
     
 try{
 
