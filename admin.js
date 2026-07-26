@@ -15,6 +15,7 @@ getDoc,
 setDoc,
 updateDoc,
 addDoc,
+deleteDoc,
 query,
 where,
 orderBy,
@@ -104,6 +105,8 @@ document.getElementById("couponResult");
 const cancelUseBtn =
 document.getElementById("cancelUseBtn");
 
+const deleteCouponBtn =
+document.getElementById("deleteCouponBtn");
 
 const historyList =
 document.getElementById("historyList");
@@ -891,3 +894,100 @@ ${data.action}
 
 
 }
+
+// ================================
+// DELETE COUPON
+// ================================
+
+
+deleteCouponBtn.onclick = async()=>{
+
+
+const number =
+searchCoupon.value.trim();
+
+
+
+if(!number){
+
+
+alert(
+"삭제할 쿠폰번호 입력"
+);
+
+
+return;
+
+
+}
+
+
+
+
+const check =
+await getDoc(
+
+doc(
+db,
+"coupons",
+number
+)
+
+);
+
+
+
+if(!check.exists()){
+
+
+alert(
+"쿠폰 없음"
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+const confirmDelete =
+confirm(
+
+"이 쿠폰을 삭제하시겠습니까?"
+
+);
+
+
+
+if(!confirmDelete)
+return;
+
+
+
+
+
+await deleteDoc(
+
+doc(
+db,
+"coupons",
+number
+)
+
+);
+
+
+
+
+
+alert(
+"쿠폰 삭제 완료"
+);
+
+
+
+};
