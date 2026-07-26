@@ -1,839 +1,301 @@
 /* =====================================
-   JOKBALTIME PREMIUM COUPON v2
-===================================== */
+   STYLE.CSS FINAL CHECK VERSION
+   JOKBALTlME PREMIUM SYSTEM
+   ===================================== */
 
-/* RESET */
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+
+margin:0;
+
+padding:0;
+
+box-sizing:border-box;
+
 }
+
+
 
 :root{
 
-    --gold:#D4AF37;
-    --gold-light:#F7D774;
-    --black:#111111;
-    --card:#1A1A1A;
-    --white:#ffffff;
-    --gray:#bdbdbd;
+--gold:#D4AF37;
+
+--gold-light:#F7D774;
+
+--black:#111;
+
+--card:#1A1A1A;
+
+--white:#fff;
+
+--gray:#aaa;
 
 }
 
-html{
 
-    scroll-behavior:smooth;
 
-}
 
 body{
 
-    background:
-        linear-gradient(
-            180deg,
-            #0f0f0f 0%,
-            #181818 100%
-        );
+background:
 
-    color:var(--white);
+linear-gradient(
 
-    font-family:
-        Pretendard,
-        "Noto Sans KR",
-        sans-serif;
+180deg,
 
-    line-height:1.6;
+#111,
 
-    padding-bottom:95px;
+#1b1b1b
+
+);
+
+color:white;
+
+font-family:
+
+"Pretendard",
+"Noto Sans KR",
+sans-serif;
+
+min-height:100vh;
+
+padding-bottom:50px;
 
 }
 
-/* ===============================
-   HEADER
-================================ */
+
+
+
 
 .header{
 
-    text-align:center;
+text-align:center;
 
-    padding:45px 20px 30px;
-
-    animation:fadeUp .8s ease;
+padding:40px 20px;
 
 }
 
-.logo{
 
-    width:120px;
-
-    display:block;
-
-    margin:auto;
-
-}
 
 .header h1{
 
-    margin-top:20px;
+color:var(--gold);
 
-    font-size:38px;
+font-size:34px;
 
-    color:var(--gold);
-
-    font-weight:800;
+font-weight:800;
 
 }
+
+
 
 .subtitle{
 
-    margin-top:10px;
+margin-top:10px;
 
-    color:#d6d6d6;
-
-    font-size:16px;
+color:#ccc;
 
 }
 
-.premium-badge{
 
-    display:inline-block;
 
-    margin-top:20px;
 
-    padding:10px 24px;
 
-    border-radius:50px;
-
-    border:1px solid var(--gold);
-
-    color:var(--gold);
-
-    letter-spacing:3px;
-
-    font-size:13px;
-
-    background:
-
-        rgba(212,175,55,.08);
-
-}
-
-/* ===============================
-   HERO
-================================ */
-
-.hero{
-
-    width:92%;
-
-    margin:auto;
-
-    position:relative;
-
-    overflow:hidden;
-
-    border-radius:28px;
-
-    box-shadow:
-
-        0 20px 60px
-
-        rgba(0,0,0,.45);
-
-}
-
-.hero img{
-
-    width:100%;
-
-    height:340px;
-
-    object-fit:cover;
-
-    animation:
-
-        zoomHero
-
-        15s
-
-        infinite
-
-        alternate;
-
-}
-
-.hero-overlay{
-
-    position:absolute;
-
-    inset:0;
-
-    background:
-
-        linear-gradient(
-
-            rgba(0,0,0,.1),
-
-            rgba(0,0,0,.7)
-
-        );
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:flex-end;
-
-    padding:30px;
-
-}
-
-.hero-overlay h2{
-
-    font-size:34px;
-
-    font-weight:800;
-
-}
-
-.hero-overlay span{
-
-    display:block;
-
-    color:var(--gold-light);
-
-    font-size:42px;
-
-    margin-top:8px;
-
-}
-
-.hero-overlay p{
-
-    margin-top:10px;
-
-    color:#efefef;
-
-    font-size:15px;
-
-}
-
-/* ===============================
-   SECTION TITLE
-================================ */
-
-.section-title{
-
-    text-align:center;
-
-    margin-bottom:25px;
-
-}
-
-.section-title h2{
-
-    color:var(--gold);
-
-    font-size:28px;
-
-}
-
-.section-title p{
-
-    color:#c7c7c7;
-
-    font-size:14px;
-
-}
-
-/* ===============================
-   ANIMATION
-================================ */
-
-@keyframes fadeUp{
-
-    from{
-
-        opacity:0;
-
-        transform:
-
-            translateY(35px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:
-
-            translateY(0);
-
-    }
-
-}
-
-@keyframes zoomHero{
-
-    from{
-
-        transform:scale(1);
-
-    }
-
-    to{
-
-        transform:scale(1.08);
-
-    }
-
-}
-/* =====================================
-   PREMIUM COUPON
-===================================== */
-
-.coupon{
-
-    width:92%;
-
-    margin:40px auto;
-
-    background:rgba(255,255,255,.04);
-
-    backdrop-filter:blur(18px);
-
-    -webkit-backdrop-filter:blur(18px);
-
-    border:1px solid rgba(212,175,55,.25);
-
-    border-radius:30px;
-
-    overflow:hidden;
-
-    position:relative;
-
-    box-shadow:
-        0 20px 50px rgba(0,0,0,.45);
-
-}
-
-/* 티켓 양옆 반원 */
-
-.coupon::before,
-.coupon::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:36px;
-
-    height:36px;
-
-    background:#111;
-
-    border-radius:50%;
-
-    top:72%;
-
-}
-
-.coupon::before{
-
-    left:-18px;
-
-}
-
-.coupon::after{
-
-    right:-18px;
-
-}
-
-/* 골드 헤더 */
-
-.coupon-header{
-
-    background:linear-gradient(
-        90deg,
-        #A67C00,
-        #D4AF37,
-        #F7D774
-    );
-
-    color:#111;
-
-    text-align:center;
-
-    font-weight:700;
-
-    letter-spacing:3px;
-
-    padding:16px;
-
-}
-
-/* 내용 */
-
-.coupon-body{
-
-    padding:35px 25px;
-
-    text-align:center;
-
-}
-
-.coupon-body h2{
-
-    font-size:30px;
-
-    color:#fff;
-
-    margin-bottom:20px;
-
-}
-
-/* 할인율 */
-
-.discount{
-
-    font-size:34px;
-
-    font-weight:800;
-
-    color:#ffffff;
-
-}
-
-.discount span{
-
-    display:block;
-
-    font-size:76px;
-
-    color:#FFD700;
-
-    margin:8px 0;
-
-    animation:pulse 2s infinite;
-
-}
-
-/* 안내 */
-
-.notice{
-
-    margin-top:30px;
-
-}
-
-.notice p{
-
-    color:#d6d6d6;
-
-    margin:10px 0;
-
-    font-size:16px;
-
-}
-
-/* 절취선 */
-
-.ticket-line{
-
-    border-top:2px dashed rgba(255,255,255,.25);
-
-}
-
-/* 하단 정보 */
-
-.coupon-footer{
-
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:15px;
-
-    padding:25px;
-
-}
-
-.coupon-footer div{
-
-    background:#1F1F1F;
-
-    border-radius:15px;
-
-    padding:18px;
-
-    text-align:center;
-
-    border:1px solid rgba(212,175,55,.15);
-
-}
-
-.coupon-footer small{
-
-    display:block;
-
-    color:#bbbbbb;
-
-    margin-bottom:8px;
-
-}
-
-.coupon-footer p{
-
-    color:#ffffff;
-
-    font-size:16px;
-
-    font-weight:700;
-
-}
-
-/* 할인 애니메이션 */
-
-@keyframes pulse{
-
-    0%{
-
-        transform:scale(1);
-
-        text-shadow:0 0 8px rgba(255,215,0,.4);
-
-    }
-
-    50%{
-
-        transform:scale(1.08);
-
-        text-shadow:0 0 22px rgba(255,215,0,.9);
-
-    }
-
-    100%{
-
-        transform:scale(1);
-
-        text-shadow:0 0 8px rgba(255,215,0,.4);
-
-    }
-
-}
-/* =====================================
-   MENU
-===================================== */
-
-.menu{
-
-    width:92%;
-
-    margin:60px auto;
-
-}
-
-.slider{
-
-    overflow:hidden;
-
-    border-radius:24px;
-
-    box-shadow:
-        0 15px 40px rgba(0,0,0,.4);
-
-}
-
-.slider img{
-
-    width:100%;
-
-    height:320px;
-
-    object-fit:cover;
-
-    transition:opacity .5s ease;
-
-}
-
-.dots{
-
-    text-align:center;
-
-    margin-top:18px;
-
-}
-
-.dot{
-
-    width:12px;
-
-    height:12px;
-
-    display:inline-block;
-
-    margin:0 6px;
-
-    border-radius:50%;
-
-    background:#555;
-
-    transition:.3s;
-
-}
-
-.dot.active{
-
-    background:var(--gold);
-
-    transform:scale(1.2);
-
-}
-
-/* =====================================
-   STORE
-===================================== */
-
-.store{
-
-    width:92%;
-
-    margin:60px auto;
-
-}
-
-.store-card{
-
-    display:grid;
-
-    gap:16px;
-
-}
-
-.store-item{
-
-    background:rgba(255,255,255,.04);
-
-    border:1px solid rgba(212,175,55,.18);
-
-    border-radius:18px;
-
-    padding:20px;
-
-}
-
-.store-item h3{
-
-    color:var(--gold);
-
-    margin-bottom:8px;
-
-}
-
-.store-item a{
-
-    color:#fff;
-
-    text-decoration:none;
-
-}
-
-/* =====================================
-   STAFF
-===================================== */
 
 .staff{
 
-    width:92%;
+width:92%;
 
-    margin:60px auto;
+max-width:500px;
 
-    text-align:center;
-
-}
-
-.staff-btn{
-
-    width:100%;
-
-    padding:18px;
-
-    border:none;
-
-    border-radius:18px;
-
-    background:linear-gradient(90deg,#8B0000,#C62828);
-
-    color:#fff;
-
-    font-size:18px;
-
-    font-weight:700;
-
-    cursor:pointer;
-
-    transition:.3s;
+margin:30px auto;
 
 }
 
-.staff-btn:hover{
 
-    transform:translateY(-2px);
 
-    box-shadow:0 10px 25px rgba(198,40,40,.4);
 
-}
+.store-item{
 
-/* =====================================
-   BOTTOM NAVIGATION
-===================================== */
+background:
 
-.bottom-nav{
+rgba(255,255,255,.05);
 
-    position:fixed;
+border:
 
-    left:0;
+1px solid rgba(212,175,55,.25);
 
-    bottom:0;
+border-radius:20px;
 
-    width:100%;
+padding:25px;
 
-    height:78px;
-
-    background:#111;
-
-    border-top:1px solid rgba(212,175,55,.4);
-
-    display:flex;
-
-    justify-content:space-around;
-
-    align-items:center;
-
-    z-index:999;
-
-    backdrop-filter:blur(12px);
+margin-bottom:25px;
 
 }
 
-.bottom-nav a{
 
-    text-decoration:none;
 
-    color:#fff;
 
-    display:flex;
 
-    flex-direction:column;
+input{
 
-    align-items:center;
+width:100%;
 
-    gap:4px;
+padding:15px;
 
-    transition:.3s;
+margin-top:12px;
 
-}
+background:#222;
 
-.nav-icon{
+border:
 
-    font-size:26px;
-
-}
-
-.bottom-nav span{
-
-    font-size:12px;
-
-}
-
-.bottom-nav a:hover{
-
-    color:var(--gold);
-
-}
-
-/* =====================================
-   FOOTER
-===================================== */
-
-footer{
-
-    text-align:center;
-
-    color:#888;
-
-    padding:40px 20px 110px;
-
-    font-size:14px;
-
-}
-
-/* =====================================
-   MOBILE
-===================================== */
-
-@media (max-width:480px){
-
-    .header h1{
-
-        font-size:32px;
-
-    }
-
-    .hero img{
-
-        height:260px;
-
-    }
-
-    .hero-overlay h2{
-
-        font-size:28px;
-
-    }
-
-    .hero-overlay span{
-
-        font-size:36px;
-
-    }
-
-    .discount span{
-
-        font-size:60px;
-
-    }
-
-    .slider img{
-
-        height:240px;
-
-    }
-#qrcode{
-
-margin:20px auto;
-
-width:260px;
-
-padding:12px;
-
-background:white;
+1px solid #555;
 
 border-radius:12px;
 
-display:flex;
+color:white;
 
-justify-content:center;
+font-size:16px;
 
 }
+
+
+
+
+
+button{
+
+cursor:pointer;
+
 }
-/* QR 스캐너 영역 안의 카메라 비디오 비율 및 크기 보정 */
-#reader video {
-    width: 100% !important;
-    height: auto !important;
-    border-radius: 8px;
-    object-fit: cover;
+
+
+
+
+
+.staff-btn{
+
+width:100%;
+
+padding:16px;
+
+margin-top:15px;
+
+border:none;
+
+border-radius:15px;
+
+background:
+
+linear-gradient(
+
+90deg,
+
+#8B0000,
+
+#C62828
+
+);
+
+color:white;
+
+font-size:18px;
+
+font-weight:bold;
+
+}
+
+
+
+
+
+.staff-btn:hover{
+
+opacity:.85;
+
+}
+
+
+
+
+
+#result{
+
+margin-top:20px;
+
+padding:15px;
+
+background:#000;
+
+border-radius:12px;
+
+min-height:30px;
+
+text-align:center;
+
+}
+
+
+
+
+
+#requestList div{
+
+background:#222;
+
+border:
+
+1px solid #444;
+
+border-radius:12px;
+
+padding:15px;
+
+margin-bottom:12px;
+
+}
+
+
+
+
+
+#reader{
+
+width:100%;
+
+margin-bottom:15px;
+
+}
+
+
+
+
+
+a{
+
+color:var(--gold);
+
+}
+
+
+
+
+
+@media(max-width:480px){
+
+
+.header h1{
+
+font-size:28px;
+
+}
+
+
+.store-item{
+
+padding:20px;
+
+}
+
+
 }
