@@ -463,6 +463,8 @@ item.id
 
 status:"approved",
 
+requestClosed:true,
+    
 approvedTime:
 serverTimestamp(),
 
