@@ -84,7 +84,7 @@ document.getElementById("imageUrl");
 const saveCouponBtn =
 document.getElementById("saveCouponBtn");
 
-
+console.log("save button:", saveCouponBtn);
 
 const requestList =
 document.getElementById("requestList");
