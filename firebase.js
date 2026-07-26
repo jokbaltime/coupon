@@ -1,5 +1,7 @@
-// firebase.js FULL REPLACEMENT
-// FIREBASE CONNECTION / EXPORT VERSION
+// ======================================
+// FIREBASE.JS FULL REPLACEMENT
+// FIREBASE CONNECTION CONFIG
+// ======================================
 
 
 import {
@@ -23,6 +25,8 @@ doc,
 getDoc,
 
 setDoc,
+
+deleteDoc,
 
 addDoc,
 
@@ -64,6 +68,7 @@ from
 
 
 
+
 const firebaseConfig = {
 
 
@@ -72,11 +77,9 @@ apiKey:
 "YOUR_API_KEY",
 
 
-
 authDomain:
 
 "YOUR_AUTH_DOMAIN",
-
 
 
 projectId:
@@ -84,17 +87,14 @@ projectId:
 "YOUR_PROJECT_ID",
 
 
-
 storageBucket:
 
 "YOUR_STORAGE_BUCKET",
 
 
-
 messagingSenderId:
 
 "YOUR_MESSAGING_SENDER_ID",
-
 
 
 appId:
@@ -137,6 +137,7 @@ getAuth(app);
 
 
 
+
 export {
 
 
@@ -153,6 +154,9 @@ getDoc,
 
 
 setDoc,
+
+
+deleteDoc,
 
 
 addDoc,
