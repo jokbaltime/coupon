@@ -4,7 +4,7 @@ db,
 doc,
 getDoc,
 getDocs,
-addDoc,
+setDoc,
 collection,
 query,
 where,
@@ -115,30 +115,25 @@ return;
 
 }
 
-await addDoc(
+await setDoc(
 
-collection(
+doc(
 db,
-"coupon_request"
+"coupon_request",
+number
 ),
 
 {
 
+couponNumber: number,
 
-couponNumber:number,
+status: "waiting",
 
-
-status:"waiting",
-
-
-requestTime:
-serverTimestamp()
-
+requestTime: serverTimestamp()
 
 }
 
 );
-
 
 
 result.innerHTML =
