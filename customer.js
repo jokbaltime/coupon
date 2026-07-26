@@ -36,6 +36,15 @@ requestButton.onclick = async()=>{
 const number =
 couponInput.value.trim();
 
+if(!number){
+
+result.innerHTML =
+"쿠폰번호를 입력하세요";
+
+return;
+
+}
+
 const snap =
 await getDoc(
 
