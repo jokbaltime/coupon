@@ -1,5 +1,5 @@
 // ======================================
-// STAFF.JS - 직원용 전체 통합 로직 (문서 미존재 에러 방지 적용)
+// STAFF.JS - 모든 updateDoc을 setDoc(..., { merge: true })로 안전 교체
 // ======================================
 import {
   db,
@@ -7,7 +7,6 @@ import {
   doc,
   getDoc,
   setDoc,
-  updateDoc,
   addDoc,
   collection,
   query,
@@ -65,7 +64,6 @@ function startRequestListener() {
   const list = document.getElementById("requestList");
   if (!list) return;
 
-  // status가 'waiting'인 대기 요청만 실시간 수신
   const q = query(
     collection(db, "coupon_request"),
     where("status", "==", "waiting")
@@ -81,7 +79,6 @@ function startRequestListener() {
     snapshot.forEach((item) => {
       const data = item.data();
 
-      // 이미 requestClosed가 true 처리된 항목은 스킵
       if (data.requestClosed) return;
 
       const div = document.createElement("div");
@@ -101,14 +98,12 @@ function startRequestListener() {
           const num = data.couponNumber;
           const staffEmail = auth.currentUser ? auth.currentUser.email : "staff";
 
-          // Step 1: 발급 DB(coupon_issue) 승인 상태 업데이트
-          // 💡 setDoc(..., { merge: true })를 사용하여 coupon_issue 문서가 없더라도 자동 생성 후 승인 처리
+          // ⭐ 문서가 존재하지 않아도 새로 만들며 승인 처리 (No document 에러 원천 차단)
           await setDoc(doc(db, "coupon_issue", num), {
             approved: true,
             approvedTime: serverTimestamp()
           }, { merge: true });
 
-          // Step 2: 요청 DB(coupon_request) 승인 완료 및 종료 처리
           await setDoc(doc(db, "coupon_request", item.id), {
             status: "approved",
             requestClosed: true,
@@ -116,7 +111,6 @@ function startRequestListener() {
             approvedTime: serverTimestamp()
           }, { merge: true });
 
-          // Step 3: 히스토리 기록
           await addDoc(collection(db, "coupon_history"), {
             couponNumber: num,
             action: "approved",
@@ -168,13 +162,12 @@ if (useBtn) {
     try {
       const staffEmail = auth.currentUser ? auth.currentUser.email : "staff";
 
-      // coupon_issue 사용 완료 업데이트 (문서 미 존재 시 생성 포함)
+      // ⭐ 사용 완료 처리도 setDoc merge로 안전하게 변경
       await setDoc(doc(db, "coupon_issue", num), {
         used: true,
         usedTime: serverTimestamp()
       }, { merge: true });
 
-      // 히스토리 기록
       await addDoc(collection(db, "coupon_history"), {
         couponNumber: num,
         action: "used",
