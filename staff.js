@@ -465,13 +465,7 @@ auth.currentUser.email
 
 );
 
-await deleteDoc(
-doc(
-db,
-"coupon_request",
-data.couponNumber
-)
-);
+
 
 
 await deleteDoc(
@@ -1176,7 +1170,7 @@ if(!historyList) return;
 const q =
 query(
 collection(db,"coupon_history"),
-orderBy("usedTime","desc")
+orderBy("approvedTime","desc")
 );
 
 
@@ -1316,7 +1310,6 @@ return;
 }
 
     
-let count = 0;
     
 const time =
 (data.usedTime || data.approvedTime)
