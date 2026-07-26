@@ -1175,18 +1175,9 @@ if(!historyList) return;
 
 const q =
 query(
-
-collection(
-db,
-"coupon_history"
-),
-
-orderBy(
-"approvedTime",
-"desc"
-)
+collection(db,"coupon_history"),
+orderBy("usedTime","desc")
 );
-
 
 
 onSnapshot(
