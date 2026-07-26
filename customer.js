@@ -548,11 +548,3 @@ console.log(
 requestBtn
 );
 
-
-requestBtn.onclick = ()=>{
-
-console.log(
-"버튼 눌림 확인"
-);
-
-};
