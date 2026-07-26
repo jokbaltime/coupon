@@ -235,7 +235,7 @@ signOut(auth);
 
 
 saveCouponBtn.onclick = async()=>{
-
+alert("저장 버튼 연결됨");
 
 const number =
 couponNumber.value.trim();
