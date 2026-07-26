@@ -72,6 +72,7 @@ document.getElementById("useButton");
 const cancelButton =
 document.getElementById("cancelButton");
 
+let currentUserIsAdmin = false;
 
 const scanButton =
 document.getElementById("scanButton");
@@ -195,13 +196,13 @@ console.log("관리자 영역:", adminArea);
 
 if(user.email === ADMIN_EMAIL){
 
+    currentUserIsAdmin = true;
 
     adminArea.style.display="block";
 
     adminRequestArea.style.display="block";
 
-    startRequestListener();
-    
+
     loadAdminStats();
 
 
@@ -209,13 +210,14 @@ if(user.email === ADMIN_EMAIL){
 else{
 
 
+    currentUserIsAdmin = false;
+
     adminArea.style.display="none";
 
     adminRequestArea.style.display="none";
 
 
 }
-
 
 }
 
@@ -817,6 +819,15 @@ if(cancelButton){
 
 cancelButton.onclick = async()=>{
 
+if(!currentUserIsAdmin){
+
+alert(
+"관리자만 취소할 수 있습니다."
+);
+
+return;
+
+}
 
 const number =
 couponInput.value.trim();
