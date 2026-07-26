@@ -58,12 +58,24 @@ function listenToCouponStatus(couponNum) {
     } 
     // 🛑 직원이 승인 완료한 경우
     else if (data.approved) {
-      if (statusNotice) statusNotice.innerHTML = "<b style='color:#4caf50;'>🎉 직원 승인 완료! (매장 직원에게 이 화면을 보여주세요)</b>";
-      if (requestBtn) {
-        requestBtn.innerText = "✅ 승인 완료됨";
-        requestBtn.disabled = true;
-      }
-    }
+
+  if (statusNotice) {
+    statusNotice.innerHTML =
+    `
+    <b style='color:#4caf50;'>
+    🎉 승인 완료
+    </b>
+    <br>
+    직원에게 쿠폰을 보여주세요.
+    `;
+  }
+
+  if (requestBtn) {
+    requestBtn.innerText = "✅ 승인 완료됨";
+    requestBtn.disabled = true;
+  }
+
+}
   });
 
   // B. coupon_request 실시간 감지 (대기 중인 요청이 있는지 체크)
