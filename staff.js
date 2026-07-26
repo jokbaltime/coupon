@@ -189,6 +189,7 @@ startRequestListener();
     
 loadHistory();
 
+startRequestListener();
 
 console.log("로그인 계정:", user.email);
 console.log("관리자 계정:", ADMIN_EMAIL);
@@ -278,12 +279,13 @@ alert(
 
 function startRequestListener(){
 
+    console.log("startRequestListener 실행");
 
-const list =
-document.getElementById("requestList");
+    const list = document.getElementById("requestList");
 
+    console.log(list);
 
-if(!list)return;
+    if(!list) return;
 
 
 
@@ -311,10 +313,9 @@ q,
 
 (snapshot)=>{
 
+console.log("실시간 요청 수 :", snapshot.size);
 
 list.innerHTML="";
-
-
 
 snapshot.forEach(
 
