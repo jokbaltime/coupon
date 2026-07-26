@@ -36,6 +36,8 @@ requestButton.onclick = async()=>{
 const number =
 couponInput.value.trim();
 
+
+
 if(!number){
 
 result.innerHTML =
@@ -44,6 +46,8 @@ result.innerHTML =
 return;
 
 }
+
+
 
 const snap =
 await getDoc(
@@ -56,6 +60,8 @@ number
 
 );
 
+
+
 if(!snap.exists()){
 
 result.innerHTML =
@@ -65,27 +71,16 @@ return;
 
 }
 
-if(!number){
-
-result.innerHTML =
-"쿠폰번호를 입력하세요";
-
-return;
-
-}
-
 
 
 try{
 
-// 이미 요청 중인지 확인
+
+// 기존 요청 확인
 
 const requestQuery = query(
 
-collection(
-db,
-"coupon_request"
-),
+collection(db,"coupon_request"),
 
 where(
 "couponNumber",
@@ -102,8 +97,10 @@ where(
 );
 
 
+
 const requestSnap =
 await getDocs(requestQuery);
+
 
 
 if(!requestSnap.empty){
@@ -115,7 +112,13 @@ return;
 
 }
 
+
+
+// 요청 저장
+
 console.log("요청 시작");
+
+
 
 await setDoc(
 
@@ -127,36 +130,51 @@ number
 
 {
 
-couponNumber: number,
+couponNumber:number,
 
-status: "waiting",
+status:"waiting",
 
-requestTime: serverTimestamp()
+createdTime:serverTimestamp()
 
 }
 
 );
 
+
+
 console.log("저장 성공");
+
 
 
 result.innerHTML =
 "✅ 직원 승인 요청 완료";
 
 
+
 couponInput.value="";
+
 
 
 }
 
 
+
 catch(error){
 
-console.error("저장 실패", error);
+
+console.error(
+"저장 실패",
+error
+);
+
+
 
 result.innerHTML =
 "요청 오류 : "
-+error.message;
++
+error.message;
+
+
 
 }
 
