@@ -122,7 +122,33 @@ return;
 const data =
 snap.data();
 
+const today =
+new Date()
+.toISOString()
+.split("T")[0];
 
+
+if(data.startDate && data.endDate){
+
+
+if(
+today < data.startDate ||
+today > data.endDate
+){
+
+
+alert(
+"⛔ 사용 기간이 아닌 쿠폰입니다."
+);
+
+
+return;
+
+
+}
+
+
+}
 
 currentCoupon = number;
 
