@@ -122,12 +122,6 @@ return;
 const data =
 snap.data();
 
-const today =
-new Date()
-.toISOString()
-.split("T")[0];
-
-
 let expired = false;
 
 
@@ -173,7 +167,14 @@ discount.innerText =
 notice.innerText =
 data.notice || "";
 
+if(expired){
 
+result.innerHTML =
+"⛔ 사용 기간 만료";
+
+requestBtn.disabled = true;
+
+}
 
 
 
@@ -233,7 +234,32 @@ return;
 const data =
 snapshot.data();
 
+const today =
+new Date()
+.toISOString()
+.split("T")[0];
 
+
+if(data.startDate && data.endDate){
+
+
+if(
+today < data.startDate ||
+today > data.endDate
+){
+
+
+alert(
+"⛔ 사용 기간이 아닌 쿠폰입니다."
+);
+
+
+return;
+
+
+}
+
+}
 
 
 if(data.status==="waiting"){
