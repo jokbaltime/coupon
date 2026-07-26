@@ -249,9 +249,11 @@ today > data.endDate
 ){
 
 
-alert(
-"⛔ 사용 기간이 아닌 쿠폰입니다."
-);
+result.innerHTML =
+"⛔ 사용 기간 만료";
+
+
+requestBtn.disabled=true;
 
 
 return;
