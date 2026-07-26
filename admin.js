@@ -502,22 +502,41 @@ requestList.appendChild(div);
 // APPROVE
 // ================================
 
-
 async function approveCoupon(number){
+
+
+const couponRef =
+doc(
+db,
+"coupons",
+number
+);
+
+
+const couponSnap =
+await getDoc(couponRef);
+
+
+
+if(!couponSnap.exists()){
+
+
+alert(
+"쿠폰 데이터를 찾을 수 없습니다"
+);
+
+
+return;
+
+
+}
+
 
 
 
 await updateDoc(
 
-doc(
-
-db,
-
-"coupons",
-
-number
-
-),
+couponRef,
 
 {
 
@@ -537,17 +556,12 @@ serverTimestamp()
 
 
 
-
 await updateDoc(
 
 doc(
-
 db,
-
 "coupon_requests",
-
 number
-
 ),
 
 {
@@ -564,15 +578,11 @@ status:"approved"
 
 
 
-
 await addDoc(
 
 collection(
-
 db,
-
 "coupon_history"
-
 ),
 
 {
@@ -603,6 +613,7 @@ alert(
 
 
 }
+
 
 
 
