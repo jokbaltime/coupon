@@ -462,21 +462,12 @@ auth.currentUser.email
 
 );
 
-await updateDoc(
-
+await deleteDoc(
 doc(
 db,
 "coupon_request",
-item.id
-),
-
-{
-status:"approved",
-requestClosed:true,
-approvedTime:serverTimestamp(),
-approvedBy:auth.currentUser.email
-}
-
+data.couponNumber
+)
 );
 
 
@@ -718,7 +709,7 @@ snap.data();
 
 
 
-if(data.used || data.approved !== true){
+if(data.used){
 
 alert(
 "사용 불가 쿠폰입니다."
@@ -1189,7 +1180,7 @@ db,
 ),
 
 orderBy(
-"approvedTime",
+"usedTime",
 "desc"
 )
 );
@@ -1226,10 +1217,10 @@ snapshot.forEach((item)=>{
 
     if(data.usedTime || data.approvedTime){
 
-    time =
-    (data.usedTime || data.approvedTime)
-    .toDate()
-    .toLocaleString();
+time =
+(data.usedTime || data.approvedTime)
+.toDate()
+.toLocaleString();
 
 }
 
