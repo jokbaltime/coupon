@@ -1,6 +1,7 @@
 // ======================================
 // admin.js
 // JOKBAL TIME COUPON ADMIN SYSTEM
+// FULL VERSION
 // ======================================
 
 
@@ -21,7 +22,6 @@ onSnapshot,
 serverTimestamp
 
 } from "./firebase.js";
-
 
 
 import {
@@ -124,11 +124,11 @@ loginBtn.onclick = async()=>{
 
 
 const email =
-document.getElementById("adminEmail").value;
+document.getElementById("adminEmail").value.trim();
 
 
 const password =
-document.getElementById("adminPassword").value;
+document.getElementById("adminPassword").value.trim();
 
 
 
@@ -146,15 +146,20 @@ password
 );
 
 
+
 }
 
 catch(error){
 
 
 alert(
+
 "로그인 실패 : "
+
 +
+
 error.message
+
 );
 
 
@@ -180,9 +185,11 @@ loginBox.classList.add("hidden");
 adminBox.classList.remove("hidden");
 
 
+
 loadRequests();
 
 loadHistory();
+
 
 
 }
@@ -198,6 +205,7 @@ adminBox.classList.add("hidden");
 }
 
 
+
 });
 
 
@@ -207,10 +215,10 @@ adminBox.classList.add("hidden");
 
 
 
-logoutBtn.onclick = ()=>{
+logoutBtn.onclick = async()=>{
 
 
-signOut(auth);
+await signOut(auth);
 
 
 };
@@ -219,8 +227,12 @@ signOut(auth);
 
 
 
+
+
+
+
 // ================================
-// COUPON SAVE / UPDATE (상태 유지)
+// COUPON SAVE / UPDATE
 // ================================
 
 
@@ -247,13 +259,18 @@ return;
 
 
 
-
 const couponRef =
 doc(
+
 db,
+
 "coupons",
+
 number
+
 );
+
+
 
 
 
@@ -265,6 +282,7 @@ await getDoc(couponRef);
 
 
 let saveData = {
+
 
 couponNumber:number,
 
@@ -288,6 +306,7 @@ imageUrl.value.trim(),
 updatedAt:
 serverTimestamp()
 
+
 };
 
 
@@ -296,12 +315,9 @@ serverTimestamp()
 
 
 
-// 기존 쿠폰이면 상태 유지
-
 if(oldCoupon.exists()){
 
-console.log("기존쿠폰 데이터", oldCoupon.data());
-  
+
 const oldData =
 oldCoupon.data();
 
@@ -319,9 +335,6 @@ oldData.createdAt;
 
 }
 
-
-// 신규 쿠폰
-
 else{
 
 
@@ -329,11 +342,14 @@ saveData.status =
 "issued";
 
 
+
 saveData.createdAt =
 serverTimestamp();
 
 
+
 }
+
 
 
 
@@ -358,6 +374,7 @@ merge:true
 
 
 
+
 alert(
 "쿠폰 저장 완료"
 );
@@ -365,10 +382,6 @@ alert(
 
 
 };
-
-
-
-
 
 
 
@@ -433,24 +446,20 @@ div.className =
 
 
 
-div.innerHTML=
+div.innerHTML =
 
 `
 
 <p>
-
 쿠폰번호 :
 <b>${data.couponNumber}</b>
-
 </p>
-
 
 <button>
 승인
 </button>
 
 `;
-
 
 
 
@@ -501,9 +510,13 @@ async function approveCoupon(number){
 await updateDoc(
 
 doc(
+
 db,
+
 "coupons",
+
 number
+
 ),
 
 {
@@ -518,8 +531,8 @@ serverTimestamp()
 
 }
 
-
 );
+
 
 
 
@@ -528,9 +541,13 @@ serverTimestamp()
 await updateDoc(
 
 doc(
+
 db,
+
 "coupon_requests",
+
 number
+
 ),
 
 {
@@ -541,8 +558,8 @@ status:"approved"
 
 }
 
-
 );
+
 
 
 
@@ -551,8 +568,11 @@ status:"approved"
 await addDoc(
 
 collection(
+
 db,
+
 "coupon_history"
+
 ),
 
 {
@@ -570,8 +590,9 @@ serverTimestamp()
 
 }
 
-
 );
+
+
 
 
 
@@ -592,7 +613,7 @@ alert(
 
 
 // ================================
-// SEARCH
+// SEARCH COUPON
 // ================================
 
 
@@ -604,13 +625,24 @@ searchCoupon.value.trim();
 
 
 
+if(!number)
+return;
+
+
+
+
+
 const snap =
 await getDoc(
 
 doc(
+
 db,
+
 "coupons",
+
 number
+
 )
 
 );
@@ -641,7 +673,8 @@ snap.data();
 
 
 
-couponResult.innerHTML=
+
+couponResult.innerHTML =
 
 `
 
@@ -649,11 +682,9 @@ couponResult.innerHTML=
 번호 : ${data.couponNumber}
 </p>
 
-
 <p>
 상태 : ${data.status}
 </p>
-
 
 <p>
 할인 : ${data.discount}%
@@ -671,3 +702,181 @@ couponResult.innerHTML=
 
 
 
+
+
+// ================================
+// CANCEL USE
+// ================================
+
+
+cancelUseBtn.onclick = async()=>{
+
+
+const number =
+searchCoupon.value.trim();
+
+
+
+if(!number)
+return;
+
+
+
+
+
+await updateDoc(
+
+doc(
+
+db,
+
+"coupons",
+
+number
+
+),
+
+{
+
+
+status:"approved",
+
+
+cancelledAt:
+serverTimestamp()
+
+
+}
+
+);
+
+
+
+
+
+
+await addDoc(
+
+collection(
+
+db,
+
+"coupon_history"
+
+),
+
+{
+
+
+couponNumber:number,
+
+
+action:"cancelled",
+
+
+time:
+serverTimestamp()
+
+
+}
+
+);
+
+
+
+
+
+alert(
+"사용 취소 복구 완료"
+);
+
+
+
+};
+
+
+
+
+
+
+
+
+
+// ================================
+// HISTORY
+// ================================
+
+
+function loadHistory(){
+
+
+
+const q =
+
+query(
+
+collection(
+
+db,
+
+"coupon_history"
+
+),
+
+orderBy(
+
+"time",
+
+"desc"
+
+)
+
+);
+
+
+
+
+
+onSnapshot(q,(snapshot)=>{
+
+
+historyList.innerHTML="";
+
+
+
+snapshot.forEach((item)=>{
+
+
+const data =
+item.data();
+
+
+
+historyList.innerHTML +=
+
+
+`
+
+<p>
+
+${data.couponNumber}
+
+-
+
+${data.action}
+
+</p>
+
+`;
+
+
+
+});
+
+
+
+});
+
+
+
+}
