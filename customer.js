@@ -153,7 +153,7 @@ const oldData =
 oldRequest.data();
 
 
-if(oldData.status === "approved"){
+if(oldData.status === "approved" || oldData.status === "done"){
 
 result.innerHTML =
 "❌ 이미 승인 완료된 쿠폰입니다.";
