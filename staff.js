@@ -371,7 +371,7 @@ btn.innerHTML = "처리중...";
 // 관리자만 승인 가능
 
 if(
-auth.currentUser.email !== ADMIN_EMAIL
+!currentUserIsAdmin
 ){
 
 alert(
