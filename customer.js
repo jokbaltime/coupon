@@ -140,3 +140,69 @@ if (requestBtn) {
     }
   };
 }
+
+// ======================================
+// CUSTOMER.JS - 사용된 쿠폰 승인 요청 재차단 FIX
+// ======================================
+if (requestBtn) {
+  requestBtn.onclick = async () => {
+    const couponNum = getCurrentCouponNumber();
+
+    if (!couponNum) {
+      alert("쿠폰 번호를 입력해 주세요.");
+      return;
+    }
+
+    requestBtn.disabled = true;
+    requestBtn.innerText = "상태 확인 중...";
+
+    try {
+      // 1. 요청을 보내기 전, 발급 DB(coupon_issue)에서 현재 쿠폰 상태를 실시간 조회
+      const issueRef = doc(db, "coupon_issue", couponNum);
+      const issueSnap = await getDoc(issueRef);
+
+      if (!issueSnap.exists()) {
+        alert("❌ 존재하지 않는 유효하지 않은 쿠폰 번호입니다.");
+        requestBtn.disabled = false;
+        requestBtn.innerText = "직원 승인 요청";
+        return;
+      }
+
+      const issueData = issueSnap.data();
+
+      // 🛑 [차단 1] 이미 사용 완료된 쿠폰인 경우
+      if (issueData.used) {
+        alert("❌ 이미 사용 완료된 쿠폰입니다. 다시 승인 요청할 수 없습니다.");
+        requestBtn.disabled = true;
+        requestBtn.innerText = "❌ 사용 완료됨";
+        return;
+      }
+
+      // 🛑 [차단 2] 이미 직원 승인이 완료된 쿠폰인 경우
+      if (issueData.approved) {
+        alert("🎉 이미 직원 승인이 완료된 쿠폰입니다.");
+        requestBtn.disabled = true;
+        requestBtn.innerText = "✅ 승인 완료됨";
+        return;
+      }
+
+      // 2. 검증을 통과한 순수 '대기 중' 쿠폰만 요청 생성
+      await setDoc(doc(db, "coupon_request", couponNum), {
+        couponNumber: couponNum,
+        status: "waiting",
+        createdTime: serverTimestamp()
+      });
+
+      alert("직원에게 승인 요청을 보냈습니다. 잠시만 기다려주세요.");
+      
+      // 상태 감지 시작
+      listenToStatus(couponNum);
+
+    } catch (error) {
+      console.error("요청 오류:", error);
+      alert("요청 처리 중 오류가 발생했습니다: " + error.message);
+      requestBtn.disabled = false;
+      requestBtn.innerText = "직원 승인 요청";
+    }
+  };
+}
