@@ -184,8 +184,6 @@ console.log("현재 로그인:", user.email);
 loginArea.style.display="none";
 
 staffArea.style.display="block";
-
-startRequestListener();
     
 loadHistory();
 
