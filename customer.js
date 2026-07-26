@@ -137,7 +137,32 @@ return;
 
 console.log("요청 시작");
 
+const oldRequest =
+await getDoc(
+doc(
+db,
+"coupon_request",
+number
+)
+);
 
+
+if(oldRequest.exists()){
+
+const oldData =
+oldRequest.data();
+
+
+if(oldData.status === "approved"){
+
+result.innerHTML =
+"❌ 이미 승인 완료된 쿠폰입니다.";
+
+return;
+
+}
+
+}
 
 await setDoc(
 
