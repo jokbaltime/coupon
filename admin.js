@@ -1,5 +1,5 @@
 // admin.js FULL REPLACEMENT
-// ADMIN APPROVAL / COUPON STATUS MANAGEMENT VERSION
+// ADMIN CONTROL / COUPON STATUS MANAGEMENT VERSION
 
 
 import {
@@ -18,6 +18,8 @@ serverTimestamp
 
 
 import {
+signInWithEmailAndPassword,
+signOut,
 onAuthStateChanged
 } from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -29,24 +31,107 @@ const ADMIN_EMAIL =
 
 
 
-const adminArea =
-document.getElementById("adminArea");
+const loginButton =
+document.getElementById("loginButton");
 
 
-const adminStats =
-document.getElementById("adminStats");
+const logoutButton =
+document.getElementById("logoutButton");
 
 
-const adminHistory =
-document.getElementById("adminHistory");
+const loginBox =
+document.querySelector(".login-box");
+
+
+const adminPanel =
+document.getElementById("adminPanel");
 
 
 
-let isAdmin = false;
+const saveButton =
+document.getElementById("saveButton");
+
+
+const titleInput =
+document.getElementById("title");
+
+
+const discountInput =
+document.getElementById("discount");
+
+
+const noticeInput =
+document.getElementById("notice");
 
 
 
-// 관리자 확인
+let adminMode=false;
+
+
+
+
+
+// 로그인
+
+if(loginButton){
+
+
+loginButton.onclick =
+async()=>{
+
+
+const email =
+document.getElementById("adminEmail").value.trim();
+
+
+const password =
+document.getElementById("adminPassword").value.trim();
+
+
+
+
+try{
+
+
+await signInWithEmailAndPassword(
+
+auth,
+
+email,
+
+password
+
+);
+
+
+
+}
+
+catch(error){
+
+
+alert(
+"로그인 실패 : "
++error.message
+);
+
+
+}
+
+
+
+};
+
+
+}
+
+
+
+
+
+
+
+// 인증 확인
 
 onAuthStateChanged(
 
@@ -57,13 +142,21 @@ auth,
 
 if(!user){
 
-if(adminArea)
-adminArea.style.display="none";
+
+if(loginBox)
+loginBox.style.display="block";
+
+
+if(adminPanel)
+adminPanel.classList.add("hidden");
 
 
 return;
 
+
 }
+
+
 
 
 
@@ -72,14 +165,25 @@ user.email === ADMIN_EMAIL
 ){
 
 
-isAdmin=true;
+adminMode=true;
 
 
-if(adminArea)
-adminArea.style.display="block";
+
+if(loginBox)
+loginBox.style.display="none";
 
 
-loadAdminData();
+
+if(adminPanel)
+adminPanel.classList.remove("hidden");
+
+
+
+loadSetting();
+
+
+loadHistory();
+
 
 
 }
@@ -87,11 +191,15 @@ loadAdminData();
 else{
 
 
-isAdmin=false;
+adminMode=false;
 
 
-if(adminArea)
-adminArea.style.display="none";
+alert(
+"관리자 권한이 없습니다."
+);
+
+
+signOut(auth);
 
 
 }
@@ -107,17 +215,173 @@ adminArea.style.display="none";
 
 
 
-// 관리자 데이터
-
-async function loadAdminData(){
 
 
-if(!isAdmin)
+// 로그아웃
+
+if(logoutButton){
+
+
+logoutButton.onclick =
+async()=>{
+
+
+await signOut(auth);
+
+
+};
+
+
+}
+
+
+
+
+
+
+
+
+// 설정 저장
+
+if(saveButton){
+
+
+saveButton.onclick =
+async()=>{
+
+
+if(!adminMode)
 return;
 
 
 
-const q = query(
+await setDoc(
+
+doc(
+db,
+"system",
+"coupon"
+),
+
+{
+
+
+title:
+titleInput.value,
+
+
+discount:
+Number(discountInput.value),
+
+
+notice:
+noticeInput.value,
+
+
+updatedTime:
+serverTimestamp()
+
+
+}
+
+);
+
+
+
+alert(
+"저장 완료"
+);
+
+
+
+};
+
+
+}
+
+
+
+
+
+
+
+
+
+
+// 설정 불러오기
+
+async function loadSetting(){
+
+
+const snap =
+await getDoc(
+
+doc(
+db,
+"system",
+"coupon"
+)
+
+);
+
+
+
+if(!snap.exists())
+return;
+
+
+
+const data =
+snap.data();
+
+
+
+if(titleInput)
+titleInput.value =
+data.title || "";
+
+
+
+if(discountInput)
+discountInput.value =
+data.discount || 0;
+
+
+
+if(noticeInput)
+noticeInput.value =
+data.notice || "";
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// 처리 기록
+
+async function loadHistory(){
+
+
+
+const historyBox =
+document.getElementById("adminHistory");
+
+
+
+if(!historyBox)
+return;
+
+
+
+const q =
+query(
 
 collection(
 db,
@@ -138,14 +402,12 @@ await getDocs(q);
 
 
 
-let used=0;
-
-let cancel=0;
+let html="";
 
 let approved=0;
 
+let used=0;
 
-let html="";
 
 
 
@@ -160,24 +422,14 @@ item.data();
 
 
 
-if(
-data.action==="used"
-)
+
+if(data.action==="approved")
+approved++;
+
+
+if(data.action==="used")
 used++;
 
-
-
-if(
-data.action==="cancel"
-)
-cancel++;
-
-
-
-if(
-data.action==="approved"
-)
-approved++;
 
 
 
@@ -187,14 +439,15 @@ html +=
 `
 
 <div style="
-border-bottom:1px solid #444;
 padding:10px;
+border-bottom:1px solid #444;
 ">
 
 
 <b>
 ${data.couponNumber}
 </b>
+
 
 <br>
 
@@ -212,7 +465,6 @@ ${data.staff || ""}
 
 </div>
 
-
 `;
 
 
@@ -224,15 +476,22 @@ ${data.staff || ""}
 
 
 
-if(adminStats){
 
 
-adminStats.innerHTML =
+const stats =
+document.getElementById("adminStats");
+
+
+
+if(stats){
+
+
+stats.innerHTML=
 
 `
 
 <h3>
-관리자 현황
+쿠폰 현황
 </h3>
 
 
@@ -249,23 +508,17 @@ ${used}
 건
 </p>
 
-
-<p>
-취소 :
-${cancel}
-건
-</p>
-
 `;
+
+
 
 }
 
 
 
-if(adminHistory){
 
 
-adminHistory.innerHTML =
+historyBox.innerHTML =
 
 `
 
@@ -277,118 +530,6 @@ ${html}
 
 `;
 
-}
-
-
-
-}
-
-
-
-
-
-// 관리자 강제 승인 기능
-
-window.adminApproveCoupon =
-async function(couponNumber){
-
-
-
-if(!isAdmin){
-
-
-alert(
-"관리자 권한 필요"
-);
-
-
-return;
 
 
 }
-
-
-
-try{
-
-
-await setDoc(
-
-doc(
-db,
-"coupon_issue",
-couponNumber
-),
-
-{
-
-approved:true,
-
-approvedTime:
-serverTimestamp()
-
-},
-
-{
-
-merge:true
-
-}
-
-);
-
-
-
-
-
-await addDoc(
-
-collection(
-db,
-"coupon_history"
-),
-
-{
-
-couponNumber:couponNumber,
-
-action:"approved",
-
-approvedTime:
-serverTimestamp(),
-
-staff:
-auth.currentUser.email
-
-}
-
-);
-
-
-
-alert(
-"승인 완료"
-);
-
-
-
-loadAdminData();
-
-
-
-}
-
-catch(error){
-
-
-alert(
-"관리자 승인 오류 : "
-+error.message
-);
-
-
-}
-
-
-
-};
