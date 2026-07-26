@@ -1,1 +1,329 @@
+<!-- ======================================
+     admin.html
+     JOKBAL TIME COUPON ADMIN
+     ====================================== -->
 
+
+<!DOCTYPE html>
+
+<html lang="ko">
+
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+족발타임 관리자
+</title>
+
+
+<link rel="stylesheet" href="./admin.css">
+
+
+</head>
+
+
+
+<body>
+
+
+<div class="admin-container">
+
+
+
+<h1>
+🍖 족발타임 관리자
+</h1>
+
+
+
+
+
+<!-- 로그인 -->
+
+<section id="loginBox" class="box">
+
+
+<h2>
+관리자 로그인
+</h2>
+
+
+<input
+
+id="adminEmail"
+
+type="email"
+
+placeholder="관리자 이메일"
+
+>
+
+
+<input
+
+id="adminPassword"
+
+type="password"
+
+placeholder="비밀번호"
+
+>
+
+
+
+<button id="loginBtn">
+
+로그인
+
+</button>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- 관리자 화면 -->
+
+<section id="adminBox" class="box hidden">
+
+
+
+<div class="top">
+
+<h2>
+쿠폰 관리
+</h2>
+
+
+<button id="logoutBtn">
+
+로그아웃
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+
+<h3>
+쿠폰 생성 / 수정
+</h3>
+
+
+
+<input
+
+id="couponNumber"
+
+placeholder="쿠폰번호"
+
+>
+
+
+<input
+
+id="couponTitle"
+
+placeholder="쿠폰 제목"
+
+>
+
+
+<input
+
+id="discount"
+
+type="number"
+
+placeholder="할인율"
+
+>
+
+
+
+<textarea
+
+id="notice"
+
+placeholder="쿠폰 안내 문구">
+
+</textarea>
+
+
+
+
+
+<input
+
+id="imageUrl"
+
+placeholder="쿠폰 이미지 주소"
+
+>
+
+
+
+
+
+
+<button id="saveCouponBtn">
+
+쿠폰 저장
+
+</button>
+
+
+
+
+
+
+
+
+
+<hr>
+
+
+
+
+
+
+
+
+<h3>
+승인 요청 목록
+</h3>
+
+
+<div id="requestList">
+
+</div>
+
+
+
+
+
+
+
+
+<hr>
+
+
+
+
+
+
+
+
+<h3>
+쿠폰 조회 / 사용 취소
+</h3>
+
+
+
+
+<input
+
+id="searchCoupon"
+
+placeholder="쿠폰번호 입력"
+
+>
+
+
+
+<button id="searchBtn">
+
+조회
+
+</button>
+
+
+
+
+
+
+<div id="couponResult">
+
+</div>
+
+
+
+
+
+
+
+<button id="cancelUseBtn">
+
+사용 취소 복구
+
+</button>
+
+
+
+
+
+
+
+<hr>
+
+
+
+
+
+
+
+<h3>
+처리 기록
+
+</h3>
+
+
+<div id="historyList">
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+<script
+
+type="module"
+
+src="./admin.js">
+
+</script>
+
+
+
+</body>
+
+
+</html>
