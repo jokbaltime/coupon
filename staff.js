@@ -1285,7 +1285,7 @@ db,
 ),
 
 orderBy(
-"approvedTime",
+"usedTime",
 "desc"
 )
 );
