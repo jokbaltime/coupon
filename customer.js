@@ -13,7 +13,7 @@ serverTimestamp
 } from "./firebase.js";
 
 
-console.log("customer.js 실행");
+console.log("★★★★★ NEW CUSTOMER.JS ★★★★★");
 
 
 
