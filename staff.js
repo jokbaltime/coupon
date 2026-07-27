@@ -580,7 +580,7 @@ couponInfo.innerHTML =
 
 <p><b>쿠폰번호</b> : ${number}</p>
 
-<p><b>상태</b> : ${data.status}</p>
+<p><b>상태</b> : ${statusText}</p>
 
 <p><b>할인율</b> : ${data.discount}%</p>
 
