@@ -545,7 +545,7 @@ snap.data();
 
 let statusText = "";
 
-if ((data.useCount || 0) >= (data.maxUseCount || 1)) {
+if ((data.useCount || 0) >= 1) {
 
     statusText = "❌ 사용 완료";
 
@@ -620,8 +620,10 @@ ${data.usedAt ? data.usedAt.toDate().toLocaleString() : "-"}
 `;
 
 // 사용 완료 버튼 제어
-if (data.status === "approved" &&
-    (data.useCount || 0) < (data.maxUseCount || 1)) {
+if (
+data.status === "approved" &&
+(data.useCount || 0) < 1
+)
 
     useBtn.disabled = false;
     useBtn.textContent = "사용 완료 처리";
@@ -752,9 +754,8 @@ const useCount =
 data.useCount || 0;
 
 
-const maxUseCount =
-data.maxUseCount || 1;
-
+// 1회용 고정
+const maxUseCount = 1;
 
 
 if(data.status === "used"){
@@ -793,17 +794,12 @@ number
 
 {
 
-
 status:"used",
 
-
-useCount:
-useCount + 1,
-
+useCount:1,
 
 usedAt:
 serverTimestamp()
-
 
 }
 
