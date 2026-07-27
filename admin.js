@@ -878,3 +878,114 @@ alert(
 );
 
 };
+
+// ================================
+// UPDATE COUPON
+// ================================
+
+updateCouponBtn.onclick = async()=>{
+
+
+const number =
+couponNumber.value.trim();
+
+
+
+if(!number){
+
+alert(
+"쿠폰번호 입력"
+);
+
+return;
+
+}
+
+
+
+await updateDoc(
+
+doc(
+db,
+"coupons",
+number
+),
+
+{
+
+
+title:
+couponTitle.value.trim(),
+
+
+discount:
+Number(discount.value),
+
+
+maxUseCount:
+Number(maxUseCount.value),
+
+
+notice:
+notice.value.trim(),
+
+
+image:
+imageUrl.value.trim(),
+
+
+startDate:
+startDate.value,
+
+
+endDate:
+endDate.value,
+
+
+updatedAt:
+serverTimestamp()
+
+
+}
+
+);
+
+
+
+
+
+await addDoc(
+
+collection(
+db,
+"coupon_history"
+),
+
+{
+
+
+couponNumber:number,
+
+
+action:"updated",
+
+
+time:
+serverTimestamp()
+
+
+}
+
+);
+
+
+
+
+
+alert(
+"쿠폰 수정 완료"
+);
+
+
+
+};
