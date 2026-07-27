@@ -955,7 +955,70 @@ data.startDate || "";
 endDate.value =
 data.endDate || "";
 
+const data =
+snap.data();
 
+
+// 여기 추가
+
+
+let statusText = "";
+
+
+if(
+(data.useCount || 0) >= (data.maxUseCount || 1)
+){
+
+statusText = "❌ 사용 완료";
+
+}
+
+else{
+
+
+switch(data.status){
+
+
+case "issued":
+
+statusText = "📄 발급 완료";
+
+break;
+
+
+case "waiting":
+
+statusText = "⏳ 승인 대기";
+
+break;
+
+
+case "approved":
+
+statusText = "✅ 승인 완료";
+
+break;
+
+
+case "used":
+
+statusText = "❌ 사용 완료";
+
+break;
+
+
+default:
+
+statusText = data.status;
+
+}
+
+}
+
+
+// 조회한 쿠폰 정보 입력창 표시
+couponNumber.value =
+  
 // 수정 버튼 표시
 if(editButtons){
 
@@ -979,7 +1042,7 @@ ${data.title}
 
 <p>
 상태 :
-${data.status}
+${statusText}
 </p>
 
 <p>
