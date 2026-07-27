@@ -462,3 +462,41 @@ font-size:52px;
 
 
 }
+
+/* ===========================
+   QR CODE
+=========================== */
+
+.qr-box{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+margin:20px auto;
+
+padding:15px;
+
+background:#ffffff;
+
+border:2px solid #eeeeee;
+
+border-radius:12px;
+
+width:210px;
+
+min-height:210px;
+
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+
+}
+
+.qr-box img{
+
+width:180px;
+
+height:180px;
+
+}
