@@ -818,7 +818,13 @@ html5QrCode.start(
 
 fps: 10,
 
-qrbox: 250
+qrbox: {
+
+width:300,
+
+height:300
+
+}
 
 },
 
