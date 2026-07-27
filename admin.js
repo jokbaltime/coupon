@@ -96,6 +96,15 @@ document.getElementById("cancelUseBtn");
 const deleteCouponBtn =
 document.getElementById("deleteCouponBtn");
 
+const editButtons =
+document.getElementById("editButtons");
+
+const editCouponBtn =
+document.getElementById("editCouponBtn");
+
+const updateCouponBtn =
+document.getElementById("updateCouponBtn");
+
 const historyList =
 document.getElementById("historyList");
 
