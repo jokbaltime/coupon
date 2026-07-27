@@ -140,6 +140,8 @@ document.getElementById("usedCount");
 
 let couponFilter = "all";
 
+let couponSnapshotData = [];
+
 // ================================
 // LOGIN
 // ================================
@@ -236,14 +238,43 @@ collection(db,"coupons"),
 (snapshot)=>{
 
 
-couponList.innerHTML="";
+couponSnapshotData = [];
 
 
 snapshot.forEach((item)=>{
 
+couponSnapshotData.push({
 
-const data =
-item.data();
+id:item.id,
+
+...item.data()
+
+});
+
+});
+
+
+renderCouponList();
+
+
+}
+
+);
+
+
+}
+
+
+
+
+function renderCouponList(){
+
+
+couponList.innerHTML="";
+
+
+couponSnapshotData.forEach((data)=>{
+
 
 if(
 couponFilter !== "all" &&
@@ -253,6 +284,8 @@ data.status !== couponFilter
 return;
 
 }
+
+
 
 let statusText="";
 
@@ -292,10 +325,7 @@ default:
 
 statusText=data.status;
 
-
 }
-
-
 
 
 
@@ -317,23 +347,19 @@ div.innerHTML =
 <b>${data.couponNumber}</b>
 </p>
 
-
 <p>
 ${data.title || "-"}
 </p>
-
 
 <p>
 상태 :
 ${statusText}
 </p>
 
-
 <p>
 할인 :
 ${data.discount || 0}%
 </p>
-
 
 <p>
 사용 :
@@ -341,7 +367,6 @@ ${data.useCount || 0}
 /
 ${data.maxUseCount || 1}
 </p>
-
 
 <p>
 최근 사용 :
@@ -365,7 +390,6 @@ data.usedAt.toDate().toLocaleString()
 
 
 
-
 div.querySelector(".selectCoupon")
 .onclick = ()=>{
 
@@ -377,7 +401,6 @@ data.couponNumber;
 searchBtn.click();
 
 
-// 수정 영역 이동
 window.scrollTo({
 
 top:0,
@@ -391,17 +414,11 @@ behavior:"smooth"
 
 
 
-
 couponList.appendChild(div);
 
 
 
 });
-
-
-}
-
-);
 
 
 }
@@ -1106,34 +1123,37 @@ allCouponBtn.onclick = ()=>{
 
 couponFilter = "all";
 
-loadCouponList();
+renderCouponList();
 
 };
+
 
 
 waitingCouponBtn.onclick = ()=>{
 
 couponFilter = "waiting";
 
-loadCouponList();
+renderCouponList();
 
 };
+
 
 
 approvedCouponBtn.onclick = ()=>{
 
 couponFilter = "approved";
 
-loadCouponList();
+renderCouponList();
 
 };
+
 
 
 usedCouponBtn.onclick = ()=>{
 
 couponFilter = "used";
 
-loadCouponList();
+renderCouponList();
 
 };
 
