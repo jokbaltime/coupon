@@ -551,33 +551,26 @@ couponInfo.innerHTML =
 
 `
 
-<p>
-상태 :
-${data.status}
-</p>
+<div class="coupon-detail">
 
+<h3>${data.title || "-"}</h3>
 
-<p>
-쿠폰명 :
-${data.title || "-"}
-</p>
+<p><b>쿠폰번호</b> : ${number}</p>
 
+<p><b>상태</b> : ${data.status}</p>
 
-<p>
-할인 :
-${data.discount || 0}%
-</p>
+<p><b>할인율</b> : ${data.discount}%</p>
 
+<p><b>사용횟수</b> : ${data.useCount || 0} / ${data.maxUseCount || 1}</p>
 
-<p>
-사용횟수 :
-${data.useCount || 0}
-/
-${data.maxUseCount || 1}
-</p>
+<p><b>사용기간</b> :
+${data.startDate || "-"}
+~
+${data.endDate || "-"}</p>
+
+</div>
 
 `;
-
 
 
 };
