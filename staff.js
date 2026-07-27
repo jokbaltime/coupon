@@ -733,7 +733,18 @@ return;
 
 }
 
+if(
+data.useCount >= 1 ||
+data.status === "used"
+){
 
+alert(
+"이미 사용 완료된 쿠폰입니다."
+);
+
+return;
+
+}
 
 
 
