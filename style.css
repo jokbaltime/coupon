@@ -485,9 +485,9 @@ border:2px solid #eeeeee;
 
 border-radius:12px;
 
-width:210px;
+width:340px;
 
-min-height:210px;
+min-height:340px;
 
 box-shadow:0 2px 8px rgba(0,0,0,.08);
 
@@ -495,8 +495,8 @@ box-shadow:0 2px 8px rgba(0,0,0,.08);
 
 .qr-box img{
 
-width:250px;
+width:320px;
 
-height:250px;
+height:320px;
 
 }
