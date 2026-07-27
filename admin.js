@@ -1029,6 +1029,27 @@ editButtons.classList.remove("hidden");
 
 couponResult.innerHTML =
 `
+${
+data.image
+?
+`
+<img 
+src="${data.image}"
+style="
+width:200px;
+border-radius:10px;
+margin:10px 0;
+">
+`
+:
+""
+}
+
+
+<p>
+안내 :
+${data.notice || "-"}
+</p>
 
 <p>
 번호 :
