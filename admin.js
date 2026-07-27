@@ -229,11 +229,25 @@ item.data();
 if(data.status==="waiting")
 waiting++;
 
-if(data.status==="approved")
+
+if(
+data.status==="approved" &&
+(data.useCount || 0) < (data.maxUseCount || 1)
+){
+
 approved++;
 
-if(data.status==="used")
+}
+
+
+if(
+data.status==="used" ||
+(data.useCount || 0) >= (data.maxUseCount || 1)
+){
+
 used++;
+
+}
 
 });
 
