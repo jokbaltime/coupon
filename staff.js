@@ -268,6 +268,30 @@ div.className =
 
 
 
+const couponSnap =
+await getDoc(
+
+doc(
+db,
+"coupons",
+data.couponNumber
+)
+
+);
+
+
+let couponData = {};
+
+
+if(couponSnap.exists()){
+
+couponData =
+couponSnap.data();
+
+}
+
+
+
 div.innerHTML =
 
 `
@@ -275,6 +299,30 @@ div.innerHTML =
 <p>
 쿠폰번호 :
 <b>${data.couponNumber}</b>
+</p>
+
+
+<p>
+쿠폰명 :
+${couponData.title || "-"}
+</p>
+
+
+<p>
+할인 :
+${couponData.discount || 0}%
+</p>
+
+
+<p>
+요청시간 :
+${
+data.createdAt
+?
+data.createdAt.toDate().toLocaleString()
+:
+""
+}
 </p>
 
 
