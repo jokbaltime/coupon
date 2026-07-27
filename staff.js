@@ -216,7 +216,6 @@ signOut(auth);
 function loadRequests(){
 
 
-
 const q =
 
 query(
@@ -236,9 +235,6 @@ where(
 
 
 
-
-
-
 onSnapshot(q,(snapshot)=>{
 
 
@@ -246,8 +242,7 @@ requestList.innerHTML="";
 
 
 
-snapshot.forEach((item)=>{
-
+snapshot.forEach(async(item)=>{
 
 
 const data =
@@ -255,16 +250,8 @@ item.data();
 
 
 
-
 const div =
 document.createElement("div");
-
-
-
-div.className =
-"request-item";
-
-
 
 
 
@@ -280,15 +267,26 @@ data.couponNumber
 );
 
 
+
 let couponData = {};
+
 
 
 if(couponSnap.exists()){
 
+
 couponData =
 couponSnap.data();
 
+
 }
+
+
+
+
+
+div.className =
+"request-item";
 
 
 
@@ -336,7 +334,6 @@ data.createdAt.toDate().toLocaleString()
 
 
 
-
 div.querySelector("button")
 .onclick=()=>{
 
@@ -350,8 +347,6 @@ data.couponNumber
 
 
 
-
-
 requestList.appendChild(div);
 
 
@@ -360,13 +355,10 @@ requestList.appendChild(div);
 
 
 
-
 });
 
 
-
 }
-
 
 
 
