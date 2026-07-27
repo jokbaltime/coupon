@@ -1601,3 +1601,183 @@ alert(
 
 
 };
+
+// ================================
+// BULK COUPON CREATE
+// ================================
+
+bulkCreateBtn.onclick = async()=>{
+
+
+const title =
+bulkCouponTitle.value.trim();
+
+
+const discountValue =
+Number(bulkDiscount.value);
+
+
+const count =
+Number(bulkCount.value);
+
+
+const start =
+bulkStartDate.value;
+
+
+const end =
+bulkEndDate.value;
+
+
+const noticeText =
+bulkNotice.value.trim();
+
+
+
+if(!title){
+
+alert("쿠폰명을 입력하세요");
+
+return;
+
+}
+
+
+if(!count || count < 1){
+
+alert("생성 수량을 입력하세요");
+
+return;
+
+}
+
+
+
+const confirmCreate =
+confirm(
+`${count}개의 쿠폰을 생성하시겠습니까?`
+);
+
+
+if(!confirmCreate){
+
+return;
+
+}
+
+
+
+for(let i = 1; i <= count; i++){
+
+
+const couponNumber =
+
+"JBT-" +
+
+Date.now().toString().slice(-6)
+
++
+
+"-"
+
++
+
+String(i).padStart(4,"0");
+
+
+
+
+
+await setDoc(
+
+doc(
+db,
+"coupons",
+couponNumber
+),
+
+{
+
+
+couponNumber:
+
+
+couponNumber,
+
+
+title:
+
+
+title,
+
+
+discount:
+
+
+discountValue,
+
+
+maxUseCount:
+
+
+1,
+
+
+useCount:
+
+
+0,
+
+
+status:
+
+
+"issued",
+
+
+notice:
+
+
+noticeText,
+
+
+startDate:
+
+
+start,
+
+
+endDate:
+
+
+end,
+
+
+createdAt:
+
+
+serverTimestamp(),
+
+
+updatedAt:
+
+
+serverTimestamp()
+
+
+}
+
+);
+
+
+}
+
+
+
+alert(
+`${count}개 쿠폰 생성 완료`
+);
+
+
+
+};
