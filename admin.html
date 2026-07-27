@@ -198,7 +198,81 @@ id="saveCouponBtn">
 
 <hr>
 
+<!-- ==============================
+대량 쿠폰 생성
+============================== -->
 
+<div class="bulk-coupon-box">
+
+<h3>
+대량 쿠폰 생성
+</h3>
+
+
+<label>
+쿠폰명
+</label>
+
+<input 
+id="bulkCouponTitle"
+type="text"
+placeholder="족발 10% 할인">
+
+
+<label>
+할인율
+</label>
+
+<input 
+id="bulkDiscount"
+type="number"
+value="10">
+
+
+<label>
+생성 수량
+</label>
+
+<input 
+id="bulkCount"
+type="number"
+value="100">
+
+
+<label>
+시작일
+</label>
+
+<input 
+id="bulkStartDate"
+type="date">
+
+
+<label>
+종료일
+</label>
+
+<input 
+id="bulkEndDate"
+type="date">
+
+
+<label>
+공지
+</label>
+
+<textarea
+id="bulkNotice"
+placeholder="이벤트 안내">
+</textarea>
+
+
+<button id="bulkCreateBtn">
+쿠폰 생성
+</button>
+
+
+</div>
 
 <!-- ============================= -->
 <!-- 쿠폰 조회 -->
@@ -307,3 +381,4 @@ src="./admin.js">
 </body>
 
 </html>   
+
