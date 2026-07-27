@@ -334,8 +334,17 @@ data.couponNumber;
 searchBtn.click();
 
 
-};
+// 수정 영역 이동
+window.scrollTo({
 
+top:0,
+
+behavior:"smooth"
+
+});
+
+
+};
 
 
 
