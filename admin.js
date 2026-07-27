@@ -1315,6 +1315,23 @@ number
 
 );
 
+const couponData =
+check.data();
+
+
+if(
+couponData.status === "used" ||
+(couponData.useCount || 0) >= (couponData.maxUseCount || 1)
+){
+
+alert(
+"사용 완료된 쿠폰은 삭제할 수 없습니다."
+);
+
+return;
+
+}
+  
 if(!check.exists()){
 
 alert(
@@ -1425,6 +1442,38 @@ updateCouponBtn.onclick = async()=>{
 
 const number =
 couponNumber.value.trim();
+
+
+const check =
+await getDoc(
+doc(
+db,
+"coupons",
+number
+)
+);
+
+
+if(check.exists()){
+
+const data =
+check.data();
+
+
+if(
+data.status === "used" ||
+(data.useCount || 0) >= (data.maxUseCount || 1)
+){
+
+alert(
+"사용 완료된 쿠폰은 수정할 수 없습니다."
+);
+
+return;
+
+}
+
+}
 
 
 
