@@ -50,7 +50,8 @@ document.getElementById("notice");
 const mainImage =
 document.getElementById("mainImage");
 
-
+const qrCode =
+document.getElementById("qrcode");
 
 
 // ================================
@@ -158,7 +159,18 @@ data.image;
 
 }
 
+// QR 생성
+qrCode.innerHTML = "";
 
+new QRCode(qrCode, {
+
+text: number,
+
+width: 180,
+
+height: 180
+
+});
 
 listenCoupon(number);
 
