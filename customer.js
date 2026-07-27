@@ -166,9 +166,11 @@ new QRCode(qrCode, {
 
 text: number,
 
-width: 180,
+width: 250,
 
-height: 180
+height: 250,
+
+correctLevel: QRCode.CorrectLevel.H
 
 });
 
