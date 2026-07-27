@@ -830,20 +830,26 @@ height:300
 
 (decodedText) => {
 
-// QR에서 읽은 쿠폰번호 입력
-useCouponNumber.value = decodedText;
+    useCouponNumber.value = decodedText;
 
-// 카메라 종료
-html5QrCode.stop();
+    html5QrCode.stop().then(() => {
 
-// 기존 조회 기능 실행
-checkBtn.click();
+        reader.innerHTML = "";
+
+        checkBtn.click();
+
+    }).catch(err => {
+
+        console.error(err);
+
+    });
 
 },
 
 (errorMessage) => {
 
-// 무시
+    // 무시
+
 }
 
 );
