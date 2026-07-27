@@ -570,13 +570,13 @@ statusText = data.status;
 
 
 
-couponInfo.innerHTML =
-
-`
+couponInfo.innerHTML = `
 
 <div class="coupon-detail">
 
 <h3>${data.title || "-"}</h3>
+
+<hr>
 
 <p><b>쿠폰번호</b> : ${number}</p>
 
@@ -586,15 +586,31 @@ couponInfo.innerHTML =
 
 <p><b>사용횟수</b> : ${data.useCount || 0} / ${data.maxUseCount || 1}</p>
 
-<p><b>사용기간</b> :
+<p><b>사용기간</b><br>
+
 ${data.startDate || "-"}
+
 ~
-${data.endDate || "-"}</p>
+
+${data.endDate || "-"}
+
+</p>
+
+<p><b>승인시간</b><br>
+
+${data.approvedAt ? data.approvedAt.toDate().toLocaleString() : "-"}
+
+</p>
+
+<p><b>사용시간</b><br>
+
+${data.usedAt ? data.usedAt.toDate().toLocaleString() : "-"}
+
+</p>
 
 </div>
 
 `;
-
 
 };
 
