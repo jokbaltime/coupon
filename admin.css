@@ -410,3 +410,41 @@ padding:20px;
 
 
 }
+
+.coupon-card{
+
+border:1px solid #ddd;
+
+padding:15px;
+
+margin-bottom:10px;
+
+border-radius:10px;
+
+background:white;
+
+}
+
+
+.coupon-card p{
+
+margin:5px 0;
+
+}
+
+
+.selectCoupon{
+
+padding:8px 15px;
+
+border:none;
+
+background:#333;
+
+color:white;
+
+border-radius:5px;
+
+cursor:pointer;
+
+}
