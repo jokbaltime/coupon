@@ -1463,6 +1463,138 @@ renderCouponList();
 
 };
 
+// ================================
+// BULK COUPON CREATE
+// ================================
+
+const bulkCouponTitle =
+document.getElementById("bulkCouponTitle");
+
+const bulkDiscount =
+document.getElementById("bulkDiscount");
+
+const bulkCount =
+document.getElementById("bulkCount");
+
+const bulkStartDate =
+document.getElementById("bulkStartDate");
+
+const bulkEndDate =
+document.getElementById("bulkEndDate");
+
+const bulkNotice =
+document.getElementById("bulkNotice");
+
+const bulkCreateBtn =
+document.getElementById("bulkCreateBtn");
+
+
+
+function createCouponNumber(){
+
+return "JBT-" +
+Math.random()
+.toString(36)
+.substring(2,8)
+.toUpperCase();
+
+}
+
+
+
+bulkCreateBtn.onclick = async()=>{
+
+
+const count =
+Number(bulkCount.value);
+
+
+
+if(!count || count <= 0){
+
+alert("생성 수량 입력");
+
+return;
+
+}
+
+
+
+for(let i=0;i<count;i++){
+
+
+const number =
+createCouponNumber();
+
+
+
+await setDoc(
+
+doc(
+db,
+"coupons",
+number
+),
+
+{
+
+
+couponNumber:number,
+
+
+title:
+bulkCouponTitle.value.trim(),
+
+
+discount:
+Number(bulkDiscount.value),
+
+
+maxUseCount:1,
+
+
+useCount:0,
+
+
+status:"issued",
+
+
+notice:
+bulkNotice.value.trim(),
+
+
+startDate:
+bulkStartDate.value,
+
+
+endDate:
+bulkEndDate.value,
+
+
+createdAt:
+serverTimestamp(),
+
+
+updatedAt:
+serverTimestamp()
+
+
+}
+
+);
+
+
+}
+
+
+
+alert(
+count + "개 쿠폰 생성 완료"
+);
+
+
+};
+
 updateCouponBtn.onclick = async()=>{
 
 
