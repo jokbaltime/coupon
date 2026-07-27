@@ -896,6 +896,7 @@ searchBtn.onclick = async()=>{
 const number =
 searchCoupon.value.trim();
 
+
 if(!number){
 
 alert(
@@ -905,6 +906,7 @@ alert(
 return;
 
 }
+
 
 const snap =
 await getDoc(
@@ -917,6 +919,7 @@ number
 
 );
 
+
 if(!snap.exists()){
 
 couponResult.innerHTML =
@@ -926,11 +929,15 @@ return;
 
 }
 
+
 const data =
 snap.data();
 
 
-// 조회한 쿠폰 정보 입력창 표시
+// ================================
+// 입력창 표시
+// ================================
+
 couponNumber.value =
 data.couponNumber || "";
 
@@ -957,17 +964,21 @@ data.endDate || "";
 
 
 
-// 여기 추가
+// ================================
+// 상태 표시
+// ================================
 
-
-let statusText = "";
+let statusText="";
 
 
 if(
-(data.useCount || 0) >= (data.maxUseCount || 1)
+(data.useCount || 0)
+>=
+(data.maxUseCount || 1)
 ){
 
-statusText = "❌ 사용 완료";
+statusText =
+"❌ 사용 완료";
 
 }
 
@@ -979,43 +990,52 @@ switch(data.status){
 
 case "issued":
 
-statusText = "📄 발급 완료";
+statusText =
+"📄 발급 완료";
 
 break;
 
 
 case "waiting":
 
-statusText = "⏳ 승인 대기";
+statusText =
+"⏳ 승인 대기";
 
 break;
 
 
 case "approved":
 
-statusText = "✅ 승인 완료";
+statusText =
+"✅ 승인 완료";
 
 break;
 
 
 case "used":
 
-statusText = "❌ 사용 완료";
+statusText =
+"❌ 사용 완료";
 
 break;
 
 
 default:
 
-statusText = data.status;
+statusText =
+data.status || "-";
 
 }
 
+
 }
 
 
 
+// ================================
 // 수정 버튼 표시
+// ================================
+
 if(editButtons){
 
 editButtons.classList.remove("hidden");
@@ -1023,8 +1043,15 @@ editButtons.classList.remove("hidden");
 }
 
 
+
+// ================================
+// 결과 표시
+// ================================
+
 couponResult.innerHTML =
+
 `
+
 ${
 data.image
 ?
@@ -1047,25 +1074,30 @@ margin:10px 0;
 ${data.notice || "-"}
 </p>
 
+
 <p>
 번호 :
-${data.couponNumber}
+${data.couponNumber || "-"}
 </p>
+
 
 <p>
 제목 :
-${data.title}
+${data.title || "-"}
 </p>
+
 
 <p>
 상태 :
 ${statusText}
 </p>
 
+
 <p>
 할인 :
-${data.discount}%
+${data.discount || 0}%
 </p>
+
 
 <p>
 사용횟수 :
@@ -1074,6 +1106,7 @@ ${data.useCount || 0}
 ${data.maxUseCount || 1}
 </p>
 
+
 <p>
 사용기간 :
 ${data.startDate || "-"}
@@ -1081,10 +1114,11 @@ ${data.startDate || "-"}
 ${data.endDate || "-"}
 </p>
 
+
 <p>
 승인시간 :
 ${
-data.approvedAt
+data.approvedAt && data.approvedAt.toDate
 ?
 data.approvedAt.toDate().toLocaleString()
 :
@@ -1096,13 +1130,15 @@ data.approvedAt.toDate().toLocaleString()
 <p>
 사용시간 :
 ${
-data.usedAt
+data.usedAt && data.usedAt.toDate
 ?
 data.usedAt.toDate().toLocaleString()
 :
 "-"
 }
 </p>
+
+
 `;
 
 };
