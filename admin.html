@@ -3,37 +3,29 @@
      JOKBAL TIME COUPON ADMIN
      ====================================== -->
 
-
 <!DOCTYPE html>
 
 <html lang="ko">
-
 
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>
 족발타임 관리자
 </title>
 
-
-<link rel="stylesheet" href="./admin.css">
-
+<link rel="stylesheet"
+href="./admin.css">
 
 </head>
 
-
-
 <body>
 
-
 <div class="admin-container">
-
-
 
 <h1>
 🍖 족발타임 관리자
@@ -41,48 +33,32 @@
 
 
 
+<!-- ============================= -->
+<!-- LOGIN -->
+<!-- ============================= -->
 
-
-<!-- 로그인 -->
-
-<section id="loginBox" class="box">
-
+<section
+id="loginBox"
+class="box">
 
 <h2>
 관리자 로그인
 </h2>
 
-
 <input
-
 id="adminEmail"
-
 type="email"
-
-placeholder="관리자 이메일"
-
->
-
+placeholder="관리자 이메일">
 
 <input
-
 id="adminPassword"
-
 type="password"
+placeholder="비밀번호">
 
-placeholder="비밀번호"
-
->
-
-
-
-<button id="loginBtn">
-
+<button
+id="loginBtn">
 로그인
-
 </button>
-
-
 
 </section>
 
@@ -90,13 +66,13 @@ placeholder="비밀번호"
 
 
 
+<!-- ============================= -->
+<!-- ADMIN -->
+<!-- ============================= -->
 
-
-<!-- 관리자 화면 -->
-
-<section id="adminBox" class="box hidden">
-
-
+<section
+id="adminBox"
+class="box hidden">
 
 <div class="top">
 
@@ -104,284 +80,184 @@ placeholder="비밀번호"
 쿠폰 관리
 </h2>
 
-
-<button id="logoutBtn">
+<button
+id="logoutBtn">
 
 로그아웃
 
 </button>
 
-
 </div>
+
 
 
 <hr>
 
-<h2>📊 오늘 통계</h2>
+<h2>
+📊 오늘 통계
+</h2>
 
 <div id="dashboard">
 
-    <p>
-        발급 :
-        <span id="totalCoupon">0</span>
-    </p>
+<p>
+발급 :
+<span id="totalCoupon">0</span>
+</p>
 
-    <p>
-        승인대기 :
-        <span id="waitingCount">0</span>
-    </p>
+<p>
+승인대기 :
+<span id="waitingCount">0</span>
+</p>
 
-    <p>
-        승인완료 :
-        <span id="approvedCount">0</span>
-    </p>
+<p>
+승인완료 :
+<span id="approvedCount">0</span>
+</p>
 
-    <p>
-        사용완료 :
-        <span id="usedCount">0</span>
-    </p>
+<p>
+사용완료 :
+<span id="usedCount">0</span>
+</p>
 
 </div>
 
 <hr>
-
 
 
 
 <h3>
+
 쿠폰 생성 / 수정
+
 </h3>
 
-
-
 <input
-
 id="couponNumber"
-
-placeholder="쿠폰번호"
-
->
-
+placeholder="쿠폰번호">
 
 <input
-
 id="couponTitle"
-
-placeholder="쿠폰 제목"
-
->
-
+placeholder="쿠폰명">
 
 <input
-
 id="discount"
-
 type="number"
-
-placeholder="할인율"
-
->
-
-<label>
-사용 가능 횟수
-</label>
+placeholder="할인율 (%)">
 
 <input
-
-type="number"
-
 id="maxUseCount"
-
+type="number"
 value="1"
-
-min="1"
-
-placeholder="사용 가능 횟수"
-
->
+placeholder="최대 사용 횟수">
 
 <textarea
-
 id="notice"
-
-placeholder="쿠폰 안내 문구">
-
+placeholder="안내 문구">
 </textarea>
 
-
-
-
-
 <input
-
 id="imageUrl"
-
-placeholder="쿠폰 이미지 주소"
-
->
+placeholder="쿠폰 이미지 주소">
 
 <label>
 사용 시작일
 </label>
 
-<input 
+<input
 type="date"
-id="startDate"
->
-
-
+id="startDate">
 
 <label>
 사용 종료일
 </label>
 
-<input 
+<input
 type="date"
-id="endDate"
->
+id="endDate">
 
-
-
-
-<button id="saveCouponBtn">
+<button
+id="saveCouponBtn">
 
 쿠폰 저장
 
 </button>
 
-
-
-
-
-
-
-
-
 <hr>
 
-
-
-
-
-
-
+  <!-- ============================= -->
+<!-- 승인 요청 -->
+<!-- ============================= -->
 
 <h3>
 승인 요청 목록
 </h3>
 
-
 <div id="requestList">
 
 </div>
 
-
-
-
-
-
-
-
 <hr>
 
 
 
-
-
-
-
+<!-- ============================= -->
+<!-- 쿠폰 조회 -->
+<!-- ============================= -->
 
 <h3>
-쿠폰 조회 / 사용 취소
+쿠폰 조회 / 관리
 </h3>
 
-
-
-
 <input
-
 id="searchCoupon"
+placeholder="쿠폰번호 입력">
 
-placeholder="쿠폰번호 입력"
-
->
-
-
-
-<button id="searchBtn">
-
+<button
+id="searchBtn">
 조회
-
 </button>
 
+<div id="couponResult">
 
+</div>
 
+<br>
 
-
-
-<div id="couponResult"></div>
-
-
-<button id="deleteCouponBtn">
+<button
+id="deleteCouponBtn">
 쿠폰 삭제
 </button>
 
-
-<button id="cancelUseBtn">
+<button
+id="cancelUseBtn">
 사용 취소 복구
 </button>
-
-
-
-
-
-
 
 <hr>
 
 
 
-
-
-
+<!-- ============================= -->
+<!-- 처리 기록 -->
+<!-- ============================= -->
 
 <h3>
 처리 기록
-
 </h3>
-
 
 <div id="historyList">
 
 </div>
 
-
-
-
 </section>
-
-
-
-
-
 
 </div>
 
-
-
-
-
 <script
-
 type="module"
-
 src="./admin.js">
-
 </script>
-
-
 
 </body>
 
-
-</html>
+</html>   
