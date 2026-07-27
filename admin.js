@@ -426,8 +426,22 @@ data.usedAt.toDate().toLocaleString()
 
 
 
-div.querySelector(".selectCoupon")
+div.querySelector(".quickEditCoupon")
 .onclick = ()=>{
+
+
+if(
+data.status === "used" ||
+(data.useCount || 0) >= (data.maxUseCount || 1)
+){
+
+alert(
+"사용 완료된 쿠폰은 수정할 수 없습니다."
+);
+
+return;
+
+}
 
 
 searchCoupon.value =
@@ -451,6 +465,18 @@ behavior:"smooth"
 div.querySelector(".quickDeleteCoupon")
 .onclick = async()=>{
 
+if(
+data.status === "used" ||
+(data.useCount || 0) >= (data.maxUseCount || 1)
+){
+
+alert(
+"사용 완료된 쿠폰은 삭제할 수 없습니다."
+);
+
+return;
+
+}  
 
 const result =
 confirm(
