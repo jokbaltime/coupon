@@ -722,7 +722,13 @@ data.maxUseCount || 1;
 
 
 
+if(data.status === "used"){
 
+alert("이미 사용 완료된 쿠폰입니다.");
+
+return;
+
+}
 
 if(useCount >= maxUseCount){
 
@@ -835,7 +841,7 @@ alert(
 "사용 완료 처리"
 );
 
-
+checkBtn.click();
 
 };
 
