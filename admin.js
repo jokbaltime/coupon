@@ -955,8 +955,6 @@ data.startDate || "";
 endDate.value =
 data.endDate || "";
 
-const data =
-snap.data();
 
 
 // 여기 추가
@@ -1016,9 +1014,7 @@ statusText = data.status;
 }
 
 
-// 조회한 쿠폰 정보 입력창 표시
-couponNumber.value =
-  
+
 // 수정 버튼 표시
 if(editButtons){
 
