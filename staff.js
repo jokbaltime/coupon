@@ -799,3 +799,47 @@ alert(
 
 
 };
+
+// ================================
+// QR SCANNER
+// ================================
+
+scanQRBtn.onclick = () => {
+
+reader.innerHTML = "";
+
+const html5QrCode = new Html5Qrcode("reader");
+
+html5QrCode.start(
+
+{ facingMode: "environment" },
+
+{
+
+fps: 10,
+
+qrbox: 250
+
+},
+
+(decodedText) => {
+
+// QR에서 읽은 쿠폰번호 입력
+useCouponNumber.value = decodedText;
+
+// 카메라 종료
+html5QrCode.stop();
+
+// 기존 조회 기능 실행
+checkBtn.click();
+
+},
+
+(errorMessage) => {
+
+// 무시
+}
+
+);
+
+};
