@@ -499,13 +499,6 @@ ${data.discount}%
 };
 
 
-
-
-
-
-
-
-
 // ================================
 // USE COMPLETE
 // ================================
@@ -519,8 +512,99 @@ useCouponNumber.value.trim();
 
 
 
-if(!number)
+if(!number){
+
+alert(
+"쿠폰번호 입력"
+);
+
 return;
+
+}
+
+
+
+
+const snap =
+await getDoc(
+
+doc(
+db,
+"coupons",
+number
+)
+
+);
+
+
+
+
+
+if(!snap.exists()){
+
+
+alert(
+"쿠폰 없음"
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+const data =
+snap.data();
+
+
+
+
+
+if(data.status !== "approved"){
+
+
+alert(
+"승인 완료된 쿠폰만 사용 가능합니다."
+);
+
+
+return;
+
+
+}
+
+
+
+
+const useCount =
+data.useCount || 0;
+
+
+
+const maxUseCount =
+data.maxUseCount || 1;
+
+
+
+
+
+if(useCount >= maxUseCount){
+
+
+alert(
+"사용 횟수를 초과한 쿠폰입니다."
+);
+
+
+return;
+
+
+}
+
 
 
 
@@ -540,6 +624,10 @@ number
 status:"used",
 
 
+useCount:
+useCount + 1,
+
+
 usedAt:
 serverTimestamp()
 
@@ -548,6 +636,31 @@ serverTimestamp()
 
 );
 
+
+
+
+
+
+await addDoc(
+
+collection(
+db,
+"coupon_use"
+),
+
+{
+
+
+couponNumber:number,
+
+
+usedAt:
+serverTimestamp()
+
+
+}
+
+);
 
 
 
@@ -582,7 +695,6 @@ serverTimestamp()
 
 
 
-
 alert(
 "사용 완료 처리"
 );
@@ -590,3 +702,9 @@ alert(
 
 
 };
+
+
+
+
+
+
