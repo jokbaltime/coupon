@@ -421,14 +421,25 @@ margin-bottom:10px;
 
 border-radius:10px;
 
-background:white;
+background:#222;
+
+color:#fff;
 
 }
 
 
 .coupon-card p{
 
-margin:5px 0;
+margin:8px 0;
+
+color:#fff;
+
+}
+
+
+.coupon-card b{
+
+color:#ffd54f;
 
 }
 
@@ -439,12 +450,14 @@ padding:8px 15px;
 
 border:none;
 
-background:#333;
+background:#ff9800;
 
 color:white;
 
 border-radius:5px;
 
 cursor:pointer;
+
+font-weight:bold;
 
 }
