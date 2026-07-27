@@ -572,8 +572,42 @@ return;
 const data =
 snap.data();
 
-couponResult.innerHTML =
 
+// 조회한 쿠폰 정보 입력창 표시
+couponNumber.value =
+data.couponNumber || "";
+
+couponTitle.value =
+data.title || "";
+
+discount.value =
+data.discount || 0;
+
+maxUseCount.value =
+data.maxUseCount || 1;
+
+notice.value =
+data.notice || "";
+
+imageUrl.value =
+data.image || "";
+
+startDate.value =
+data.startDate || "";
+
+endDate.value =
+data.endDate || "";
+
+
+// 수정 버튼 표시
+if(editButtons){
+
+editButtons.classList.remove("hidden");
+
+}
+
+
+couponResult.innerHTML =
 `
 
 <p>
