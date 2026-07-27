@@ -545,26 +545,33 @@ snap.data();
 
 let statusText = "";
 
-switch(data.status){
+if ((data.useCount || 0) >= (data.maxUseCount || 1)) {
 
-case "issued":
-statusText = "📄 발급 완료";
-break;
+    statusText = "❌ 사용 완료";
 
-case "waiting":
-statusText = "⏳ 승인 대기";
-break;
+} else {
 
-case "approved":
-statusText = "✅ 승인 완료";
-break;
+    switch (data.status) {
 
-case "used":
-statusText = "❌ 사용 완료";
-break;
+        case "issued":
+            statusText = "📄 발급 완료";
+            break;
 
-default:
-statusText = data.status;
+        case "waiting":
+            statusText = "⏳ 승인 대기";
+            break;
+
+        case "approved":
+            statusText = "✅ 승인 완료";
+            break;
+
+        case "used":
+            statusText = "❌ 사용 완료";
+            break;
+
+        default:
+            statusText = data.status;
+    }
 
 }
 
