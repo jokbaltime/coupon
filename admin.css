@@ -413,26 +413,31 @@ padding:20px;
 
 .coupon-card{
 
-border:1px solid #ddd;
+background:#1f2937;
 
-padding:15px;
+color:white;
 
-margin-bottom:10px;
+border-radius:15px;
 
-border-radius:10px;
+padding:18px;
 
-background:#222;
+margin:12px 0;
 
-color:#fff;
+box-shadow:
+0 5px 15px rgba(0,0,0,0.25);
 
 }
 
 
 .coupon-card p{
 
-margin:8px 0;
+color:white;
 
-color:#fff;
+font-size:15px;
+
+line-height:1.5;
+
+margin:8px 0;
 
 }
 
@@ -441,23 +446,53 @@ color:#fff;
 
 color:#ffd54f;
 
+font-size:18px;
+
 }
 
 
-.selectCoupon{
+.coupon-card button{
 
-padding:8px 15px;
+margin-top:10px;
+
+margin-right:5px;
+
+padding:8px 14px;
 
 border:none;
 
-background:#ff9800;
-
-color:white;
-
-border-radius:5px;
+border-radius:8px;
 
 cursor:pointer;
 
 font-weight:bold;
+
+}
+
+
+
+.selectCoupon{
+
+background:#2196f3;
+
+color:white;
+
+}
+
+
+.quickEditCoupon{
+
+background:#4caf50;
+
+color:white;
+
+}
+
+
+.quickDeleteCoupon{
+
+background:#f44336;
+
+color:white;
 
 }
