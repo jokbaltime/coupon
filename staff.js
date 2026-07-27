@@ -816,7 +816,7 @@ html5QrCode.start(
 
 {
 
-fps: 10,
+fps: 20,
 
 qrbox: {
 
