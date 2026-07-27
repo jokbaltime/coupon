@@ -89,7 +89,11 @@ document.getElementById("couponInfo");
 const useBtn =
 document.getElementById("useBtn");
 
+const scanQRBtn =
+document.getElementById("scanQRBtn");
 
+const reader =
+document.getElementById("reader");
 
 
 
