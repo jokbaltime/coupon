@@ -1001,6 +1001,28 @@ ${data.startDate || "-"}
 ${data.endDate || "-"}
 </p>
 
+<p>
+승인시간 :
+${
+data.approvedAt
+?
+data.approvedAt.toDate().toLocaleString()
+:
+"-"
+}
+</p>
+
+
+<p>
+사용시간 :
+${
+data.usedAt
+?
+data.usedAt.toDate().toLocaleString()
+:
+"-"
+}
+</p>
 `;
 
 };
