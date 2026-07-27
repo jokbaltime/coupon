@@ -70,10 +70,8 @@ const logoutBtn =
 document.getElementById("logoutBtn");
 
 
-
 const requestList =
 document.getElementById("requestList");
-
 
 
 const useCouponNumber =
@@ -97,8 +95,6 @@ document.getElementById("useBtn");
 
 
 
-
-
 // ================================
 // LOGIN
 // ================================
@@ -108,11 +104,11 @@ loginBtn.onclick = async()=>{
 
 
 const email =
-document.getElementById("staffEmail").value;
+document.getElementById("staffEmail").value.trim();
 
 
 const password =
-document.getElementById("staffPassword").value;
+document.getElementById("staffPassword").value.trim();
 
 
 
@@ -164,11 +160,11 @@ if(user){
 
 loginBox.classList.add("hidden");
 
+
 staffBox.classList.remove("hidden");
 
 
 loadRequests();
-
 
 
 }
@@ -178,11 +174,11 @@ else{
 
 loginBox.classList.remove("hidden");
 
+
 staffBox.classList.add("hidden");
 
 
 }
-
 
 
 });
@@ -192,10 +188,11 @@ staffBox.classList.add("hidden");
 
 
 
-logoutBtn.onclick=()=>{
+
+logoutBtn.onclick = async()=>{
 
 
-signOut(auth);
+await signOut(auth);
 
 
 };
@@ -214,6 +211,7 @@ signOut(auth);
 
 
 function loadRequests(){
+
 
 
 const q =
@@ -235,14 +233,17 @@ where(
 
 
 
-onSnapshot(q,(snapshot)=>{
+
+
+onSnapshot(q,async(snapshot)=>{
 
 
 requestList.innerHTML="";
 
 
 
-snapshot.forEach(async(item)=>{
+for(const item of snapshot.docs){
+
 
 
 const data =
@@ -280,7 +281,6 @@ couponSnap.data();
 
 
 }
-
 
 
 
@@ -335,7 +335,7 @@ data.createdAt.toDate().toLocaleString()
 
 
 div.querySelector("button")
-.onclick=()=>{
+.onclick = ()=>{
 
 
 approveCoupon(
@@ -347,11 +347,13 @@ data.couponNumber
 
 
 
+
+
 requestList.appendChild(div);
 
 
 
-});
+}
 
 
 
@@ -359,6 +361,7 @@ requestList.appendChild(div);
 
 
 }
+
 
 
 
@@ -376,13 +379,18 @@ async function approveCoupon(number){
 
 
 
-await updateDoc(
-
+const couponRef =
 doc(
 db,
 "coupons",
 number
-),
+);
+
+
+
+await updateDoc(
+
+couponRef,
 
 {
 
@@ -474,7 +482,7 @@ alert(
 // ================================
 
 
-checkBtn.onclick=async()=>{
+checkBtn.onclick = async()=>{
 
 
 const number =
@@ -482,7 +490,22 @@ useCouponNumber.value.trim();
 
 
 
+if(!number){
+
+alert(
+"쿠폰번호 입력"
+);
+
+return;
+
+}
+
+
+
+
+
 const snap =
+
 await getDoc(
 
 doc(
@@ -512,13 +535,15 @@ return;
 
 
 
+
 const data =
 snap.data();
 
 
 
 
-couponInfo.innerHTML=
+
+couponInfo.innerHTML =
 
 `
 
@@ -527,9 +552,24 @@ couponInfo.innerHTML=
 ${data.status}
 </p>
 
+
+<p>
+쿠폰명 :
+${data.title || "-"}
+</p>
+
+
 <p>
 할인 :
-${data.discount}%
+${data.discount || 0}%
+</p>
+
+
+<p>
+사용횟수 :
+${data.useCount || 0}
+/
+${data.maxUseCount || 1}
 </p>
 
 `;
@@ -539,12 +579,19 @@ ${data.discount}%
 };
 
 
+
+
+
+
+
+
+
 // ================================
 // USE COMPLETE
 // ================================
 
 
-useBtn.onclick=async()=>{
+useBtn.onclick = async()=>{
 
 
 const number =
@@ -565,7 +612,9 @@ return;
 
 
 
+
 const snap =
+
 await getDoc(
 
 doc(
@@ -620,9 +669,9 @@ return;
 
 
 
+
 const useCount =
 data.useCount || 0;
-
 
 
 const maxUseCount =
@@ -681,6 +730,8 @@ serverTimestamp()
 
 
 
+
+
 await addDoc(
 
 collection(
@@ -701,6 +752,8 @@ serverTimestamp()
 }
 
 );
+
+
 
 
 
@@ -742,9 +795,3 @@ alert(
 
 
 };
-
-
-
-
-
-
