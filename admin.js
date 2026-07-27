@@ -298,18 +298,43 @@ div.innerHTML =
 <b>${data.couponNumber}</b>
 </p>
 
+
 <p>
 ${data.title || "-"}
 </p>
 
+
 <p>
+상태 :
 ${statusText}
 </p>
+
 
 <p>
 할인 :
 ${data.discount || 0}%
 </p>
+
+
+<p>
+사용 :
+${data.useCount || 0}
+/
+${data.maxUseCount || 1}
+</p>
+
+
+<p>
+최근 사용 :
+${
+data.usedAt
+?
+data.usedAt.toDate().toLocaleString()
+:
+"-"
+}
+</p>
+
 
 <button class="selectCoupon">
 
@@ -318,7 +343,6 @@ ${data.discount || 0}%
 </button>
 
 `;
-
 
 
 
