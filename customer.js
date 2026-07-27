@@ -267,14 +267,13 @@ else if(data.status==="used"){
 
 
 result.innerHTML =
-"❌ 이미 사용된 쿠폰";
+"❌ 이미 사용 완료된 쿠폰입니다.";
 
 
 requestBtn.disabled=true;
 
 
 }
-
 
 
 else{
@@ -414,17 +413,13 @@ couponSnap.data();
 
 if(data.status==="used"){
 
-
 alert(
-"이미 사용된 쿠폰"
+"❌ 이미 사용 완료된 쿠폰입니다."
 );
-
 
 return;
 
-
 }
-
 
 
 
