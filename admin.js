@@ -93,6 +93,18 @@ document.getElementById("couponResult");
 const couponList =
 document.getElementById("couponList");
 
+const allCouponBtn =
+document.getElementById("allCouponBtn");
+
+const waitingCouponBtn =
+document.getElementById("waitingCouponBtn");
+
+const approvedCouponBtn =
+document.getElementById("approvedCouponBtn");
+
+const usedCouponBtn =
+document.getElementById("usedCouponBtn");
+
 const cancelUseBtn =
 document.getElementById("cancelUseBtn");
 
@@ -126,7 +138,7 @@ document.getElementById("approvedCount");
 const usedCount =
 document.getElementById("usedCount");
 
-
+let couponFilter = "all";
 
 // ================================
 // LOGIN
@@ -233,7 +245,14 @@ snapshot.forEach((item)=>{
 const data =
 item.data();
 
+if(
+couponFilter !== "all" &&
+data.status !== couponFilter
+){
 
+return;
+
+}
 
 let statusText="";
 
@@ -446,6 +465,7 @@ usedCount.innerText=used;
 
 });
 
+  
 }
 
 
@@ -1077,6 +1097,45 @@ alert(
 // ================================
 // UPDATE COUPON
 // ================================
+
+// ================================
+// COUPON FILTER
+// ================================
+
+allCouponBtn.onclick = ()=>{
+
+couponFilter = "all";
+
+loadCouponList();
+
+};
+
+
+waitingCouponBtn.onclick = ()=>{
+
+couponFilter = "waiting";
+
+loadCouponList();
+
+};
+
+
+approvedCouponBtn.onclick = ()=>{
+
+couponFilter = "approved";
+
+loadCouponList();
+
+};
+
+
+usedCouponBtn.onclick = ()=>{
+
+couponFilter = "used";
+
+loadCouponList();
+
+};
 
 updateCouponBtn.onclick = async()=>{
 
