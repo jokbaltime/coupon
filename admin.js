@@ -90,6 +90,9 @@ document.getElementById("searchBtn");
 const couponResult =
 document.getElementById("couponResult");
 
+const couponList =
+document.getElementById("couponList");
+
 const cancelUseBtn =
 document.getElementById("cancelUseBtn");
 
@@ -180,6 +183,7 @@ loadRequests();
 
 loadHistory();
 
+loadCouponList();
 }
 
 else{
@@ -205,6 +209,150 @@ await signOut(auth);
 // ================================
 // DASHBOARD
 // ================================
+
+// ================================
+// COUPON LIST
+// ================================
+
+function loadCouponList(){
+
+
+onSnapshot(
+
+collection(db,"coupons"),
+
+(snapshot)=>{
+
+
+couponList.innerHTML="";
+
+
+snapshot.forEach((item)=>{
+
+
+const data =
+item.data();
+
+
+
+let statusText="";
+
+
+switch(data.status){
+
+
+case "issued":
+
+statusText="📄 발급";
+
+break;
+
+
+case "waiting":
+
+statusText="⏳ 승인대기";
+
+break;
+
+
+case "approved":
+
+statusText="✅ 승인완료";
+
+break;
+
+
+case "used":
+
+statusText="❌ 사용완료";
+
+break;
+
+
+default:
+
+statusText=data.status;
+
+
+}
+
+
+
+
+
+const div =
+document.createElement("div");
+
+
+
+div.className =
+"coupon-card";
+
+
+
+div.innerHTML =
+
+`
+
+<p>
+<b>${data.couponNumber}</b>
+</p>
+
+<p>
+${data.title || "-"}
+</p>
+
+<p>
+${statusText}
+</p>
+
+<p>
+할인 :
+${data.discount || 0}%
+</p>
+
+<button class="selectCoupon">
+
+조회
+
+</button>
+
+`;
+
+
+
+
+
+div.querySelector(".selectCoupon")
+.onclick = ()=>{
+
+
+searchCoupon.value =
+data.couponNumber;
+
+
+searchBtn.click();
+
+
+};
+
+
+
+
+
+couponList.appendChild(div);
+
+
+
+});
+
+
+}
+
+);
+
+
+}
 
 function loadDashboard(){
 
