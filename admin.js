@@ -408,6 +408,20 @@ data.usedAt.toDate().toLocaleString()
 
 </button>
 
+
+<button class="quickEditCoupon">
+
+수정
+
+</button>
+
+
+<button class="quickDeleteCoupon">
+
+삭제
+
+</button>
+
 `;
 
 
@@ -434,7 +448,70 @@ behavior:"smooth"
 
 };
 
+div.querySelector(".quickDeleteCoupon")
+.onclick = async()=>{
 
+
+const result =
+confirm(
+"이 쿠폰을 삭제하시겠습니까?"
+);
+
+
+if(!result){
+
+return;
+
+}
+
+
+
+await deleteDoc(
+
+doc(
+db,
+"coupons",
+data.couponNumber
+)
+
+);
+
+
+
+await addDoc(
+
+collection(
+db,
+"coupon_history"
+),
+
+{
+
+
+couponNumber:
+data.couponNumber,
+
+
+action:
+"deleted",
+
+
+time:
+serverTimestamp()
+
+
+}
+
+);
+
+
+
+alert(
+"삭제 완료"
+);
+
+
+};
 
 couponList.appendChild(div);
 
