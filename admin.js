@@ -459,7 +459,22 @@ data.usedAt.toDate().toLocaleString()
 
 `;
 
+div.querySelector(".selectCoupon").onclick = ()=>{
 
+searchCoupon.value =
+data.couponNumber;
+
+searchBtn.click();
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+};
 
 div.querySelector(".quickEditCoupon")
 .onclick = ()=>{
