@@ -438,12 +438,12 @@ ${data.maxUseCount || 1}
 </button>
 
 
-<button class="quickEditCoupon">
+<button type="button" class="quickEditCoupon">
 수정
 </button>
 
 
-<button class="quickDeleteCoupon">
+<button type="button" class="quickDeleteCoupon">
 삭제
 </button>
 
