@@ -621,9 +621,9 @@ ${data.usedAt ? data.usedAt.toDate().toLocaleString() : "-"}
 
 // 사용 완료 버튼 제어
 if (
-data.status === "approved" &&
-(data.useCount || 0) < 1
-)
+    data.status === "approved" &&
+    (data.useCount || 0) < 1
+) {
 
     useBtn.disabled = false;
     useBtn.textContent = "사용 완료 처리";
@@ -632,8 +632,10 @@ data.status === "approved" &&
 
     useBtn.disabled = true;
 
-    if (data.status === "used" ||
-        (data.useCount || 0) >= (data.maxUseCount || 1)) {
+    if (
+        data.status === "used" ||
+        (data.useCount || 0) >= (data.maxUseCount || 1)
+    ) {
 
         useBtn.textContent = "사용 완료";
 
