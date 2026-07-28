@@ -467,22 +467,7 @@ data.couponNumber;
 searchBtn.click();
 
 
-setTimeout(()=>{
-
-document.querySelector("#couponNumber").scrollIntoView({
-
-behavior:"smooth",
-
-block:"start"
-
-});
-
-},500);
-
 };
-
-
-
 
 // ================================
 // 수정 버튼 수정
