@@ -462,15 +462,20 @@ div.querySelector(".selectCoupon").onclick = ()=>{
 searchCoupon.value =
 data.couponNumber;
 
-document.documentElement.scrollTop = 0;
-document.body.scrollTop = 0;
+window.scrollTo({
+
+top: document.querySelector("#searchCoupon").offsetTop - 20,
+
+behavior:"smooth"
+
+});
 
 setTimeout(()=>{
 
 
 searchBtn.click();
 
-},100);
+},300);
 
 };
 div.querySelector(".quickEditCoupon")
