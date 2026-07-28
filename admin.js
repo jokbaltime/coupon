@@ -461,19 +461,13 @@ div.querySelector(".selectCoupon").onclick = ()=>{
 searchCoupon.value =
 data.couponNumber;
 
-window.scrollTo({
-
-top:0,
-
-behavior:"smooth"
-
-});
+window.scrollTo(0,0);
 
 setTimeout(()=>{
 
 searchBtn.click();
 
-},200);
+},100);
 
 };
 
