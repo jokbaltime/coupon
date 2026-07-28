@@ -462,16 +462,17 @@ div.querySelector(".selectCoupon").onclick = ()=>{
 searchCoupon.value =
 data.couponNumber;
 
-window.scrollTo({
 
-top: document.querySelector("#searchCoupon").offsetTop - 20,
+document.querySelector("#searchCoupon").scrollIntoView({
 
-behavior:"smooth"
+behavior:"smooth",
+
+block:"start"
 
 });
 
-setTimeout(()=>{
 
+setTimeout(()=>{
 
 searchBtn.click();
 
