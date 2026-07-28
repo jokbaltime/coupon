@@ -1463,30 +1463,7 @@ renderCouponList();
 
 };
 
-// ================================
-// BULK COUPON CREATE
-// ================================
 
-const bulkCouponTitle =
-document.getElementById("bulkCouponTitle");
-
-const bulkDiscount =
-document.getElementById("bulkDiscount");
-
-const bulkCount =
-document.getElementById("bulkCount");
-
-const bulkStartDate =
-document.getElementById("bulkStartDate");
-
-const bulkEndDate =
-document.getElementById("bulkEndDate");
-
-const bulkNotice =
-document.getElementById("bulkNotice");
-
-const bulkCreateBtn =
-document.getElementById("bulkCreateBtn");
 
 
 
@@ -1502,7 +1479,7 @@ Math.random()
 
 
 
-bulkCreateBtn.onclick = async()=>{
+
 
 
 const count =
