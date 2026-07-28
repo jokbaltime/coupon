@@ -433,7 +433,7 @@ ${data.maxUseCount || 1}
 </p>
 
 
-<button class="selectCoupon">
+<button type="button" class="selectCoupon">
 조회
 </button>
 
