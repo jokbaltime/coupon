@@ -496,9 +496,6 @@ searchCoupon.value =
 data.couponNumber;
 
 
-searchBtn.click();
-
-
 window.scrollTo({
 
 top:0,
@@ -506,6 +503,13 @@ top:0,
 behavior:"smooth"
 
 });
+
+
+setTimeout(()=>{
+
+searchBtn.click();
+
+},300);
 
 
 };
