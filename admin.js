@@ -515,27 +515,24 @@ searchCoupon.value =
 data.couponNumber;
 
 
-searchCoupon.focus();
-
-
-searchCoupon.scrollIntoView({
-
-behavior:"smooth",
-
-block:"center"
-
-});
-
-
-
-setTimeout(()=>{
+searchCoupon.value =
+data.couponNumber;
 
 
 searchBtn.click();
 
 
-},500);
+setTimeout(()=>{
 
+document.querySelector("#couponNumber").scrollIntoView({
+
+behavior:"smooth",
+
+block:"start"
+
+});
+
+},500);
 
 
 };
