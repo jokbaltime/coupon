@@ -105,6 +105,9 @@ document.getElementById("approvedCouponBtn");
 const usedCouponBtn =
 document.getElementById("usedCouponBtn");
 
+const useCouponBtn =
+document.getElementById("useCouponBtn");
+
 const cancelUseBtn =
 document.getElementById("cancelUseBtn");
 
@@ -1168,6 +1171,103 @@ data.usedAt.toDate().toLocaleString()
 `;
 
 };
+
+
+
+// ================================
+// USE COUPON
+// ================================
+
+useCouponBtn.onclick = async()=>{
+
+const number =
+searchCoupon.value.trim();
+
+if(!number){
+
+alert("쿠폰번호 입력");
+
+return;
+
+}
+
+const snap =
+await getDoc(
+doc(
+db,
+"coupons",
+number
+)
+);
+
+if(!snap.exists()){
+
+alert("쿠폰 없음");
+
+return;
+
+}
+
+const data =
+snap.data();
+
+if(
+data.status==="used" ||
+(data.useCount || 0) >= (data.maxUseCount || 1)
+){
+
+alert("이미 사용 완료된 쿠폰입니다.");
+
+return;
+
+}
+
+await updateDoc(
+
+doc(
+db,
+"coupons",
+number
+),
+
+{
+
+status:"used",
+
+useCount:
+(data.useCount || 0)+1,
+
+usedAt:
+serverTimestamp()
+
+}
+
+);
+
+await addDoc(
+
+collection(
+db,
+"coupon_history"
+),
+
+{
+
+couponNumber:number,
+
+action:"used",
+
+time:
+serverTimestamp()
+
+}
+
+);
+
+alert("쿠폰 사용 처리 완료");
+
+};
+
 
 
 
