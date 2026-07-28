@@ -9,9 +9,7 @@ import {
 db,
 doc,
 getDoc,
-setDoc,
-onSnapshot,
-serverTimestamp
+onSnapshot
 
 } from "./firebase.js";
 
@@ -313,16 +311,12 @@ loadCoupon(number);
 
 
 
-
-
-
-
-
 // ================================
-// REQUEST
+// COUPON CHECK BUTTON
 // ================================
 
 requestBtn.onclick = async()=>{
+
 
 const number =
 couponNumber.value.trim();
@@ -339,12 +333,15 @@ return;
 
 const snap =
 await getDoc(
+
 doc(
 db,
 "coupons",
 number
 )
+
 );
+
 
 
 if(!snap.exists()){
@@ -356,83 +353,34 @@ return;
 }
 
 
-const data =
-snap.data();
-
-
-if(data.status==="used"){
-
-alert(
-"이미 사용 완료된 쿠폰입니다."
-);
-
-return;
-
-}
-
-
-// 사용 요청 상태 저장
-
-requestBtn.onclick = async()=>{
-
-const number =
-couponNumber.value.trim();
-
-
-if(!number){
-
-alert("쿠폰번호 입력");
-
-return;
-
-}
-
-
-const snap =
-await getDoc(
-doc(
-db,
-"coupons",
-number
-)
-);
-
-
-if(!snap.exists()){
-
-alert("쿠폰 없음");
-
-return;
-
-}
-
 
 const data =
 snap.data();
 
 
+
 if(data.status==="used"){
 
-alert(
-"이미 사용 완료된 쿠폰입니다."
-);
+result.innerHTML =
+"❌ 이미 사용 완료된 쿠폰입니다.";
 
 return;
 
 }
+
 
 
 result.innerHTML =
 "📱 QR 또는 쿠폰번호를 직원에게 보여주세요";
 
 
+
 };
 
-result.innerHTML =
-"🎉 쿠폰 사용 완료";
 
 
-requestBtn.disabled=true;
+
+
 
 
 };
