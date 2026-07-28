@@ -902,6 +902,7 @@ alert(
 
 searchBtn.onclick=async()=>{
 
+console.log("검색버튼 실행", searchCoupon.value);
 
 const number =
 searchCoupon.value.trim();
