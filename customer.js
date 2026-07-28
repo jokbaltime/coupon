@@ -159,20 +159,6 @@ data.image;
 
 }
 
-// QR 생성
-qrCode.innerHTML = "";
-
-new QRCode(qrCode, {
-
-text: number,
-
-width: 320,
-
-height: 320,
-
-correctLevel: QRCode.CorrectLevel.H
-
-});
 
 listenCoupon(number);
 
@@ -267,14 +253,29 @@ else if(data.status==="approved"){
 
 
 result.innerHTML =
-"✅ 승인 완료 직원에게 보여주세요";
+"✅ 승인 완료 QR을 보여주세요";
 
 
 requestBtn.disabled=true;
 
 
-}
+// QR 생성
+qrCode.innerHTML = "";
 
+new QRCode(qrCode, {
+
+text:number,
+
+width:320,
+
+height:320,
+
+correctLevel:QRCode.CorrectLevel.H
+
+});
+
+
+}
 
 
 else if(data.status==="used"){
