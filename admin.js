@@ -459,16 +459,14 @@ ${data.maxUseCount || 1}
 div.querySelector(".selectCoupon")
 .onclick=()=>{
 
+console.log("조회 클릭", data.couponNumber);
 
 searchCoupon.value =
 data.couponNumber;
 
-
 searchBtn.click();
 
-
 };
-
 // ================================
 // 수정 버튼 수정
 // ================================
