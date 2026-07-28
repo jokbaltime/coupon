@@ -933,7 +933,8 @@ number
 
 );
 
-
+console.log("쿠폰 조회 완료");
+console.log(snap.exists());
 
 if(!snap.exists()){
 
@@ -1186,8 +1187,7 @@ number
 
 );
 
-console.log("쿠폰 조회 완료");
-console.log(snap.exists());
+
   
 
 if(!snap.exists()){
