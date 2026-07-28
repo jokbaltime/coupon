@@ -974,6 +974,8 @@ snap.data();
 
 searchCoupon.addEventListener("keydown",(e)=>{
 
+console.log(e.key);
+
 if(e.key==="Enter"){
 
 searchBtn.click();
