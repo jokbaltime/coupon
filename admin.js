@@ -1623,19 +1623,7 @@ alert(
 // UPDATE COUPON
 // ================================
 
-editCouponBtn.onclick = ()=>{
 
-
-document.querySelector("#couponNumber").scrollIntoView({
-
-behavior:"smooth",
-
-block:"start"
-
-});
-
-
-};
 
 updateCouponBtn.onclick = async()=>{
 
