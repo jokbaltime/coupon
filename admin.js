@@ -501,17 +501,7 @@ data.couponNumber;
 searchBtn.click();
 
 
-setTimeout(()=>{
 
-document.querySelector("#couponNumber").scrollIntoView({
-
-behavior:"smooth",
-
-block:"start"
-
-});
-
-},500);
 
 
 };
@@ -1556,11 +1546,11 @@ if(editCouponBtn){
 
 editCouponBtn.onclick = ()=>{
 
-document.querySelector("#couponNumber").scrollIntoView({
+document.querySelector("#editButtons").scrollIntoView({
 
 behavior:"smooth",
 
-block:"start"
+block:"center"
 
 });
 
