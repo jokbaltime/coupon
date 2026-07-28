@@ -496,20 +496,9 @@ searchCoupon.value =
 data.couponNumber;
 
 
-window.scrollTo({
-
-top:0,
-
-behavior:"smooth"
-
-});
 
 
-setTimeout(()=>{
 
-searchBtn.click();
-
-},300);
 
 
 };
