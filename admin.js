@@ -968,6 +968,19 @@ return;
 const data =
 snap.data();
 
+// ================================
+// ENTER SEARCH
+// ================================
+
+searchCoupon.addEventListener("keydown",(e)=>{
+
+if(e.key==="Enter"){
+
+searchBtn.click();
+
+}
+
+});
 
 // ================================
 // 입력창 표시
