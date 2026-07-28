@@ -372,33 +372,61 @@ return;
 
 
 // 사용 요청 상태 저장
-await setDoc(
 
+requestBtn.onclick = async()=>{
+
+const number =
+couponNumber.value.trim();
+
+
+if(!number){
+
+alert("쿠폰번호 입력");
+
+return;
+
+}
+
+
+const snap =
+await getDoc(
 doc(
 db,
 "coupons",
 number
-),
-
-{
-
-status:"used",
-
-usedAt:
-serverTimestamp(),
-
-useCount:
-(data.useCount || 0)+1
-
-},
-
-{
-merge:true
-}
-
+)
 );
 
 
+if(!snap.exists()){
+
+alert("쿠폰 없음");
+
+return;
+
+}
+
+
+const data =
+snap.data();
+
+
+if(data.status==="used"){
+
+alert(
+"이미 사용 완료된 쿠폰입니다."
+);
+
+return;
+
+}
+
+
+result.innerHTML =
+"📱 QR 또는 쿠폰번호를 직원에게 보여주세요";
+
+
+};
 
 result.innerHTML =
 "🎉 쿠폰 사용 완료";
