@@ -159,6 +159,19 @@ data.image;
 
 }
 
+qrCode.innerHTML = "";
+
+new QRCode(qrCode, {
+
+text:number,
+
+width:320,
+
+height:320,
+
+correctLevel:QRCode.CorrectLevel.H
+
+});
 
 listenCoupon(number);
 
@@ -233,52 +246,7 @@ return;
 }
 
 
-
-
-if(data.status==="waiting"){
-
-
-result.innerHTML =
-"⏳ 승인 요청 대기중";
-
-
-requestBtn.disabled=true;
-
-
-}
-
-
-
-else if(data.status==="approved"){
-
-
-result.innerHTML =
-"✅ 승인 완료 QR을 보여주세요";
-
-
-requestBtn.disabled=true;
-
-
-// QR 생성
-qrCode.innerHTML = "";
-
-new QRCode(qrCode, {
-
-text:number,
-
-width:320,
-
-height:320,
-
-correctLevel:QRCode.CorrectLevel.H
-
-});
-
-
-}
-
-
-else if(data.status==="used"){
+if(data.status==="used"){
 
 
 result.innerHTML =
@@ -295,13 +263,14 @@ else{
 
 
 result.innerHTML =
-"사용 요청 가능";
+"✅ 사용 가능한 쿠폰입니다.";
 
 
 requestBtn.disabled=false;
 
 
 }
+
 
 
 }
@@ -353,209 +322,25 @@ loadCoupon(number);
 // REQUEST
 // ================================
 
-
 requestBtn.onclick = async()=>{
-
-
-console.log(
-"사용 요청 버튼 클릭됨"
-);
-
-
-
-try{
-
 
 const number =
 couponNumber.value.trim();
 
 
-
 if(!number){
 
-
-alert(
-"쿠폰번호 입력"
-);
-
-
-return;
-
-
-}
-
-
-
-
-
-const couponSnap =
-await getDoc(
-
-doc(
-db,
-"coupons",
-number
-)
-
-);
-
-
-
-
-
-if(!couponSnap.exists()){
-
-
-alert(
-"쿠폰 없음"
-);
-
-
-return;
-
-
-}
-
-
-
-
-
-const data =
-couponSnap.data();
-
-
-
-
-if(data.status==="used"){
-
-alert(
-"❌ 이미 사용 완료된 쿠폰입니다."
-);
+alert("쿠폰번호 입력");
 
 return;
 
 }
 
 
-
-
-
-console.log(
-"요청 저장 시작"
-);
-
-
-
-
-
-await setDoc(
-
-doc(
-db,
-"coupon_requests",
-number
-),
-
-{
-
-
-couponNumber:number,
-
-
-status:"waiting",
-
-
-createdAt:
-serverTimestamp()
-
-
-}
-
-);
-
-
-
-
-
-
-console.log(
-"요청 저장 완료"
-);
-
-
-
-
-
-
-
-await setDoc(
-
-doc(
-db,
-"coupons",
-number
-),
-
-{
-
-
-status:"waiting"
-
-
-},
-
-{
-
-merge:true
-
-}
-
-);
-
-
-
-
-
-
-console.log(
-"쿠폰 상태 변경 완료"
-);
-
-
-
-
-
-result.innerHTML =
-"⏳ 직원 승인 요청 완료";
-
-
-
-}
-
-catch(error){
-
-
-console.error(
-"요청 오류:",
-error
-);
-
-
-alert(
-"요청 처리 오류 : "
-+
-error.message
-);
-
-
-}
-
+await loadCoupon(number);
 
 
 };
-
-
-
 
 
 console.log(
