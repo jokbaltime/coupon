@@ -1284,8 +1284,10 @@ serverTimestamp()
 
 alert("쿠폰 사용 처리 완료");
 
-};
+// 현재 조회 중인 쿠폰 다시 조회
+searchBtn.click();
 
+};
 
 
 
