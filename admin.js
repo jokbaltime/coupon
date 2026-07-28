@@ -1175,7 +1175,19 @@ data.usedAt.toDate().toLocaleString()
 
 
 `;
+if(
+data.status === "used" ||
+(data.useCount || 0) >= (data.maxUseCount || 1)
+){
 
+useCouponBtn.classList.add("hidden");
+
+}else{
+
+useCouponBtn.classList.remove("hidden");
+
+}
+  
 };
 
 
