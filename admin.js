@@ -466,6 +466,9 @@ data.couponNumber;
 
 searchBtn.click();
 
+  document.getElementById("couponResult").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
 };
 // ================================
 // 수정 버튼 수정
