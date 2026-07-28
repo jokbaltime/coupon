@@ -1112,6 +1112,14 @@ useCouponBtn.classList.remove("hidden");
 
 }
 
+setTimeout(()=>{
+
+couponResult.scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+});
+
+},100);
 
   
 console.log("검색 함수 끝");
