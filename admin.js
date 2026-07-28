@@ -458,6 +458,8 @@ data.usedAt.toDate().toLocaleString()
 
 div.querySelector(".selectCoupon").onclick = ()=>{
 
+alert(window.scrollY);
+
 searchCoupon.value =
 data.couponNumber;
 
@@ -465,12 +467,13 @@ window.scrollTo(0,0);
 
 setTimeout(()=>{
 
+alert(window.scrollY);
+
 searchBtn.click();
 
 },100);
 
 };
-
 div.querySelector(".quickEditCoupon")
 .onclick = ()=>{
 
