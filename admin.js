@@ -466,46 +466,37 @@ data.couponNumber;
 
 searchBtn.click();
 
-  document.getElementById("couponResult").scrollIntoView({
-    behavior: "smooth",
-    block: "start"
+   setTimeout(() => {
+        document.getElementById("couponResult").scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }, 200);
 };
 // ================================
 // 수정 버튼 수정
 // ================================
 
-div.querySelector(".quickEditCoupon")
-.onclick = ()=>{
+div.querySelector(".quickEditCoupon").onclick = () => {
 
-if(
+    if (
+        data.status === "used" ||
+        (data.useCount || 0) >= (data.maxUseCount || 1)
+    ) {
+        alert("사용 완료된 쿠폰은 수정할 수 없습니다.");
+        return;
+    }
 
-data.status==="used" ||
+    searchCoupon.value = data.couponNumber;
 
-(data.useCount || 0)
->=
-(data.maxUseCount || 1)
+    searchBtn.click();
 
-){
-
-alert(
-"사용 완료된 쿠폰은 수정할 수 없습니다."
-);
-
-return;
-
-}
-
-
-
-searchCoupon.value =
-data.couponNumber;
-
-
-searchBtn.click();
-
-
-
-
+    setTimeout(() => {
+        document.getElementById("couponEditSection").scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }, 200);
 
 };
 
@@ -1121,6 +1112,11 @@ useCouponBtn.classList.remove("hidden");
 
 }
 
+couponResult.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+});
+  
 console.log("검색 함수 끝");
 
 };
