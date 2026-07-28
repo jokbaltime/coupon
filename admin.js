@@ -498,10 +498,6 @@ searchCoupon.value =
 data.couponNumber;
 
 
-searchCoupon.value =
-data.couponNumber;
-
-
 searchBtn.click();
 
 
