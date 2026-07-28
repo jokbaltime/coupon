@@ -378,13 +378,6 @@ result.innerHTML =
 };
 
 
-
-
-
-
-
-};
-
 console.log(
 "requestBtn 확인:",
 requestBtn
