@@ -337,11 +337,77 @@ return;
 }
 
 
-await loadCoupon(number);
+const snap =
+await getDoc(
+doc(
+db,
+"coupons",
+number
+)
+);
+
+
+if(!snap.exists()){
+
+alert("쿠폰 없음");
+
+return;
+
+}
+
+
+const data =
+snap.data();
+
+
+if(data.status==="used"){
+
+alert(
+"이미 사용 완료된 쿠폰입니다."
+);
+
+return;
+
+}
+
+
+// 사용 요청 상태 저장
+await setDoc(
+
+doc(
+db,
+"coupons",
+number
+),
+
+{
+
+status:"used",
+
+usedAt:
+serverTimestamp(),
+
+useCount:
+(data.useCount || 0)+1
+
+},
+
+{
+merge:true
+}
+
+);
+
+
+
+result.innerHTML =
+"🎉 쿠폰 사용 완료";
+
+
+requestBtn.disabled=true;
 
 
 };
-
 
 console.log(
 "requestBtn 확인:",
