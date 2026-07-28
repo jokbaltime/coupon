@@ -87,6 +87,12 @@ document.getElementById("searchCoupon");
 const searchBtn =
 document.getElementById("searchBtn");
 
+const scanQrBtn =
+document.getElementById("scanQrBtn");
+
+const reader =
+document.getElementById("reader");
+
 const couponResult =
 document.getElementById("couponResult");
 
@@ -1903,5 +1909,55 @@ alert(
 );
 
 
+
+};
+
+// ================================
+// QR SCANNER
+// ================================
+
+scanQrBtn.onclick = async()=>{
+
+const scanner =
+new Html5Qrcode("reader");
+
+try{
+
+await scanner.start(
+
+{
+facingMode:"environment"
+},
+
+{
+fps:10,
+qrbox:250
+},
+
+async(decodedText)=>{
+
+await scanner.stop();
+
+reader.innerHTML = "";
+
+searchCoupon.value =
+decodedText;
+
+searchBtn.click();
+
+}
+
+);
+
+}
+catch(error){
+
+alert(
+"카메라 실행 실패"
+);
+
+console.error(error);
+
+}
 
 };
