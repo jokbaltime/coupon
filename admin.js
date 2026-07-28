@@ -308,26 +308,23 @@ function renderCouponList(){
 couponList.innerHTML="";
 
 
-const sortedList = [...couponSnapshotData].sort((a,b)=>{
-
+const sortedList = [...couponSnapshotData]
+.sort((a,b)=>{
 
 const aTime =
 a.updatedAt?.seconds ||
 a.createdAt?.seconds ||
 0;
 
-
 const bTime =
 b.updatedAt?.seconds ||
 b.createdAt?.seconds ||
 0;
 
-
 return bTime - aTime;
 
-
-});
-
+})
+.slice(0,10);
 
 
 sortedList.forEach((data)=>{
