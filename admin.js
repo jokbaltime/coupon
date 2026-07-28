@@ -495,52 +495,6 @@ searchBtn.click();
 div.querySelector(".quickEditCoupon")
 .onclick = ()=>{
 
-
-if(
-
-data.status==="used" ||
-
-(data.useCount || 0)
->=
-(data.maxUseCount || 1)
-
-){
-
-alert(
-"사용 완료된 쿠폰은 수정할 수 없습니다."
-);
-
-return;
-
-}
-
-
-
-searchCoupon.value =
-data.couponNumber;
-
-
-
-document.querySelector("#couponNumber").scrollIntoView({
-
-behavior:"smooth",
-
-block:"start"
-
-});
-
-
-
-setTimeout(()=>{
-
-searchBtn.click();
-
-},300);
-
-
-
-};
-
 if(
 
 data.status==="used" ||
