@@ -1128,7 +1128,7 @@ useCouponBtn.classList.remove("hidden");
 
 }
 
-
+console.log("검색 함수 끝");
 
 };
 
