@@ -561,9 +561,9 @@ if ((data.useCount || 0) >= 1) {
             statusText = "⏳ 승인 대기";
             break;
 
-        case "approved":
-            statusText = "✅ 승인 완료";
-            break;
+        case "issued":
+    statusText = "✅ 사용 가능";
+    break;
 
         case "used":
             statusText = "❌ 사용 완료";
@@ -724,19 +724,16 @@ snap.data();
 
 
 
-if(data.status !== "approved"){
-
+if(data.status === "used"){
 
 alert(
-"승인 완료된 쿠폰만 사용 가능합니다."
+"이미 사용 완료된 쿠폰입니다."
 );
-
 
 return;
 
-
 }
-
+    
 if(
 data.useCount >= 1 ||
 data.status === "used"
