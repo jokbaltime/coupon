@@ -115,6 +115,8 @@ document.getElementById("deleteCouponBtn");
 const editButtons =
 document.getElementById("editButtons");
 
+const editCouponBtn =
+document.getElementById("editCouponBtn");
 
 const updateCouponBtn =
 document.getElementById("updateCouponBtn");
@@ -462,26 +464,20 @@ searchCoupon.value =
 data.couponNumber;
 
 
-searchCoupon.focus();
-
-
-searchCoupon.scrollIntoView({
-
-behavior:"smooth",
-
-block:"center"
-
-});
+searchBtn.click();
 
 
 setTimeout(()=>{
 
+document.querySelector("#couponNumber").scrollIntoView({
 
-searchBtn.click();
+behavior:"smooth",
 
+block:"start"
+
+});
 
 },500);
-
 
 };
 
@@ -1577,7 +1573,21 @@ alert(
 // UPDATE COUPON
 // ================================
 
+if(editCouponBtn){
 
+editCouponBtn.onclick = ()=>{
+
+document.querySelector("#couponNumber").scrollIntoView({
+
+behavior:"smooth",
+
+block:"start"
+
+});
+
+};
+
+}
 
 updateCouponBtn.onclick = async()=>{
 
