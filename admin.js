@@ -938,6 +938,7 @@ alert(
 "쿠폰번호 입력"
 );
 
+
 return;
 
 }
@@ -968,21 +969,7 @@ return;
 const data =
 snap.data();
 
-// ================================
-// ENTER SEARCH
-// ================================
 
-searchCoupon.addEventListener("keydown",(e)=>{
-
-console.log(e.key);
-
-if(e.key==="Enter"){
-
-searchBtn.click();
-
-}
-
-});
 
 // ================================
 // 입력창 표시
@@ -1205,6 +1192,19 @@ useCouponBtn.classList.remove("hidden");
   
 };
 
+// ================================
+// ENTER SEARCH
+// ================================
+
+searchCoupon.addEventListener("keydown",(e)=>{
+
+if(e.key==="Enter"){
+
+searchBtn.click();
+
+}
+
+});
 
 
 // ================================
@@ -1556,9 +1556,6 @@ alert(
 
 };
 
-// ================================
-// UPDATE COUPON
-// ================================
 
 // ================================
 // COUPON FILTER
