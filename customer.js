@@ -382,3 +382,21 @@ console.log(
 "requestBtn 확인:",
 requestBtn
 );
+
+// ================================
+// AUTO LOAD FROM URL
+// ================================
+
+const params =
+new URLSearchParams(window.location.search);
+
+const coupon =
+params.get("coupon");
+
+if(coupon){
+
+couponNumber.value = coupon;
+
+loadCoupon(coupon);
+
+}
