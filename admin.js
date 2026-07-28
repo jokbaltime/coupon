@@ -1300,7 +1300,11 @@ number
 
 {
 
-status:"approved",
+status:"issued",
+
+useCount:0,
+
+usedAt:null,
 
 cancelledAt:
 serverTimestamp()
