@@ -953,7 +953,7 @@ return;
 const data =
 snap.data();
 
-
+console.log("데이터 표시 시작", data);
 
 
 // 입력창 채우기
