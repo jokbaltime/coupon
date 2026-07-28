@@ -1550,14 +1550,13 @@ if(editCouponBtn){
 
 editCouponBtn.onclick = ()=>{
 
-document.querySelector("#editButtons").scrollIntoView({
+document.querySelector("#couponEditSection").scrollIntoView({
 
 behavior:"smooth",
 
-block:"center"
+block:"start"
 
 });
-
 };
 
 }
