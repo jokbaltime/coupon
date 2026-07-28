@@ -1,7 +1,7 @@
 // ======================================
 // admin.js
 // JOKBAL TIME COUPON ADMIN SYSTEM
-// PART 1
+// FIX VERSION PART 1
 // ======================================
 
 import {
@@ -23,13 +23,16 @@ serverTimestamp
 
 } from "./firebase.js";
 
+
 import {
 
 signInWithEmailAndPassword,
 signOut,
 onAuthStateChanged
 
-} from
+}
+
+from
 
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -50,6 +53,7 @@ document.getElementById("loginBtn");
 
 const logoutBtn =
 document.getElementById("logoutBtn");
+
 
 const couponNumber =
 document.getElementById("couponNumber");
@@ -75,11 +79,14 @@ document.getElementById("startDate");
 const endDate =
 document.getElementById("endDate");
 
+
 const saveCouponBtn =
 document.getElementById("saveCouponBtn");
 
+
 const requestList =
 document.getElementById("requestList");
+
 
 const searchCoupon =
 document.getElementById("searchCoupon");
@@ -87,11 +94,6 @@ document.getElementById("searchCoupon");
 const searchBtn =
 document.getElementById("searchBtn");
 
-const scanQrBtn =
-document.getElementById("scanQrBtn");
-
-const reader =
-document.getElementById("reader");
 
 const couponResult =
 document.getElementById("couponResult");
@@ -99,17 +101,6 @@ document.getElementById("couponResult");
 const couponList =
 document.getElementById("couponList");
 
-const allCouponBtn =
-document.getElementById("allCouponBtn");
-
-const waitingCouponBtn =
-document.getElementById("waitingCouponBtn");
-
-const approvedCouponBtn =
-document.getElementById("approvedCouponBtn");
-
-const usedCouponBtn =
-document.getElementById("usedCouponBtn");
 
 const useCouponBtn =
 document.getElementById("useCouponBtn");
@@ -120,46 +111,41 @@ document.getElementById("cancelUseBtn");
 const deleteCouponBtn =
 document.getElementById("deleteCouponBtn");
 
+
 const editButtons =
 document.getElementById("editButtons");
 
-const editCouponBtn =
-document.getElementById("editCouponBtn");
 
 const updateCouponBtn =
 document.getElementById("updateCouponBtn");
 
+
 const historyList =
 document.getElementById("historyList");
+
 
 const bulkCouponTitle =
 document.getElementById("bulkCouponTitle");
 
-
 const bulkDiscount =
 document.getElementById("bulkDiscount");
-
 
 const bulkCount =
 document.getElementById("bulkCount");
 
-
 const bulkStartDate =
 document.getElementById("bulkStartDate");
-
 
 const bulkEndDate =
 document.getElementById("bulkEndDate");
 
-
 const bulkNotice =
 document.getElementById("bulkNotice");
-
 
 const bulkCreateBtn =
 document.getElementById("bulkCreateBtn");
 
-// ===== Dashboard =====
+
 
 const totalCoupon =
 document.getElementById("totalCoupon");
@@ -173,9 +159,13 @@ document.getElementById("approvedCount");
 const usedCount =
 document.getElementById("usedCount");
 
-let couponFilter = "all";
 
-let couponSnapshotData = [];
+
+let couponFilter="all";
+
+let couponSnapshotData=[];
+
+
 
 // ================================
 // LOGIN
@@ -183,11 +173,16 @@ let couponSnapshotData = [];
 
 loginBtn.onclick = async()=>{
 
+
 const email =
-document.getElementById("adminEmail").value.trim();
+document.getElementById("adminEmail")
+.value.trim();
+
 
 const password =
-document.getElementById("adminPassword").value.trim();
+document.getElementById("adminPassword")
+.value.trim();
+
 
 try{
 
@@ -199,13 +194,13 @@ password
 
 );
 
+
 }
 
 catch(error){
 
 alert(
-"로그인 실패 : " +
-error.message
+"로그인 실패 : "+error.message
 );
 
 }
@@ -215,36 +210,43 @@ error.message
 
 
 // ================================
-// LOGIN STATE
+// AUTH
 // ================================
 
 onAuthStateChanged(auth,(user)=>{
 
+
 if(user){
+
 
 loginBox.classList.add("hidden");
 
 adminBox.classList.remove("hidden");
 
+
 loadDashboard();
 
-loadRequests();
+loadCouponList();
 
 loadHistory();
 
-loadCouponList();
+loadRequests();
+
+
 }
 
 else{
+
 
 loginBox.classList.remove("hidden");
 
 adminBox.classList.add("hidden");
 
+
 }
 
-});
 
+});
 
 
 logoutBtn.onclick = async()=>{
@@ -252,12 +254,6 @@ logoutBtn.onclick = async()=>{
 await signOut(auth);
 
 };
-
-
-
-// ================================
-// DASHBOARD
-// ================================
 
 // ================================
 // COUPON LIST
@@ -273,10 +269,11 @@ collection(db,"coupons"),
 (snapshot)=>{
 
 
-couponSnapshotData = [];
+couponSnapshotData=[];
 
 
 snapshot.forEach((item)=>{
+
 
 couponSnapshotData.push({
 
@@ -285,6 +282,7 @@ id:item.id,
 ...item.data()
 
 });
+
 
 });
 
@@ -309,30 +307,40 @@ couponList.innerHTML="";
 
 
 const sortedList = [...couponSnapshotData]
+
 .sort((a,b)=>{
+
 
 const aTime =
 a.updatedAt?.seconds ||
 a.createdAt?.seconds ||
 0;
 
+
 const bTime =
 b.updatedAt?.seconds ||
 b.createdAt?.seconds ||
 0;
 
-return bTime - aTime;
+
+return bTime-aTime;
+
 
 })
+
 .slice(0,10);
+
+
 
 
 sortedList.forEach((data)=>{
 
 
 if(
+
 couponFilter !== "all" &&
 data.status !== couponFilter
+
 ){
 
 return;
@@ -377,9 +385,11 @@ break;
 
 default:
 
-statusText=data.status;
+statusText=data.status || "-";
+
 
 }
+
 
 
 
@@ -387,13 +397,11 @@ const div =
 document.createElement("div");
 
 
-
-div.className =
-"coupon-card";
+div.className="coupon-card";
 
 
 
-div.innerHTML =
+div.innerHTML=
 
 `
 
@@ -422,70 +430,80 @@ ${data.useCount || 0}
 ${data.maxUseCount || 1}
 </p>
 
-<p>
-최근 사용 :
-${
-data.usedAt
-?
-data.usedAt.toDate().toLocaleString()
-:
-"-"
-}
-</p>
-
 
 <button class="selectCoupon">
-
 조회
-
 </button>
 
 
 <button class="quickEditCoupon">
-
 수정
-
 </button>
 
 
 <button class="quickDeleteCoupon">
-
 삭제
-
 </button>
 
 `;
 
-div.querySelector(".selectCoupon").onclick = ()=>{
+
+
+
+// ================================
+// 조회 버튼 수정
+// ================================
+
+div.querySelector(".selectCoupon")
+.onclick=()=>{
 
 
 searchCoupon.value =
 data.couponNumber;
 
 
-document.querySelector("#searchCoupon").scrollIntoView({
+searchCoupon.focus();
+
+
+searchCoupon.scrollIntoView({
 
 behavior:"smooth",
 
-block:"start"
+block:"center"
 
 });
 
 
 setTimeout(()=>{
 
+
 searchBtn.click();
 
-},300);
+
+},500);
+
 
 };
+
+
+
+
+// ================================
+// 수정 버튼 수정
+// ================================
+
 div.querySelector(".quickEditCoupon")
-.onclick = ()=>{
+.onclick=()=>{
 
 
 if(
-data.status === "used" ||
-(data.useCount || 0) >= (data.maxUseCount || 1)
+
+data.status==="used" ||
+
+(data.useCount || 0)
+>=
+(data.maxUseCount || 1)
+
 ){
 
 alert(
@@ -497,23 +515,55 @@ return;
 }
 
 
+
 searchCoupon.value =
 data.couponNumber;
 
 
+searchCoupon.focus();
 
 
+searchCoupon.scrollIntoView({
+
+behavior:"smooth",
+
+block:"center"
+
+});
+
+
+
+setTimeout(()=>{
+
+
+searchBtn.click();
+
+
+},500);
 
 
 
 };
 
+
+
+
+// ================================
+// 빠른 삭제
+// ================================
+
 div.querySelector(".quickDeleteCoupon")
-.onclick = async()=>{
+.onclick=async()=>{
+
 
 if(
-data.status === "used" ||
-(data.useCount || 0) >= (data.maxUseCount || 1)
+
+data.status==="used" ||
+
+(data.useCount || 0)
+>=
+(data.maxUseCount || 1)
+
 ){
 
 alert(
@@ -522,12 +572,15 @@ alert(
 
 return;
 
-}  
+}
+
+
 
 const result =
 confirm(
 "이 쿠폰을 삭제하시겠습니까?"
 );
+
 
 
 if(!result){
@@ -538,12 +591,14 @@ return;
 
 
 
+
 await deleteDoc(
 
 doc(
 db,
 "coupons",
 data.couponNumber
+
 )
 
 );
@@ -555,6 +610,7 @@ await addDoc(
 collection(
 db,
 "coupon_history"
+
 ),
 
 {
@@ -583,7 +639,10 @@ alert(
 );
 
 
+
 };
+
+
 
 couponList.appendChild(div);
 
@@ -594,7 +653,12 @@ couponList.appendChild(div);
 
 }
 
+// ================================
+// DASHBOARD
+// ================================
+
 function loadDashboard(){
+
 
 onSnapshot(
 
@@ -602,25 +666,44 @@ collection(db,"coupons"),
 
 (snapshot)=>{
 
+
 let total=0;
+
 let waiting=0;
+
 let approved=0;
+
 let used=0;
+
+
 
 snapshot.forEach((item)=>{
 
+
 total++;
+
 
 const data =
 item.data();
 
-if(data.status==="waiting")
+
+
+if(data.status==="waiting"){
+
 waiting++;
+
+}
+
 
 
 if(
+
 data.status==="approved" &&
-(data.useCount || 0) < (data.maxUseCount || 1)
+
+(data.useCount || 0)
+<
+(data.maxUseCount || 1)
+
 ){
 
 approved++;
@@ -628,33 +711,59 @@ approved++;
 }
 
 
+
 if(
+
 data.status==="used" ||
-(data.useCount || 0) >= (data.maxUseCount || 1)
+
+(data.useCount || 0)
+>=
+(data.maxUseCount || 1)
+
 ){
 
 used++;
 
 }
 
+
+
 });
+
+
 
 if(totalCoupon)
+
 totalCoupon.innerText=total;
 
+
+
 if(waitingCount)
+
 waitingCount.innerText=waiting;
 
+
+
 if(approvedCount)
+
 approvedCount.innerText=approved;
 
+
+
 if(usedCount)
+
 usedCount.innerText=used;
 
-});
 
-  
+
 }
+
+);
+
+
+}
+
+
 
 
 
@@ -662,20 +771,25 @@ usedCount.innerText=used;
 // SAVE COUPON
 // ================================
 
-saveCouponBtn.onclick = async()=>{
+
+saveCouponBtn.onclick=async()=>{
+
 
 const number =
 couponNumber.value.trim();
 
+
+
 if(!number){
 
-alert(
-"쿠폰번호 입력"
-);
+alert("쿠폰번호 입력");
 
 return;
 
 }
+
+
+
 
 const couponRef =
 doc(
@@ -684,67 +798,101 @@ db,
 number
 );
 
+
+
 const oldCoupon =
 await getDoc(couponRef);
 
+
+
 let saveData={
 
+
 couponNumber:number,
+
 
 title:
 couponTitle.value.trim(),
 
+
 discount:
 Number(discount.value),
+
 
 maxUseCount:
 Number(maxUseCount.value),
 
+
 notice:
 notice.value.trim(),
+
 
 image:
 imageUrl.value.trim(),
 
+
 startDate:
 startDate.value,
+
 
 endDate:
 endDate.value,
 
+
 updatedAt:
 serverTimestamp()
 
+
 };
 
+
+
+
+
 if(oldCoupon.exists()){
+
 
 const oldData =
 oldCoupon.data();
 
+
+
 saveData.status =
 oldData.status;
+
+
 
 saveData.createdAt =
 oldData.createdAt;
 
+
+
 saveData.useCount =
 oldData.useCount || 0;
+
+
 
 }
 
 else{
 
-saveData.status =
-"issued";
 
-saveData.useCount =
-0;
+saveData.status="issued";
 
-saveData.createdAt =
+
+saveData.useCount=0;
+
+
+saveData.createdAt=
 serverTimestamp();
 
+
+
 }
+
+
+
+
 
 await setDoc(
 
@@ -760,176 +908,15 @@ merge:true
 
 );
 
+
+
 alert(
 "쿠폰 저장 완료"
 );
-};
 
-// ================================
-// REQUEST LIST
-// ================================
-
-function loadRequests(){
-
-const q =
-
-query(
-
-collection(
-db,
-"coupon_requests"
-),
-
-where(
-"status",
-"==",
-"waiting"
-)
-
-);
-
-onSnapshot(q,(snapshot)=>{
-
-requestList.innerHTML="";
-
-snapshot.forEach((item)=>{
-
-const data =
-item.data();
-
-const div =
-document.createElement("div");
-
-div.className =
-"request-card";
-
-div.innerHTML =
-
-`
-
-<p>
-쿠폰번호 :
-<b>${data.couponNumber}</b>
-</p>
-
-<p>
-요청시간 :
-${
-data.createdAt
-?
-data.createdAt.toDate().toLocaleString()
-:
-""
-}
-</p>
-
-<button>
-승인
-</button>
-
-`;
-
-div.querySelector("button")
-.onclick = async()=>{
-
-await approveCoupon(
-data.couponNumber
-);
 
 };
 
-requestList.appendChild(div);
-
-});
-
-});
-
-}
-
-
-
-// ================================
-// APPROVE
-// ================================
-
-async function approveCoupon(number){
-
-const couponRef =
-doc(
-db,
-"coupons",
-number
-);
-
-const couponSnap =
-await getDoc(couponRef);
-
-if(!couponSnap.exists()){
-
-alert(
-"쿠폰 데이터를 찾을 수 없습니다."
-);
-
-return;
-
-}
-
-await updateDoc(
-
-couponRef,
-
-{
-
-status:"approved",
-
-approvedAt:
-serverTimestamp()
-
-}
-
-);
-
-await updateDoc(
-
-doc(
-db,
-"coupon_requests",
-number
-),
-
-{
-
-status:"approved"
-
-}
-
-);
-
-await addDoc(
-
-collection(
-db,
-"coupon_history"
-),
-
-{
-
-couponNumber:number,
-
-action:"approved",
-
-time:
-serverTimestamp()
-
-}
-
-);
-
-alert(
-"승인 완료"
-);
-
-}
 
 
 
@@ -937,10 +924,13 @@ alert(
 // SEARCH COUPON
 // ================================
 
-searchBtn.onclick = async()=>{
+
+searchBtn.onclick=async()=>{
+
 
 const number =
 searchCoupon.value.trim();
+
 
 
 if(!number){
@@ -949,10 +939,10 @@ alert(
 "쿠폰번호 입력"
 );
 
-
 return;
 
 }
+
 
 
 const snap =
@@ -962,19 +952,25 @@ doc(
 db,
 "coupons",
 number
+
 )
 
 );
 
 
+
 if(!snap.exists()){
 
-couponResult.innerHTML =
+
+couponResult.innerHTML=
 "❌ 쿠폰 없음";
+
 
 return;
 
 }
+
+
 
 
 const data =
@@ -982,9 +978,8 @@ snap.data();
 
 
 
-// ================================
-// 입력창 표시
-// ================================
+
+// 입력창 채우기
 
 couponNumber.value =
 data.couponNumber || "";
@@ -1012,21 +1007,31 @@ data.endDate || "";
 
 
 
-// ================================
-// 상태 표시
-// ================================
+
+
+if(editButtons){
+
+editButtons.classList.remove("hidden");
+
+}
+
+
+
 
 let statusText="";
 
 
+
 if(
+
 (data.useCount || 0)
 >=
 (data.maxUseCount || 1)
+
 ){
 
-statusText =
-"❌ 사용 완료";
+statusText="❌ 사용 완료";
+
 
 }
 
@@ -1038,90 +1043,50 @@ switch(data.status){
 
 case "issued":
 
-statusText =
-"📄 발급 완료";
+statusText="📄 발급 완료";
 
 break;
 
 
 case "waiting":
 
-statusText =
-"⏳ 승인 대기";
+statusText="⏳ 승인 대기";
 
 break;
 
 
 case "approved":
 
-statusText =
-"✅ 승인 완료";
+statusText="✅ 승인 완료";
 
 break;
 
 
 case "used":
 
-statusText =
-"❌ 사용 완료";
+statusText="❌ 사용 완료";
 
 break;
 
 
 default:
 
-statusText =
-data.status || "-";
-
-}
+statusText=data.status || "-";
 
 
 }
 
 
 
-// ================================
-// 수정 버튼 표시
-// ================================
-
-if(editButtons){
-
-editButtons.classList.remove("hidden");
-
 }
 
 
 
-// ================================
-// 결과 표시
-// ================================
 
-couponResult.innerHTML =
+
+couponResult.innerHTML=
 
 `
-
-${
-data.image
-?
-`
-<img 
-src="${data.image}"
-style="
-width:200px;
-border-radius:10px;
-margin:10px 0;
-">
-`
-:
-""
-}
-
-
-<p>
-안내 :
-${data.notice || "-"}
-</p>
-
 
 <p>
 번호 :
@@ -1163,51 +1128,43 @@ ${data.endDate || "-"}
 </p>
 
 
-<p>
-승인시간 :
-${
-data.approvedAt && data.approvedAt.toDate
-?
-data.approvedAt.toDate().toLocaleString()
-:
-"-"
-}
-</p>
-
-
-<p>
-사용시간 :
-${
-data.usedAt && data.usedAt.toDate
-?
-data.usedAt.toDate().toLocaleString()
-:
-"-"
-}
-</p>
-
-
 `;
+
+
+
 if(
-data.status === "used" ||
-(data.useCount || 0) >= (data.maxUseCount || 1)
+
+data.status==="used" ||
+
+(data.useCount || 0)
+>=
+(data.maxUseCount || 1)
+
 ){
 
 useCouponBtn.classList.add("hidden");
 
-}else{
+
+}
+
+else{
+
 
 useCouponBtn.classList.remove("hidden");
 
+
 }
-  
+
+
+
 };
 
-// ================================
-// ENTER SEARCH
-// ================================
+
+
+// ENTER 검색
 
 searchCoupon.addEventListener("keydown",(e)=>{
+
 
 if(e.key==="Enter"){
 
@@ -1215,8 +1172,8 @@ searchBtn.click();
 
 }
 
-});
 
+});
 
 // ================================
 // USE COUPON
@@ -1224,8 +1181,11 @@ searchBtn.click();
 
 useCouponBtn.onclick = async()=>{
 
+
 const number =
 searchCoupon.value.trim();
+
+
 
 if(!number){
 
@@ -1235,14 +1195,22 @@ return;
 
 }
 
+
+
+
 const snap =
 await getDoc(
+
 doc(
 db,
 "coupons",
 number
+
 )
+
 );
+
+
 
 if(!snap.exists()){
 
@@ -1252,19 +1220,34 @@ return;
 
 }
 
+
+
 const data =
 snap.data();
 
+
+
 if(
+
 data.status==="used" ||
-(data.useCount || 0) >= (data.maxUseCount || 1)
+
+(data.useCount || 0)
+>=
+(data.maxUseCount || 1)
+
 ){
 
-alert("이미 사용 완료된 쿠폰입니다.");
+alert(
+"이미 사용 완료된 쿠폰입니다."
+);
 
 return;
 
 }
+
+
+
+
 
 await updateDoc(
 
@@ -1272,48 +1255,70 @@ doc(
 db,
 "coupons",
 number
+
 ),
 
 {
 
+
 status:"used",
+
 
 useCount:
 (data.useCount || 0)+1,
 
+
 usedAt:
 serverTimestamp()
+
 
 }
 
 );
+
+
+
 
 await addDoc(
 
 collection(
 db,
 "coupon_history"
+
 ),
 
 {
 
+
 couponNumber:number,
+
 
 action:"used",
 
+
 time:
 serverTimestamp()
+
 
 }
 
 );
 
-alert("쿠폰 사용 처리 완료");
 
-// 현재 조회 중인 쿠폰 다시 조회
+
+alert(
+"쿠폰 사용 처리 완료"
+);
+
+
+
 searchBtn.click();
 
+
+
 };
+
+
 
 
 
@@ -1323,8 +1328,11 @@ searchBtn.click();
 
 cancelUseBtn.onclick = async()=>{
 
+
 const number =
 searchCoupon.value.trim();
+
+
 
 if(!number){
 
@@ -1336,128 +1344,78 @@ return;
 
 }
 
+
+
+
 await updateDoc(
 
 doc(
 db,
 "coupons",
 number
+
 ),
 
 {
 
+
 status:"issued",
+
 
 useCount:0,
 
+
 usedAt:null,
+
 
 cancelledAt:
 serverTimestamp()
 
+
 }
 
 );
+
+
+
 
 await addDoc(
 
 collection(
 db,
 "coupon_history"
+
 ),
 
 {
 
+
 couponNumber:number,
 
+
 action:"cancelled",
+
 
 time:
 serverTimestamp()
 
+
 }
 
 );
+
+
 
 alert(
 "사용 취소 복구 완료"
 );
 
-  };
+
+
+};
 
 
 
-// ================================
-// HISTORY
-// ================================
-
-function loadHistory(){
-
-const q =
-
-query(
-
-collection(
-db,
-"coupon_history"
-),
-
-orderBy(
-"time",
-"desc"
-)
-
-);
-
-onSnapshot(q,(snapshot)=>{
-
-historyList.innerHTML="";
-
-snapshot.forEach((item)=>{
-
-const data =
-item.data();
-
-const div =
-document.createElement("div");
-
-div.className =
-"history-card";
-
-div.innerHTML =
-
-`
-
-<p>
-쿠폰번호 :
-<b>${data.couponNumber}</b>
-</p>
-
-<p>
-처리 :
-${data.action}
-</p>
-
-<p>
-시간 :
-${
-data.time
-?
-data.time.toDate().toLocaleString()
-:
-"처리 시간 없음"
-}
-</p>
-
-`;
-
-historyList.appendChild(div);
-
-});
-
-});
-
-}
 
 
 
@@ -1467,8 +1425,11 @@ historyList.appendChild(div);
 
 deleteCouponBtn.onclick = async()=>{
 
+
 const number =
 searchCoupon.value.trim();
+
+
 
 if(!number){
 
@@ -1480,6 +1441,9 @@ return;
 
 }
 
+
+
+
 const check =
 await getDoc(
 
@@ -1487,27 +1451,15 @@ doc(
 db,
 "coupons",
 number
+
 )
 
 );
 
-const couponData =
-check.data();
 
 
-if(
-couponData.status === "used" ||
-(couponData.useCount || 0) >= (couponData.maxUseCount || 1)
-){
 
-alert(
-"사용 완료된 쿠폰은 삭제할 수 없습니다."
-);
 
-return;
-
-}
-  
 if(!check.exists()){
 
 alert(
@@ -1518,10 +1470,42 @@ return;
 
 }
 
+
+
+const couponData =
+check.data();
+
+
+
+
+
+if(
+
+couponData.status==="used" ||
+
+(couponData.useCount || 0)
+>=
+(couponData.maxUseCount || 1)
+
+){
+
+alert(
+"사용 완료된 쿠폰은 삭제할 수 없습니다."
+);
+
+return;
+
+}
+
+
+
+
 const confirmDelete =
 confirm(
 "이 쿠폰을 삭제하시겠습니까?"
 );
+
+
 
 if(!confirmDelete){
 
@@ -1529,144 +1513,76 @@ return;
 
 }
 
+
+
+
 await deleteDoc(
 
 doc(
 db,
 "coupons",
 number
+
 )
 
 );
+
+
+
 
 await addDoc(
 
 collection(
 db,
 "coupon_history"
+
 ),
 
 {
 
+
 couponNumber:number,
+
 
 action:"deleted",
 
+
 time:
 serverTimestamp()
+
 
 }
 
 );
 
-couponResult.innerHTML = "";
+
+
+couponResult.innerHTML="";
+
+
 
 alert(
 "쿠폰 삭제 완료"
 );
 
+
+
 };
+
+
+
+
 
 
 // ================================
-// COUPON FILTER
+// UPDATE COUPON
 // ================================
-
-allCouponBtn.onclick = ()=>{
-
-couponFilter = "all";
-
-renderCouponList();
-
-};
-
-
-
-waitingCouponBtn.onclick = ()=>{
-
-couponFilter = "waiting";
-
-renderCouponList();
-
-};
-
-
-
-approvedCouponBtn.onclick = ()=>{
-
-couponFilter = "approved";
-
-renderCouponList();
-
-};
-
-
-
-usedCouponBtn.onclick = ()=>{
-
-couponFilter = "used";
-
-renderCouponList();
-
-};
-
-
-
-
-
-function createCouponNumber(){
-
-return "JBT-" +
-Math.random()
-.toString(36)
-.substring(2,8)
-.toUpperCase();
-
-}
-
-
-
-
-
-
 
 updateCouponBtn.onclick = async()=>{
 
 
 const number =
 couponNumber.value.trim();
-
-
-const check =
-await getDoc(
-doc(
-db,
-"coupons",
-number
-)
-);
-
-
-if(check.exists()){
-
-const data =
-check.data();
-
-
-if(
-data.status === "used" ||
-(data.useCount || 0) >= (data.maxUseCount || 1)
-){
-
-alert(
-"사용 완료된 쿠폰은 수정할 수 없습니다."
-);
-
-return;
-
-}
-
-}
 
 
 
@@ -1682,12 +1598,68 @@ return;
 
 
 
+
+const check =
+await getDoc(
+
+doc(
+db,
+"coupons",
+number
+
+)
+
+);
+
+
+
+if(!check.exists()){
+
+alert(
+"쿠폰 없음"
+);
+
+return;
+
+}
+
+
+
+const data =
+check.data();
+
+
+
+
+if(
+
+data.status==="used" ||
+
+(data.useCount || 0)
+>=
+(data.maxUseCount || 1)
+
+){
+
+alert(
+"사용 완료된 쿠폰은 수정할 수 없습니다."
+);
+
+return;
+
+}
+
+
+
+
+
 await updateDoc(
 
 doc(
 db,
 "coupons",
 number
+
 ),
 
 {
@@ -1738,6 +1710,7 @@ await addDoc(
 collection(
 db,
 "coupon_history"
+
 ),
 
 {
@@ -1770,30 +1743,431 @@ alert(
 };
 
 // ================================
-// BULK COUPON CREATE
+// REQUEST LIST
 // ================================
 
-bulkCreateBtn.onclick = async()=>{
+function loadRequests(){
+
+
+const q =
+
+query(
+
+collection(
+db,
+"coupon_requests"
+),
+
+where(
+"status",
+"==",
+"waiting"
+)
+
+);
+
+
+
+onSnapshot(q,(snapshot)=>{
+
+
+requestList.innerHTML="";
+
+
+
+snapshot.forEach((item)=>{
+
+
+const data =
+item.data();
+
+
+
+const div =
+document.createElement("div");
+
+
+
+div.className =
+"request-card";
+
+
+
+div.innerHTML=
+
+`
+
+<p>
+쿠폰번호 :
+<b>${data.couponNumber}</b>
+</p>
+
+
+<p>
+요청시간 :
+${
+data.createdAt
+?
+data.createdAt.toDate().toLocaleString()
+:
+""
+}
+</p>
+
+
+<button>
+승인
+</button>
+
+`;
+
+
+
+div.querySelector("button")
+.onclick=async()=>{
+
+
+await approveCoupon(
+data.couponNumber
+);
+
+
+
+};
+
+
+
+requestList.appendChild(div);
+
+
+
+});
+
+
+
+});
+
+
+}
+
+
+
+
+
+async function approveCoupon(number){
+
+
+
+const couponRef =
+doc(
+db,
+"coupons",
+number
+);
+
+
+
+const couponSnap =
+await getDoc(couponRef);
+
+
+
+if(!couponSnap.exists()){
+
+
+alert(
+"쿠폰 데이터를 찾을 수 없습니다."
+);
+
+
+return;
+
+
+}
+
+
+
+
+await updateDoc(
+
+couponRef,
+
+{
+
+
+status:"approved",
+
+
+approvedAt:
+serverTimestamp()
+
+
+}
+
+);
+
+
+
+
+
+await updateDoc(
+
+doc(
+db,
+"coupon_requests",
+number
+
+),
+
+{
+
+
+status:"approved"
+
+
+}
+
+);
+
+
+
+
+
+await addDoc(
+
+collection(
+db,
+"coupon_history"
+
+),
+
+{
+
+
+couponNumber:number,
+
+
+action:"approved",
+
+
+time:
+serverTimestamp()
+
+
+}
+
+);
+
+
+
+
+alert(
+"승인 완료"
+);
+
+
+
+}
+
+
+
+
+
+
+// ================================
+// HISTORY
+// ================================
+
+
+function loadHistory(){
+
+
+
+const q =
+
+query(
+
+collection(
+db,
+"coupon_history"
+),
+
+orderBy(
+"time",
+"desc"
+)
+
+);
+
+
+
+onSnapshot(q,(snapshot)=>{
+
+
+historyList.innerHTML="";
+
+
+
+snapshot.forEach((item)=>{
+
+
+const data =
+item.data();
+
+
+
+const div =
+document.createElement("div");
+
+
+
+div.className =
+"history-card";
+
+
+
+div.innerHTML=
+
+`
+
+<p>
+쿠폰번호 :
+<b>${data.couponNumber}</b>
+</p>
+
+
+<p>
+처리 :
+${data.action}
+</p>
+
+
+<p>
+시간 :
+${
+data.time
+?
+data.time.toDate().toLocaleString()
+:
+"처리 시간 없음"
+}
+</p>
+
+`;
+
+
+
+historyList.appendChild(div);
+
+
+
+});
+
+
+
+});
+
+
+}
+
+
+
+
+
+
+// ================================
+// FILTER
+// ================================
+
+
+allCouponBtn.onclick=()=>{
+
+
+couponFilter="all";
+
+
+renderCouponList();
+
+
+};
+
+
+
+waitingCouponBtn.onclick=()=>{
+
+
+couponFilter="waiting";
+
+
+renderCouponList();
+
+
+};
+
+
+
+approvedCouponBtn.onclick=()=>{
+
+
+couponFilter="approved";
+
+
+renderCouponList();
+
+
+};
+
+
+
+usedCouponBtn.onclick=()=>{
+
+
+couponFilter="used";
+
+
+renderCouponList();
+
+
+};
+
+
+
+
+
+
+
+// ================================
+// BULK CREATE
+// ================================
+
+
+bulkCreateBtn.onclick=async()=>{
+
 
 
 const title =
 bulkCouponTitle.value.trim();
 
 
+
 const discountValue =
 Number(bulkDiscount.value);
+
 
 
 const count =
 Number(bulkCount.value);
 
 
+
 const start =
 bulkStartDate.value;
 
 
+
 const end =
 bulkEndDate.value;
+
 
 
 const noticeText =
@@ -1801,18 +2175,13 @@ bulkNotice.value.trim();
 
 
 
+
+
 if(!title){
 
-alert("쿠폰명을 입력하세요");
-
-return;
-
-}
-
-
-if(!count || count < 1){
-
-alert("생성 수량을 입력하세요");
+alert(
+"쿠폰명을 입력하세요"
+);
 
 return;
 
@@ -1820,13 +2189,29 @@ return;
 
 
 
-const confirmCreate =
+
+if(!count || count<1){
+
+alert(
+"생성 수량 입력"
+);
+
+return;
+
+}
+
+
+
+
+
+const ok =
 confirm(
-`${count}개의 쿠폰을 생성하시겠습니까?`
+`${count}개 쿠폰 생성하시겠습니까?`
 );
 
 
-if(!confirmCreate){
+
+if(!ok){
 
 return;
 
@@ -1834,14 +2219,22 @@ return;
 
 
 
-for(let i = 1; i <= count; i++){
+
+for(
+let i=1;
+i<=count;
+i++
+){
 
 
-const couponNumber =
+
+const number =
 
 "JBT-" +
 
-Date.now().toString().slice(-6)
+Date.now()
+.toString()
+.slice(-6)
 
 +
 
@@ -1849,7 +2242,8 @@ Date.now().toString().slice(-6)
 
 +
 
-String(i).padStart(4,"0");
+String(i)
+.padStart(4,"0");
 
 
 
@@ -1860,75 +2254,45 @@ await setDoc(
 doc(
 db,
 "coupons",
-couponNumber
+number
+
 ),
 
 {
 
 
-couponNumber:
+couponNumber:number,
 
 
-couponNumber,
+title:title,
 
 
-title:
+discount:discountValue,
 
 
-title,
+maxUseCount:1,
 
 
-discount:
+useCount:0,
 
 
-discountValue,
+status:"issued",
 
 
-maxUseCount:
+notice:noticeText,
 
 
-1,
+startDate:start,
 
 
-useCount:
-
-
-0,
-
-
-status:
-
-
-"issued",
-
-
-notice:
-
-
-noticeText,
-
-
-startDate:
-
-
-start,
-
-
-endDate:
-
-
-end,
+endDate:end,
 
 
 createdAt:
-
-
 serverTimestamp(),
 
 
 updatedAt:
-
-
 serverTimestamp()
 
 
@@ -1937,7 +2301,9 @@ serverTimestamp()
 );
 
 
+
 }
+
 
 
 
@@ -1949,52 +2315,87 @@ alert(
 
 };
 
+
+
+
+
+
+
 // ================================
 // QR SCANNER
 // ================================
 
-scanQrBtn.onclick = async()=>{
+
+scanQrBtn.onclick=async()=>{
+
 
 const scanner =
 new Html5Qrcode("reader");
 
+
+
 try{
+
 
 await scanner.start(
 
 {
+
 facingMode:"environment"
+
 },
 
+
 {
+
 fps:10,
+
 qrbox:250
+
 },
+
 
 async(decodedText)=>{
 
+
 await scanner.stop();
 
-reader.innerHTML = "";
+
+
+reader.innerHTML="";
+
+
 
 searchCoupon.value =
 decodedText;
 
+
+
 searchBtn.click();
+
+
 
 }
 
 );
 
+
+
 }
+
 catch(error){
+
 
 alert(
 "카메라 실행 실패"
 );
 
+
 console.error(error);
 
+
 }
+
+
 
 };
