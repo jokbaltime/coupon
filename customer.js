@@ -198,7 +198,28 @@ return;
 const data =
 snap.data();
 
+if(data.status==="used"){
 
+
+result.innerHTML =
+"❌ 이미 사용 완료된 쿠폰입니다.";
+
+
+requestBtn.disabled=true;
+
+
+}
+else{
+
+
+result.innerHTML =
+"✅ 사용 가능한 쿠폰입니다.";
+
+
+requestBtn.disabled=false;
+
+
+}
 
 const today =
 new Date()
