@@ -9,10 +9,13 @@ import {
 db,
 doc,
 getDoc,
+setDoc,
+addDoc,
+collection,
+serverTimestamp,
 onSnapshot
 
 } from "./firebase.js";
-
 
 
 
