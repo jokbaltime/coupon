@@ -54,6 +54,106 @@ document.getElementById("mainImage");
 const qrCode =
 document.getElementById("qrcode");
 
+// ================================
+// AUTO COUPON CREATE
+// ================================
+
+async function createAutoCoupon(){
+
+
+const couponNumber =
+
+"JBT-" +
+
+Date.now()
+.toString()
+.slice(-8);
+
+
+
+const couponData = {
+
+
+couponNumber:
+
+
+couponNumber,
+
+
+title:
+
+"첫 방문 할인 쿠폰",
+
+
+discount:
+
+10,
+
+
+maxUseCount:
+
+1,
+
+
+useCount:
+
+0,
+
+
+status:
+
+"issued",
+
+
+notice:
+
+"족발타임 방문 감사 쿠폰입니다.",
+
+
+startDate:
+
+new Date()
+.toISOString()
+.split("T")[0],
+
+
+endDate:
+
+"2099-12-31",
+
+
+createdAt:
+
+serverTimestamp(),
+
+
+updatedAt:
+
+serverTimestamp()
+
+
+};
+
+
+
+await setDoc(
+
+doc(
+db,
+"coupons",
+couponNumber
+),
+
+couponData
+
+);
+
+
+
+return couponNumber;
+
+
+}
 
 // ================================
 // COUPON LOAD
