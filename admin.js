@@ -145,7 +145,8 @@ document.getElementById("bulkNotice");
 const bulkCreateBtn =
 document.getElementById("bulkCreateBtn");
 
-
+const issuedCouponBtn =
+document.getElementById("issuedCouponBtn");
 
 const totalCoupon =
 document.getElementById("totalCoupon");
@@ -314,7 +315,7 @@ switch(data.status){
 
 case "issued":
 
-statusText="✅ 사용 가능";
+statusText="✅ 발급됨";
 
 break;
 
@@ -328,7 +329,7 @@ break;
 
 case "approved":
 
-statusText="✅ 승인 완료";
+statusText="✅ 사용 가능";
 
 break;
 
@@ -2020,7 +2021,14 @@ historyList.appendChild(div);
 
 allCouponBtn.onclick=()=>{
 
+issuedCouponBtn.onclick=()=>{
 
+couponFilter="issued";
+
+renderCouponList();
+
+};
+   
 couponFilter="all";
 
 
