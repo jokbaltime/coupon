@@ -496,3 +496,88 @@ background:#f44336;
 color:white;
 
 }
+
+/* ==========================
+   ADMIN COUPON CARD PREMIUM
+========================== */
+
+
+.coupon-card{
+
+background:
+linear-gradient(
+180deg,
+#242424,
+#161616
+);
+
+border:
+
+1px solid rgba(212,175,55,.35);
+
+border-radius:18px;
+
+padding:20px;
+
+margin-bottom:15px;
+
+box-shadow:
+
+0 8px 20px rgba(0,0,0,.35);
+
+}
+
+
+.coupon-card p{
+
+margin:8px 0;
+
+font-size:15px;
+
+}
+
+
+.coupon-card b{
+
+color:#FFD700;
+
+font-size:18px;
+
+}
+
+
+
+.coupon-card button{
+
+width:auto;
+
+display:inline-block;
+
+margin-right:6px;
+
+padding:10px 15px;
+
+font-size:14px;
+
+}
+
+
+.selectCoupon{
+
+background:#1565c0;
+
+}
+
+
+.quickEditCoupon{
+
+background:#2e7d32;
+
+}
+
+
+.quickDeleteCoupon{
+
+background:#b71c1c;
+
+}
