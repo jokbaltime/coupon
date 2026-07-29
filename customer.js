@@ -13,8 +13,11 @@ setDoc,
 addDoc,
 collection,
 serverTimestamp,
-onSnapshot
-
+onSnapshot,
+getDocs,
+query,
+where
+  
 } from "./firebase.js";
 
 
@@ -57,6 +60,24 @@ document.getElementById("qrcode");
 // ================================
 // AUTO COUPON CREATE
 // ================================
+const eventKey = "jokbal_event";
+
+
+const eventCheck = await getDocs(
+
+query(
+
+collection(db,"event_logs"),
+
+where(
+"event",
+"==",
+eventKey
+)
+
+)
+
+);
 
 async function createAutoCoupon(){
 
