@@ -390,13 +390,50 @@ requestBtn
 const params =
 new URLSearchParams(window.location.search);
 
+
 const coupon =
 params.get("coupon");
 
+
+// QR로 처음 들어온 경우
 if(coupon){
+
 
 couponNumber.value = coupon;
 
+
+// 내 쿠폰 저장
+localStorage.setItem(
+"myCoupon",
+coupon
+);
+
+
 loadCoupon(coupon);
+
+
+}
+
+
+// 저장된 쿠폰이 있는 경우
+else{
+
+
+const savedCoupon =
+localStorage.getItem("myCoupon");
+
+
+if(savedCoupon){
+
+
+couponNumber.value =
+savedCoupon;
+
+
+loadCoupon(savedCoupon);
+
+
+}
+
 
 }
