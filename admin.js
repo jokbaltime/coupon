@@ -314,28 +314,28 @@ switch(data.status){
 
 case "issued":
 
-statusText="📄 발급";
+statusText="✅ 사용 가능";
 
 break;
 
 
 case "waiting":
 
-statusText="⏳ 승인대기";
+statusText="⏳ 승인 대기";
 
 break;
 
 
 case "approved":
 
-statusText="✅ 승인완료";
+statusText="✅ 승인 완료";
 
 break;
 
 
 case "used":
 
-statusText="❌ 사용완료";
+statusText="❌ 사용 완료";
 
 break;
 
@@ -955,7 +955,7 @@ switch(data.status){
 
 case "issued":
 
-statusText="📄 발급 완료";
+statusText="✅ 사용 가능";
 
 break;
 
