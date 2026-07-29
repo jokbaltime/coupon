@@ -167,45 +167,6 @@ let couponSnapshotData=[];
 
 
 
-// ================================
-// LOGIN
-// ================================
-
-loginBtn.onclick = async()=>{
-
-
-const email =
-document.getElementById("adminEmail")
-.value.trim();
-
-
-const password =
-document.getElementById("adminPassword")
-.value.trim();
-
-
-try{
-
-await signInWithEmailAndPassword(
-
-auth,
-email,
-password
-
-);
-
-
-}
-
-catch(error){
-
-alert(
-"로그인 실패 : "+error.message
-);
-
-}
-
-};
 
 
 
@@ -215,9 +176,12 @@ alert(
 
 onAuthStateChanged(auth,(user)=>{
 
+
 if(user){
 
+
 adminBox.classList.remove("hidden");
+
 
 loadDashboard();
 
@@ -227,13 +191,17 @@ loadHistory();
 
 loadRequests();
 
+
 }
 
 else{
 
+
 location.href="login.html";
 
+
 }
+
 
 });
 
