@@ -493,26 +493,78 @@ requestBtn
 const params =
 new URLSearchParams(window.location.search);
 
+// ================================
+// AUTO EVENT COUPON LOAD
+// ================================
+
+
+const params =
+new URLSearchParams(window.location.search);
+
+
 
 const coupon =
 params.get("coupon");
 
 
-// QR로 처음 들어온 경우
+
+const event =
+params.get("event");
+
+
+
+
+
 if(coupon){
 
 
 couponNumber.value = coupon;
 
 
-// 내 쿠폰 저장
-localStorage.setItem(
-"myCoupon",
-coupon
-);
-
-
 loadCoupon(coupon);
+
+
+}
+
+
+
+else if(event){
+
+
+
+createAutoCoupon()
+
+.then((newCoupon)=>{
+
+
+couponNumber.value =
+newCoupon;
+
+
+
+loadCoupon(newCoupon);
+
+
+
+result.innerHTML =
+"🎉 이벤트 쿠폰이 발급되었습니다.";
+
+
+
+})
+
+.catch((error)=>{
+
+
+console.error(error);
+
+
+result.innerHTML =
+"❌ 쿠폰 발급 오류";
+
+
+
+});
 
 
 }
