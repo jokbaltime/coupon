@@ -180,6 +180,8 @@ db,
 
 event:"jokbal",
 
+customerId:getCustomerId(),
+
 couponNumber:couponNumber,
 
 createdAt:
