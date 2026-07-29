@@ -176,6 +176,62 @@ serverTimestamp()
 result.innerHTML =
 "🎉 사용 완료 처리되었습니다";
 
+  // ================================
+// QR CAMERA SCAN
+// ================================
+
+
+function startQR(){
+
+
+const scanner =
+new Html5Qrcode("reader");
+
+
+
+scanner.start(
+
+{
+facingMode:"environment"
+},
+
+{
+fps:10,
+qrbox:250
+},
+
+
+(qrCodeMessage)=>{
+
+
+couponNumber.value =
+qrCodeMessage;
+
+
+scanner.stop();
+
+
+result.innerHTML =
+"📱 QR 인식 완료";
+
+
+}
+
+
+)
+
+.catch((err)=>{
+
+console.log(err);
+
+});
+
+
+}
+
+
+
+startQR();
 
 useBtn.classList.add("hidden");
 
