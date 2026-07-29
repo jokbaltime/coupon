@@ -148,7 +148,25 @@ couponData
 
 );
 
+await addDoc(
 
+collection(
+db,
+"event_logs"
+),
+
+{
+
+event:"jokbal",
+
+couponNumber:couponNumber,
+
+createdAt:
+serverTimestamp()
+
+}
+
+);
 
 return couponNumber;
 
