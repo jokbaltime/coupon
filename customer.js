@@ -564,7 +564,8 @@ loadCoupon(coupon);
 
 else if(event){
 
-
+const savedEventCoupon =
+localStorage.getItem("eventCoupon");
 
 createAutoCoupon()
 
@@ -578,7 +579,10 @@ newCoupon;
 
 loadCoupon(newCoupon);
 
-
+localStorage.setItem(
+"eventCoupon",
+newCoupon
+);
 
 result.innerHTML =
 "🎉 이벤트 쿠폰이 발급되었습니다.";
