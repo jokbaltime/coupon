@@ -553,26 +553,25 @@ if ((data.useCount || 0) >= 1) {
 
     switch (data.status) {
 
-        case "issued":
-            statusText = "📄 발급 완료";
-            break;
-
-        case "waiting":
-            statusText = "⏳ 승인 대기";
-            break;
-
-        case "issued":
+case "issued":
     statusText = "✅ 사용 가능";
     break;
 
-        case "used":
-            statusText = "❌ 사용 완료";
-            break;
+case "waiting":
+    statusText = "⏳ 승인 대기";
+    break;
 
-        default:
-            statusText = data.status;
-    }
+case "approved":
+    statusText = "✅ 승인 완료";
+    break;
 
+case "used":
+    statusText = "❌ 사용 완료";
+    break;
+
+default:
+    statusText = data.status;
+}
 }
 
 
@@ -621,8 +620,9 @@ ${data.usedAt ? data.usedAt.toDate().toLocaleString() : "-"}
 
 // 사용 완료 버튼 제어
 if (
-    data.status === "approved" &&
-    (data.useCount || 0) < 1
+    data.status === "issued" &&
+    (data.useCount || 0) < (data.maxUseCount || 1)
+)
 ) {
 
     useBtn.disabled = false;
