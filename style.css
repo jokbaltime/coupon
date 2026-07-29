@@ -704,3 +704,19 @@ transition:.2s;
 transform:scale(.96);
 
 }
+
+/* QR SCANNER */
+
+#reader{
+
+width:100%;
+
+max-width:350px;
+
+margin:20px auto;
+
+border-radius:15px;
+
+overflow:hidden;
+
+}
