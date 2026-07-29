@@ -126,7 +126,7 @@ export {
 
     onSnapshot,
 
-    serverTimestamp
+    serverTimestamp,
 
     signInWithEmailAndPassword
 };
