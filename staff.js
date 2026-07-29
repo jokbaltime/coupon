@@ -622,7 +622,6 @@ ${data.usedAt ? data.usedAt.toDate().toLocaleString() : "-"}
 if (
     data.status === "issued" &&
     (data.useCount || 0) < (data.maxUseCount || 1)
-)
 ) {
 
     useBtn.disabled = false;
