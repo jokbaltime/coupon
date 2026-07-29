@@ -81,6 +81,46 @@ eventKey
 
 async function createAutoCoupon(){
 
+const customerId =
+getCustomerId();
+
+
+const oldCoupon =
+await getDocs(
+
+query(
+
+collection(
+db,
+"event_logs"
+),
+
+where(
+"customerId",
+"==",
+customerId
+),
+
+where(
+"event",
+"==",
+"jokbal"
+)
+
+)
+
+);
+
+
+if(!oldCoupon.empty){
+
+
+return oldCoupon.docs[0]
+.data()
+.couponNumber;
+
+
+}
 
 const couponNumber =
 
