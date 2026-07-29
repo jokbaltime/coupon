@@ -42,8 +42,6 @@ from
 // ELEMENT
 // ================================
 
-const loginBox =
-document.getElementById("loginBox");
 
 const adminBox =
 document.getElementById("adminBox");
@@ -217,14 +215,9 @@ alert(
 
 onAuthStateChanged(auth,(user)=>{
 
-
 if(user){
 
-
-loginBox.classList.add("hidden");
-
 adminBox.classList.remove("hidden");
-
 
 loadDashboard();
 
@@ -234,19 +227,13 @@ loadHistory();
 
 loadRequests();
 
-
 }
 
 else{
 
-
-loginBox.classList.remove("hidden");
-
-adminBox.classList.add("hidden");
-
+location.href="login.html";
 
 }
-
 
 });
 
