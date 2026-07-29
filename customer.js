@@ -651,3 +651,32 @@ loadCoupon(savedCoupon);
 
 
 }
+
+function getCustomerId(){
+
+let id =
+localStorage.getItem("customerId");
+
+
+if(!id){
+
+id =
+"USER-" +
+Date.now() +
+"-" +
+Math.random()
+.toString(36)
+.substring(2,8);
+
+
+localStorage.setItem(
+"customerId",
+id
+);
+
+}
+
+
+return id;
+
+}
