@@ -1231,7 +1231,29 @@ return;
 const data =
 snap.data();
 
+const today =
+new Date();
 
+const endDate =
+data.endDate
+?
+new Date(data.endDate)
+:
+null;
+
+
+if(
+endDate &&
+today > endDate
+){
+
+alert(
+"기간이 만료된 쿠폰입니다."
+);
+
+return;
+
+}
 
 
 const today = new Date();
