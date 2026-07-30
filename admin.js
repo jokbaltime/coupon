@@ -1928,32 +1928,33 @@ status:"approved"
 
 
 
-
-
 await addDoc(
 
 collection(
 db,
 "coupon_history"
-
 ),
 
 {
 
-
 couponNumber:number,
-
 
 action:"approved",
 
+adminUid:
+auth.currentUser.uid,
+
+adminEmail:
+auth.currentUser.email,
 
 time:
 serverTimestamp()
 
-
 }
 
 );
+
+
 
 
 
