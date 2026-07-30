@@ -1012,7 +1012,22 @@ statusText=data.status || "-";
 
 }
 
+const today = new Date();
 
+const endDate = data.endDate
+? new Date(data.endDate)
+: null;
+
+
+if(
+    endDate &&
+    today > endDate &&
+    data.status !== "used"
+){
+
+    statusText = "🔴 기간 만료";
+
+}
 
 
 
