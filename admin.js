@@ -364,7 +364,8 @@ const endDate = data.endDate
 if(
     endDate &&
     today > endDate &&
-    data.status !== "used"
+    data.status !== "used" &&
+    data.status !== "expired"
 ){
 
     statusText = "🔴 기간 만료";
