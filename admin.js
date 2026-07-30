@@ -348,7 +348,21 @@ statusText=data.status || "-";
 
 }
 
+const today = new Date();
 
+const endDate = data.endDate
+? new Date(data.endDate)
+: null;
+
+if(
+    endDate &&
+    today > endDate &&
+    data.status !== "used"
+){
+
+    statusText = "🔴 기간 만료";
+
+}
 
 
 const div =
@@ -357,7 +371,12 @@ document.createElement("div");
 
 div.className="coupon-card";
 
+if(statusText==="🔴 기간 만료"){
 
+div.style.border =
+"2px solid #f44336";
+
+}
 
 div.innerHTML=
 
