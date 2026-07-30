@@ -693,7 +693,79 @@ usedCount.innerText=used;
 
 }
 
+// ================================
+// COUPON USE HISTORY
+// ================================
 
+function loadHistory(){
+
+onSnapshot(
+
+query(
+collection(db,"coupon_use"),
+orderBy("usedAt","desc")
+),
+
+(snapshot)=>{
+
+
+historyList.innerHTML="";
+
+
+snapshot.forEach((item)=>{
+
+
+const data =
+item.data();
+
+
+const div =
+document.createElement("div");
+
+
+div.className="history-item";
+
+
+div.innerHTML=`
+
+<p>
+쿠폰번호 :
+<b>${data.couponNumber}</b>
+</p>
+
+<p>
+직원 :
+${data.staffEmail || "-"}
+</p>
+
+<p>
+사용시간 :
+${
+data.usedAt
+?
+data.usedAt.toDate().toLocaleString()
+:
+"-"
+}
+</p>
+
+<hr>
+
+`;
+
+
+historyList.appendChild(div);
+
+
+});
+
+
+}
+
+);
+
+
+}
 
 
 
