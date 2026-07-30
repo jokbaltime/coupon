@@ -712,10 +712,11 @@ savedCoupon;
 
 loadCoupon(savedCoupon);
 
-
 }
 
 
+}
+  
 }
 
 function getCustomerId(){
@@ -746,3 +747,5 @@ id
 return id;
 
 }
+
+autoLoadCoupon();
