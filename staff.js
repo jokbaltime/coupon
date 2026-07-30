@@ -543,6 +543,44 @@ return;
 const data =
 snap.data();
 
+const today = new Date();
+
+const startDate = data.startDate
+? new Date(data.startDate)
+: null;
+
+const endDate = data.endDate
+? new Date(data.endDate)
+: null;
+
+if(endDate && today > endDate){
+
+couponInfo.innerHTML = `
+<div class="coupon-detail">
+
+<h3>${data.title}</h3>
+
+<hr>
+
+<p>❌ 기간이 만료된 쿠폰입니다.</p>
+
+<p>
+사용기간<br>
+${data.startDate}
+~
+${data.endDate}
+</p>
+
+</div>
+`;
+
+useBtn.disabled = true;
+useBtn.textContent = "기간 만료";
+
+return;
+
+}
+    
 let statusText = "";
 
 if ((data.useCount || 0) >= 1) {
