@@ -1232,14 +1232,17 @@ return;
 const data =
 snap.data();
 
-
-
-
+const couponEndDate =
+data.endDate
+?
+new Date(data.endDate)
+:
+null;
 
 
 if(
-endDate &&
-today > endDate
+couponEndDate &&
+new Date() > couponEndDate
 ){
 
 alert(
