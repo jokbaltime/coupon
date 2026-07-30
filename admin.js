@@ -608,6 +608,9 @@ let approved=0;
 
 let used=0;
 
+let todayIssuedCount = 0;
+
+let todayUsedCount = 0;    
 
 const today = new Date();
 
@@ -621,17 +624,16 @@ snapshot.forEach((item)=>{
 const data = item.data();
 
 
-// 오늘 발급
-
-if(
-data.createdAt &&
-data.createdAt.toDate() >= today
-){
-
+// 전체 발급
 issued++;
 
+// 오늘 발급
+if(
+    data.createdAt &&
+    data.createdAt.toDate() >= today
+){
+    todayIssuedCount++;
 }
-
 
 // 승인 대기
 
@@ -667,6 +669,16 @@ used++;
 
 }
 
+// 오늘 사용 통계
+
+if(
+data.usedAt &&
+data.usedAt.toDate() >= today
+){
+
+todayUsedCount++;
+
+}
 
 });
 
@@ -691,7 +703,14 @@ if(usedCount)
 
 usedCount.innerText = used;
 
+if(todayIssued)
 
+todayIssued.innerText = todayIssuedCount;
+
+
+if(todayUsed)
+
+todayUsed.innerText = todayUsedCount;
 
 }
 
