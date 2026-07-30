@@ -653,10 +653,9 @@ newCoupon;
 loadCoupon(newCoupon);
 
 localStorage.setItem(
-"eventCoupon",
+"myCoupon",
 newCoupon
 );
-
 result.innerHTML =
 "🎉 이벤트 쿠폰을 확인했습니다.";
 
@@ -692,8 +691,9 @@ else{
 
 
 const savedCoupon =
-localStorage.getItem("myCoupon");
-
+localStorage.getItem("myCoupon")
+||
+localStorage.getItem("eventCoupon");
 
 if(savedCoupon){
 
