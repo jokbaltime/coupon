@@ -611,6 +611,8 @@ let approved=0;
 
 let used=0;
 
+let expired=0;
+    
 let todayIssuedCount = 0;
 
 let todayUsedCount = 0;    
@@ -626,6 +628,23 @@ snapshot.forEach((item)=>{
 
 const data = item.data();
 
+const endDate =
+data.endDate
+?
+new Date(data.endDate)
+:
+null;
+
+
+if(
+endDate &&
+new Date() > endDate &&
+data.status !== "used"
+){
+
+expired++;
+
+}    
 
 // 전체 발급
 issued++;
@@ -706,6 +725,10 @@ if(usedCount)
 
 usedCount.innerText = used;
 
+if(expiredCount)
+
+expiredCount.innerText = expired;
+    
 if(todayIssued)
 
 todayIssued.innerText = todayIssuedCount;
