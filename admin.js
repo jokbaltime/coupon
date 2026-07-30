@@ -1182,8 +1182,6 @@ return;
 const data =
 snap.data();
 
-const data =
-snap.data();
 
 
 
