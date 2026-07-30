@@ -30,6 +30,7 @@ where
 const couponNumber =
 document.getElementById("couponNumber");
 
+let couponCreating = false;
 
 const requestBtn =
 document.getElementById("requestBtn");
