@@ -141,6 +141,9 @@ couponNumber:
 
 couponNumber,
 
+customerId:
+
+getCustomerId(),  
 
 title:
 
