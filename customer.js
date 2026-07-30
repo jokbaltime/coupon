@@ -630,6 +630,16 @@ else if(event){
 const savedEventCoupon =
 localStorage.getItem("eventCoupon");
 
+if(couponCreating){
+
+return;
+
+}
+
+
+couponCreating = true;
+
+
 createAutoCoupon()
 
 .then((newCoupon)=>{
@@ -663,6 +673,12 @@ console.error(error);
 result.innerHTML =
 "❌ 쿠폰 발급 오류";
 
+
+})
+.finally(()=>{
+
+
+couponCreating = false;
 
 
 });
