@@ -1232,8 +1232,7 @@ return;
 const data =
 snap.data();
 
-const today =
-new Date();
+
 
 const endDate =
 data.endDate
