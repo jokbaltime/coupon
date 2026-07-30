@@ -160,7 +160,11 @@ document.getElementById("approvedCount");
 const usedCount =
 document.getElementById("usedCount");
 
+const todayIssued =
+document.getElementById("todayIssued");
 
+const todayUsed =
+document.getElementById("todayUsed");
 
 let couponFilter="all";
 
