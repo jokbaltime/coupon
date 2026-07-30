@@ -1234,12 +1234,7 @@ snap.data();
 
 
 
-const endDate =
-data.endDate
-?
-new Date(data.endDate)
-:
-null;
+
 
 
 if(
