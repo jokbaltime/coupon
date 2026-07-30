@@ -595,6 +595,12 @@ requestBtn
 const params =
 new URLSearchParams(window.location.search);
 
+async function autoLoadCoupon(){
+
+
+const params =
+new URLSearchParams(window.location.search);
+
 // ================================
 // AUTO EVENT COUPON LOAD
 // ================================
@@ -628,6 +634,8 @@ loadCoupon(coupon);
 else if(event){
 
 const savedEventCoupon =
+localStorage.getItem("myCoupon")
+||
 localStorage.getItem("eventCoupon");
 
 if(couponCreating){
