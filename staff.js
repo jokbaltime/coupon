@@ -857,18 +857,20 @@ db,
 
 {
 
-
 couponNumber:number,
 
+staffUid:
+auth.currentUser.uid,
+
+staffEmail:
+auth.currentUser.email,
 
 usedAt:
 serverTimestamp()
 
-
 }
 
 );
-
 
 
 
