@@ -160,6 +160,9 @@ document.getElementById("approvedCount");
 const usedCount =
 document.getElementById("usedCount");
 
+const expiredCount =
+document.getElementById("expiredCount");
+
 const todayIssued =
 document.getElementById("todayIssued");
 
