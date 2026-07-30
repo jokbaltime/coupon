@@ -1269,16 +1269,18 @@ db,
 
 {
 
-
 couponNumber:number,
-
 
 action:"used",
 
+staffUid:
+auth.currentUser.uid,
+
+staffEmail:
+auth.currentUser.email,
 
 time:
 serverTimestamp()
-
 
 }
 
