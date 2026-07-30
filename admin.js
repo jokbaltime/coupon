@@ -1012,23 +1012,23 @@ statusText=data.status || "-";
 
 }
 
+
 const today = new Date();
 
-const endDate = data.endDate
+const checkEndDate = data.endDate
 ? new Date(data.endDate)
 : null;
 
 
 if(
-    endDate &&
-    today > endDate &&
+    checkEndDate &&
+    today > checkEndDate &&
     data.status !== "used"
 ){
 
     statusText = "🔴 기간 만료";
 
 }
-
 
 
 couponResult.innerHTML=
