@@ -589,7 +589,6 @@ couponList.appendChild(div);
 
 function loadDashboard(){
 
-
 onSnapshot(
 
 collection(db,"coupons"),
@@ -597,7 +596,7 @@ collection(db,"coupons"),
 (snapshot)=>{
 
 
-let total=0;
+let issued=0;
 
 let waiting=0;
 
@@ -606,34 +605,46 @@ let approved=0;
 let used=0;
 
 
+const today = new Date();
+
+today.setHours(0,0,0,0);
+
+
 
 snapshot.forEach((item)=>{
 
 
-total++;
+const data = item.data();
 
 
-const data =
-item.data();
+// 오늘 발급
+
+if(
+data.createdAt &&
+data.createdAt.toDate() >= today
+){
+
+issued++;
+
+}
 
 
+// 승인 대기
 
-if(data.status==="waiting"){
+if(
+data.status === "waiting"
+){
 
 waiting++;
 
 }
 
 
+// 오늘 승인 완료
 
 if(
-
-data.status==="approved" &&
-
-(data.useCount || 0)
-<
-(data.maxUseCount || 1)
-
+data.approvedAt &&
+data.approvedAt.toDate() >= today
 ){
 
 approved++;
@@ -641,21 +652,16 @@ approved++;
 }
 
 
+// 오늘 사용 완료
 
 if(
-
-data.status==="used" ||
-
-(data.useCount || 0)
->=
-(data.maxUseCount || 1)
-
+data.usedAt &&
+data.usedAt.toDate() >= today
 ){
 
 used++;
 
 }
-
 
 
 });
@@ -664,25 +670,22 @@ used++;
 
 if(totalCoupon)
 
-totalCoupon.innerText=total;
-
+totalCoupon.innerText = issued;
 
 
 if(waitingCount)
 
-waitingCount.innerText=waiting;
-
+waitingCount.innerText = waiting;
 
 
 if(approvedCount)
 
-approvedCount.innerText=approved;
-
+approvedCount.innerText = approved;
 
 
 if(usedCount)
 
-usedCount.innerText=used;
+usedCount.innerText = used;
 
 
 
@@ -690,9 +693,7 @@ usedCount.innerText=used;
 
 );
 
-
 }
-
 
 
 // ================================
