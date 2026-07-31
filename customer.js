@@ -85,41 +85,12 @@ async function createAutoCoupon(){
 const customerId =
 getCustomerId();
 
+const savedCoupon =
+localStorage.getItem("myCoupon");
 
-const oldCoupon =
-await getDocs(
+if(savedCoupon){
 
-query(
-
-collection(
-db,
-"event_logs"
-),
-
-where(
-"customerId",
-"==",
-customerId
-),
-
-where(
-"event",
-"==",
-"jokbal"
-)
-
-)
-
-);
-
-
-if(!oldCoupon.empty){
-
-
-return oldCoupon.docs[0]
-.data()
-.couponNumber;
-
+    return savedCoupon;
 
 }
 
