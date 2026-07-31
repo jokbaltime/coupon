@@ -13,11 +13,8 @@ setDoc,
 addDoc,
 collection,
 serverTimestamp,
-onSnapshot,
-getDocs,
-query,
-where
-  
+onSnapshot
+
 } from "./firebase.js";
 
 
