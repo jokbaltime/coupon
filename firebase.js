@@ -24,7 +24,8 @@ import {
     where,
     orderBy,
     onSnapshot,
-    serverTimestamp
+    serverTimestamp,
+    runTransaction
 } from 
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -128,5 +129,8 @@ export {
 
     serverTimestamp,
 
-    signInWithEmailAndPassword
+    signInWithEmailAndPassword,
+
+    runTransaction
+
 };
