@@ -567,6 +567,43 @@ searchBtn.click();
 // ================================
 // 빠른 삭제
 // ================================
+const selectBtn =
+div.querySelector(".selectCoupon");
+
+
+if(selectBtn){
+
+selectBtn.onclick=()=>{
+
+searchCoupon.value =
+data.couponNumber;
+
+searchBtn.click();
+
+};
+
+}
+
+
+
+const editBtn =
+div.querySelector(".quickEditCoupon");
+
+
+if(editBtn){
+
+editBtn.onclick=()=>{
+
+searchCoupon.value =
+data.couponNumber;
+
+searchBtn.click();
+
+};
+
+}
+
+
 
 const deleteBtn =
 div.querySelector(".quickDeleteCoupon");
@@ -574,42 +611,20 @@ div.querySelector(".quickDeleteCoupon");
 
 if(deleteBtn){
 
-deleteBtn.onclick = async()=>{
+deleteBtn.onclick=async()=>{
 
 
-if(
-
-data.status==="used" ||
-
-(data.useCount || 0)
->=
-(data.maxUseCount || 1)
-
-){
-
-alert(
-"사용 완료된 쿠폰은 삭제할 수 없습니다."
-);
-
-return;
-
-}
-
-
-
-const result =
+const ok =
 confirm(
 "이 쿠폰을 삭제하시겠습니까?"
 );
 
 
-
-if(!result){
+if(!ok){
 
 return;
 
 }
-
 
 
 await deleteDoc(
@@ -618,36 +633,9 @@ doc(
 db,
 "coupons",
 data.couponNumber
-
 )
 
 );
-
-
-
-await addDoc(
-
-collection(
-db,
-"coupon_history"
-
-),
-
-{
-
-couponNumber:
-data.couponNumber,
-
-action:
-"deleted",
-
-time:
-serverTimestamp()
-
-}
-
-);
-
 
 
 alert(
@@ -657,20 +645,12 @@ alert(
 
 };
 
+
 }
-
-
 
 
 
 couponList.appendChild(div);
-
-
-
-});
-
-
-}
 
 // ================================
 // DASHBOARD
