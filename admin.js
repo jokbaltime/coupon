@@ -476,8 +476,13 @@ ${data.maxUseCount || 1}
 // 조회 버튼 수정
 // ================================
 
-div.querySelector(".selectCoupon")
-.onclick=()=>{
+const selectBtn =
+div.querySelector(".selectCoupon");
+
+
+if(selectBtn){
+
+selectBtn.onclick=()=>{
 
 console.log("조회 클릭", data.couponNumber);
 
@@ -497,19 +502,32 @@ searchBtn.click();
 // 수정 버튼 수정
 // ================================
 
-div.querySelector(".quickEditCoupon").onclick = () => {
+const editBtn =
+div.querySelector(".quickEditCoupon");
 
-    if (
-        data.status === "used" ||
-        (data.useCount || 0) >= (data.maxUseCount || 1)
-    ) {
-        alert("사용 완료된 쿠폰은 수정할 수 없습니다.");
-        return;
-    }
 
-    searchCoupon.value = data.couponNumber;
+if(editBtn){
 
-    searchBtn.click();
+editBtn.onclick = () => {
+
+if(
+data.status==="used" ||
+(data.useCount || 0)>=
+(data.maxUseCount || 1)
+){
+
+alert(
+"사용 완료된 쿠폰은 수정할 수 없습니다."
+);
+
+return;
+
+}
+
+searchCoupon.value =
+data.couponNumber;
+
+searchBtn.click();
 
     setTimeout(() => {
         document.getElementById("couponEditSection").scrollIntoView({
@@ -527,8 +545,13 @@ div.querySelector(".quickEditCoupon").onclick = () => {
 // 빠른 삭제
 // ================================
 
-div.querySelector(".quickDeleteCoupon")
-.onclick=async()=>{
+const deleteBtn =
+div.querySelector(".quickDeleteCoupon");
+
+
+if(deleteBtn){
+
+deleteBtn.onclick = async()=>{
 
 
 if(
@@ -566,7 +589,6 @@ return;
 
 
 
-
 await deleteDoc(
 
 doc(
@@ -590,18 +612,14 @@ db,
 
 {
 
-
 couponNumber:
 data.couponNumber,
-
 
 action:
 "deleted",
 
-
 time:
 serverTimestamp()
-
 
 }
 
@@ -614,8 +632,11 @@ alert(
 );
 
 
-
 };
+
+}
+
+
 
 
 
