@@ -170,7 +170,7 @@ serverTimestamp()
 
 };
 
-
+console.log("쿠폰생성 데이터", couponData);
 
 await setDoc(
 
