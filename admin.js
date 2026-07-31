@@ -149,6 +149,21 @@ document.getElementById("bulkCreateBtn");
 const issuedCouponBtn =
 document.getElementById("issuedCouponBtn");
 
+const allCouponBtn =
+document.getElementById("allCouponBtn");
+
+
+const waitingCouponBtn =
+document.getElementById("waitingCouponBtn");
+
+
+const approvedCouponBtn =
+document.getElementById("approvedCouponBtn");
+
+
+const usedCouponBtn =
+document.getElementById("usedCouponBtn");
+
 const totalCoupon =
 document.getElementById("totalCoupon");
 
@@ -169,6 +184,13 @@ document.getElementById("todayIssued");
 
 const todayUsed =
 document.getElementById("todayUsed");
+
+const scanQrBtn =
+document.getElementById("scanQrBtn");
+
+
+const reader =
+document.getElementById("reader");
 
 let couponFilter="all";
 
@@ -460,12 +482,13 @@ ${data.maxUseCount || 1}
 조회
 </button>
 
-
 <button type="button" class="quickEditCoupon">
 수정
 </button>
 
-
+<button class="quickDeleteCoupon">
+삭제
+</button>
 
 `;
 
