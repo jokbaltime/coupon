@@ -188,6 +188,35 @@ onAuthStateChanged(auth,(user)=>{
 
 if(user){
 
+const userSnap =
+await getDoc(
+doc(db,"users",user.uid)
+);
+
+
+if(!userSnap.exists()){
+
+alert("권한 정보 없음");
+return;
+
+}
+
+
+const userData =
+userSnap.data();
+
+
+if(
+userData.role !== "staff" &&
+userData.role !== "admin"
+){
+
+alert("접근 권한 없음");
+return;
+
+}
+
+
 
 adminBox.classList.remove("hidden");
 
@@ -427,9 +456,6 @@ ${data.maxUseCount || 1}
 </button>
 
 
-<button type="button" class="quickDeleteCoupon">
-삭제
-</button>
 
 `;
 
@@ -2161,19 +2187,18 @@ historyList.appendChild(div);
 
 allCouponBtn.onclick=()=>{
 
+couponFilter="all";
+
+renderCouponList();
+
+};
+
+
 issuedCouponBtn.onclick=()=>{
 
 couponFilter="issued";
 
 renderCouponList();
-
-};
-   
-couponFilter="all";
-
-
-renderCouponList();
-
 
 };
 
