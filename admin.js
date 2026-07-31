@@ -1307,36 +1307,38 @@ return;
 }
 
 
+await runTransaction(db, async (transaction)=>{
 
+    const couponRef = doc(db,"coupons",number);
 
+    const couponSnap = await transaction.get(couponRef);
 
-await updateDoc(
+    if(!couponSnap.exists()){
 
-doc(
-db,
-"coupons",
-number
+        throw new Error("쿠폰이 존재하지 않습니다.");
 
-),
+    }
 
-{
+    const couponData = couponSnap.data();
 
+    if(
+        couponData.status==="used" ||
+        (couponData.useCount || 0) >= (couponData.maxUseCount || 1)
+    ){
 
-status:"used",
+        throw new Error("이미 사용된 쿠폰입니다.");
 
+    }
 
-useCount:
-(data.useCount || 0)+1,
+    transaction.update(couponRef,{
 
+        status:"used",
 
-usedAt:
-serverTimestamp()
+        useCount:(couponData.useCount || 0)+1,
 
+        usedAt:serverTimestamp()
 
-}
-
-);
-
+    });
 
 
 
