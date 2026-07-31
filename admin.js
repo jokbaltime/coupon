@@ -183,10 +183,11 @@ let couponSnapshotData=[];
 // AUTH
 // ================================
 
-onAuthStateChanged(auth,(user)=>{
+onAuthStateChanged(auth, async (user)=>{
 
 
 if(user){
+
 
 const userSnap =
 await getDoc(
@@ -194,16 +195,22 @@ doc(db,"users",user.uid)
 );
 
 
+
 if(!userSnap.exists()){
 
-alert("권한 정보 없음");
+alert("사용자 권한 정보가 없습니다.");
+
+await signOut(auth);
+
 return;
 
 }
 
 
+
 const userData =
 userSnap.data();
+
 
 
 if(
@@ -211,7 +218,10 @@ userData.role !== "staff" &&
 userData.role !== "admin"
 ){
 
-alert("접근 권한 없음");
+alert("관리자 권한이 없습니다.");
+
+await signOut(auth);
+
 return;
 
 }
