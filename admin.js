@@ -586,8 +586,6 @@ searchBtn.click();
 
 
 
-const editBtn =
-div.querySelector(".quickEditCoupon");
 
 
 if(editBtn){
