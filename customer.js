@@ -184,6 +184,8 @@ couponData
 
 );
 
+console.log("1. coupons 저장 성공");
+  
 await addDoc(
 
 collection(
@@ -206,6 +208,8 @@ serverTimestamp()
 
 );
 
+console.log("2. event_logs 저장 성공");
+  
 return couponNumber;
 
 
