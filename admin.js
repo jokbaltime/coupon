@@ -569,8 +569,6 @@ searchBtn.click();
 // ================================
 // 빠른 삭제
 // ================================
-const selectBtn =
-div.querySelector(".selectCoupon");
 
 
 if(selectBtn){
