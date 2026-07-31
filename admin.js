@@ -1340,7 +1340,7 @@ await runTransaction(db, async (transaction)=>{
 
     });
 
-
+});
 
 await addDoc(
 
@@ -1379,18 +1379,7 @@ useCouponBtn.innerText = "사용 완료";
 
 searchBtn.click();
 
-}
-catch(error){
-
-console.error(error);
-
-alert("사용 처리 실패");
-
-useCouponBtn.disabled = false;
-
-useCouponBtn.innerText = "사용";
-
-}
+};
 
 
 
