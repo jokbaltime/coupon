@@ -1082,19 +1082,26 @@ titleSnap.docs[0];
 
 
 console.log("쿠폰 조회 완료");
-console.log(snap.exists());
 
 if(!snap){
 
-
-couponResult.innerHTML=
+couponResult.innerHTML =
 "❌ 쿠폰 없음";
-
 
 return;
 
 }
 
+console.log(snap.exists());
+
+if(!snap.exists()){
+
+couponResult.innerHTML =
+"❌ 쿠폰 없음";
+
+return;
+
+}
 
 
 
