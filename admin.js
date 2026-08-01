@@ -1127,15 +1127,12 @@ let statusText="";
 
 
 if(
-
-(data.useCount || 0)
+(couponData.useCount || 0)
 >=
-(data.maxUseCount || 1)
-
+(couponData.maxUseCount || 1)
 ){
 
 statusText="❌ 사용 완료";
-
 
 }
 
