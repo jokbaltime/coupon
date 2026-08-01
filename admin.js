@@ -1084,7 +1084,7 @@ titleSnap.docs[0];
 console.log("쿠폰 조회 완료");
 console.log(snap.exists());
 
-if(!snap.exists()){
+if(!snap){
 
 
 couponResult.innerHTML=
