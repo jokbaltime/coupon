@@ -1192,7 +1192,7 @@ const checkEndDate = data.endDate
 if(
     checkEndDate &&
     today > checkEndDate &&
-    data.status !== "used"
+    couponData.status !== "used"
 ){
 
     statusText = "🔴 기간 만료";
@@ -1206,13 +1206,13 @@ couponResult.innerHTML=
 
 <p>
 번호 :
-${data.couponNumber || "-"}
+${couponData.couponNumber || "-"}
 </p>
 
 
 <p>
 제목 :
-${data.title || "-"}
+${couponData.title || "-"}
 </p>
 
 
@@ -1224,23 +1224,23 @@ ${statusText}
 
 <p>
 할인 :
-${data.discount || 0}%
+${couponData.discount || 0}
 </p>
 
 
 <p>
 사용횟수 :
-${data.useCount || 0}
+${couponData.useCount || 0}
 /
-${data.maxUseCount || 1}
+${couponData.maxUseCount || 1}
 </p>
 
 
 <p>
 사용기간 :
-${data.startDate || "-"}
+${couponData.startDate || "-"}
 ~
-${data.endDate || "-"}
+${couponData.endDate || "-"}
 </p>
 
 
@@ -1250,11 +1250,11 @@ ${data.endDate || "-"}
 
 if(
 
-data.status==="used" ||
+couponData.status==="used" ||
 
-(data.useCount || 0)
+(couponData.useCount || 0)
 >=
-(data.maxUseCount || 1)
+(couponData.maxUseCount || 1)
 
 ){
 
