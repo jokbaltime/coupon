@@ -1138,6 +1138,9 @@ statusText="❌ 사용 완료";
 
 else{
 
+const data = snap.data();
+
+let statusText="";    
 
 switch(data.status){
 
