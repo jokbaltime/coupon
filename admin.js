@@ -1082,10 +1082,7 @@ return;
 
 console.log("쿠폰 조회 완료");
 
-const data =
-snap.data();
 
-console.log("데이터 표시 시작", data);
 
 
 if(!snap){
