@@ -11,6 +11,7 @@ auth,
 collection,
 doc,
 getDoc,
+getDocs,
 setDoc,
 updateDoc,
 addDoc,
@@ -987,19 +988,71 @@ return;
 
 }
 
+let snap;
 
 
-const snap =
-await getDoc(
-
+// 1. 쿠폰번호 검색
+const couponRef =
 doc(
 db,
 "coupons",
-number
-
-)
-
+keyword
 );
+
+
+const couponSnap =
+await getDoc(couponRef);
+
+
+if(couponSnap.exists()){
+
+    snap = couponSnap;
+
+}
+
+
+// 2. 쿠폰번호가 아니면 제목 검색
+else{
+
+
+const q =
+query(
+collection(db,"coupons"),
+where(
+"title",
+">=",
+keyword
+),
+where(
+"title",
+"<=",
+keyword + "\uf8ff"
+)
+);
+
+
+const titleSnap =
+await getDocs(q);
+
+
+if(titleSnap.empty){
+
+    couponResult.innerHTML =
+    "❌ 쿠폰 없음";
+
+    return;
+
+}
+
+
+// 첫 번째 결과 사용
+snap =
+titleSnap.docs[0];
+
+
+}
+
+
 
 console.log("쿠폰 조회 완료");
 console.log(snap.exists());
