@@ -1462,7 +1462,7 @@ number
 
   
 
-if(!snap.exists()){
+if(!snap){
 
 alert("쿠폰 없음");
 
