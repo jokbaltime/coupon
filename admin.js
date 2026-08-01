@@ -290,6 +290,62 @@ await signOut(auth);
 
 };
 
+// ================================
+// DASHBOARD
+// ================================
+
+function loadDashboard(){
+
+    onSnapshot(
+
+    collection(db,"coupons"),
+
+    (snapshot)=>{
+
+        let issued=0;
+        let waiting=0;
+        let approved=0;
+        let used=0;
+        let expired=0;
+
+        snapshot.forEach((item)=>{
+
+            const data = item.data();
+
+            if(data.status==="waiting"){
+                waiting++;
+            }
+
+            if(data.status==="approved"){
+                approved++;
+            }
+
+            if(data.status==="used"){
+                used++;
+            }
+
+            issued++;
+
+        });
+
+
+        if(totalCoupon)
+        totalCoupon.innerText = issued;
+
+        if(waitingCount)
+        waitingCount.innerText = waiting;
+
+        if(approvedCount)
+        approvedCount.innerText = approved;
+
+        if(usedCount)
+        usedCount.innerText = used;
+
+    }
+
+    );
+
+}
 
 
 
