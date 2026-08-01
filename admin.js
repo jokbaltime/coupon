@@ -1370,7 +1370,7 @@ return;
 snapshot.forEach((item)=>{
 
 
-const data =
+const titleData =
 item.data();
 
 
@@ -1380,22 +1380,22 @@ couponResult.innerHTML +=
 
 <p>
 번호 :
-${data.couponNumber}
+${titleData.couponNumber}
 </p>
 
 <p>
 제목 :
-${data.title}
+${titleData.title}
 </p>
 
 <p>
 상태 :
-${data.status}
+${titleData.status}
 </p>
 
 <p>
 할인 :
-${data.discount}%
+${titleData.discount}
 </p>
 
 <hr>
