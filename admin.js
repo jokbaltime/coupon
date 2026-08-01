@@ -490,8 +490,21 @@ data.couponNumber;
 
 searchBtn.click();
 
-};
 
+setTimeout(()=>{
+
+couponResult.scrollIntoView({
+
+behavior:"smooth",
+
+block:"start"
+
+});
+
+},200);
+
+
+};
 
 
 div.querySelector(".quickEditCoupon").onclick=()=>{
@@ -501,8 +514,30 @@ data.couponNumber;
 
 searchBtn.click();
 
-};
 
+setTimeout(()=>{
+
+const section =
+document.querySelector("#couponEditSection");
+
+
+if(section){
+
+section.scrollIntoView({
+
+behavior:"smooth",
+
+block:"start"
+
+});
+
+}
+
+
+},200);
+
+
+};
 
 
 div.querySelector(".quickDeleteCoupon").onclick=async()=>{
