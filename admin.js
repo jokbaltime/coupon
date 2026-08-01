@@ -972,15 +972,15 @@ searchBtn.onclick=async()=>{
 
 console.log("검색버튼 실행", searchCoupon.value);
 
-const number =
+const keyword =
 searchCoupon.value.trim();
 
 
 
-if(!number){
+if(!keyword){
 
 alert(
-"쿠폰번호 입력"
+"검색어 입력"
 );
 
 return;
