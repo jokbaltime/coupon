@@ -578,35 +578,12 @@ searchBtn.click();
 // ================================
 
 
-if(selectBtn){
-
-selectBtn.onclick=()=>{
-
-searchCoupon.value =
-data.couponNumber;
-
-searchBtn.click();
-
-};
-
-}
 
 
 
 
 
-if(editBtn){
 
-editBtn.onclick=()=>{
-
-searchCoupon.value =
-data.couponNumber;
-
-searchBtn.click();
-
-};
-
-}
 
 
 
@@ -1079,22 +1056,8 @@ return;
 
 }
 
-
 console.log("쿠폰 조회 완료");
 
-
-
-
-if(!snap){
-
-couponResult.innerHTML =
-"❌ 쿠폰 없음";
-
-return;
-
-}
-
-console.log(snap.exists());
 
 if(!snap.exists()){
 
@@ -1106,38 +1069,36 @@ return;
 }
 
 
+const couponData = snap.data();
 
-const data =
-snap.data();
-
-console.log("데이터 표시 시작", data);
+console.log("데이터 표시 시작", couponData);
 
 
 // 입력창 채우기
 
 couponNumber.value =
-data.couponNumber || "";
+couponData.couponNumber || "";
 
 couponTitle.value =
-data.title || "";
+couponData.title || "";
 
 discount.value =
-data.discount || 0;
+couponData.discount || 0;
 
 maxUseCount.value =
-data.maxUseCount || 1;
+couponData.maxUseCount || 1;
 
 notice.value =
-data.notice || "";
+couponData.notice || "";
 
 imageUrl.value =
-data.image || "";
+couponData.image || "";
 
 startDate.value =
-data.startDate || "";
+couponData.startDate || "";
 
 endDate.value =
-data.endDate || "";
+couponData.endDate || "";
 
 
 
