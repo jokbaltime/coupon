@@ -94,6 +94,11 @@ document.getElementById("searchCoupon");
 const searchBtn =
 document.getElementById("searchBtn");
 
+const searchTitle =
+document.getElementById("searchTitle");
+
+const searchTitleBtn =
+document.getElementById("searchTitleBtn");
 
 const couponResult =
 document.getElementById("couponResult");
