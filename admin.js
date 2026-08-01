@@ -969,6 +969,100 @@ useCouponBtn.classList.remove("hidden");
 };
 
 // ================================
+// SEARCH COUPON TITLE
+// ================================
+
+searchTitleBtn.onclick = async()=>{
+
+
+const title =
+searchTitle.value.trim();
+
+
+if(!title){
+
+alert("쿠폰명 입력");
+
+return;
+
+}
+
+
+const q =
+query(
+collection(db,"coupons"),
+where("title","==",title)
+);
+
+
+
+const snap =
+await getDocs(q);
+
+
+
+if(snap.empty){
+
+couponResult.innerHTML =
+"❌ 쿠폰 없음";
+
+return;
+
+}
+
+
+
+couponResult.innerHTML="";
+
+
+
+snap.forEach((item)=>{
+
+
+const data =
+item.data();
+
+
+
+couponResult.innerHTML +=
+
+`
+
+<p>
+번호 :
+${data.couponNumber}
+</p>
+
+
+<p>
+제목 :
+${data.title}
+</p>
+
+
+<p>
+상태 :
+${data.status}
+</p>
+
+
+<p>
+할인 :
+${data.discount}%
+</p>
+
+<hr>
+
+`;
+
+
+
+});
+
+
+};
+
+// ================================
 // USE COUPON
 // ================================
 
