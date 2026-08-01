@@ -1014,7 +1014,6 @@ if(couponSnap.exists()){
 
 }
 
-
 // 2. 끝자리 4자리 검색
 if(!snap){
 
@@ -1038,9 +1037,8 @@ if(!result.empty){
 }
 
 
-// 2. 쿠폰번호가 아니면 제목 검색
-else{
-
+// 3. 쿠폰명 검색
+if(!snap){
 
 const q =
 query(
@@ -1062,26 +1060,33 @@ const titleSnap =
 await getDocs(q);
 
 
-if(titleSnap.empty){
+if(!titleSnap.empty){
 
-    couponResult.innerHTML =
-    "❌ 쿠폰 없음";
+    snap = titleSnap.docs[0];
 
-    return;
+}
 
 }
 
 
-// 첫 번째 결과 사용
-snap =
-titleSnap.docs[0];
+// 결과 없음
+if(!snap){
 
+couponResult.innerHTML =
+"❌ 쿠폰 없음";
+
+return;
 
 }
-
 
 
 console.log("쿠폰 조회 완료");
+
+const data =
+snap.data();
+
+console.log("데이터 표시 시작", data);
+
 
 if(!snap){
 
