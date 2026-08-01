@@ -992,27 +992,36 @@ if(couponSnap.exists()){
 }
 
 // 2. 끝자리 4자리 검색
-if(!snap){
+if(!snap && keyword.length === 4){
 
-const q =
-query(
-collection(db,"coupons"),
-where("couponNumber","==",keyword)
+const allCoupons =
+await getDocs(
+collection(db,"coupons")
 );
 
 
-const result =
-await getDocs(q);
+const found =
+allCoupons.docs.find(doc=>{
+
+const coupon =
+doc.data();
 
 
-if(!result.empty){
+return coupon.couponNumber
+&&
+coupon.couponNumber.endsWith(keyword);
 
-    snap = result.docs[0];
+
+});
+
+
+if(found){
+
+snap = found;
 
 }
 
 }
-
 
 // 3. 쿠폰명 검색
 if(!snap){
