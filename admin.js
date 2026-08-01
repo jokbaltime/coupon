@@ -995,8 +995,7 @@ return;
 
 let snap;
 
-
-// 1. 쿠폰번호 검색
+// 1. 쿠폰번호 전체 검색
 const couponRef =
 doc(
 db,
@@ -1012,6 +1011,29 @@ await getDoc(couponRef);
 if(couponSnap.exists()){
 
     snap = couponSnap;
+
+}
+
+
+// 2. 끝자리 4자리 검색
+if(!snap){
+
+const q =
+query(
+collection(db,"coupons"),
+where("couponNumber","==",keyword)
+);
+
+
+const result =
+await getDocs(q);
+
+
+if(!result.empty){
+
+    snap = result.docs[0];
+
+}
 
 }
 
