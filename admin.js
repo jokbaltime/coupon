@@ -291,6 +291,51 @@ await signOut(auth);
 };
 
 // ================================
+// EXPIRED COUPON CHECK
+// ================================
+
+async function checkExpiredCoupons(){
+
+    const snapshot = await getDocs(collection(db,"coupons"));
+
+    const today = new Date();
+
+    for(const item of snapshot.docs){
+
+        const data = item.data();
+
+        if(
+            !data.endDate ||
+            data.status === "used" ||
+            data.status === "expired"
+        ){
+            continue;
+        }
+
+        const endDate = new Date(data.endDate);
+
+        if(today > endDate){
+
+            await updateDoc(
+                doc(db,"coupons",item.id),
+                {
+                    status:"expired",
+                    expiredAt:serverTimestamp()
+                }
+            );
+
+            console.log(
+                "기간 만료 처리:",
+                data.couponNumber
+            );
+
+        }
+
+    }
+
+}
+
+// ================================
 // DASHBOARD
 // ================================
 
