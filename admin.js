@@ -372,7 +372,11 @@ function loadDashboard(){
             }
 
             if(data.status==="expired"){
-    expired++;
+                expired++;
+                
+            if(expiredCount)
+            expiredCount.innerText = expired;
+                
             }
             issued++;
 
