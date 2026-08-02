@@ -628,6 +628,78 @@ couponList.appendChild(div);
 }
 
 // ================================
+// SAVE COUPON
+// ================================
+
+saveCouponBtn.onclick = async()=>{
+
+const number =
+couponNumber.value.trim();
+
+
+if(!number){
+
+alert("쿠폰번호 입력");
+
+return;
+
+}
+
+
+await setDoc(
+
+doc(
+db,
+"coupons",
+number
+),
+
+{
+
+couponNumber:number,
+
+title:
+couponTitle.value.trim(),
+
+discount:
+Number(discount.value),
+
+maxUseCount:
+Number(maxUseCount.value),
+
+useCount:0,
+
+status:"issued",
+
+notice:
+notice.value.trim(),
+
+image:
+imageUrl.value.trim(),
+
+startDate:
+startDate.value,
+
+endDate:
+endDate.value,
+
+createdAt:
+serverTimestamp(),
+
+updatedAt:
+serverTimestamp()
+
+}
+
+);
+
+
+alert("쿠폰 저장 완료");
+
+
+};
+
+// ================================
 // SEARCH COUPON
 // ================================
 
