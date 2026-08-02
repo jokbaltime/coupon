@@ -1421,9 +1421,10 @@ db,
 {
 
 
-couponNumber:number,
-
 action:"used",
+
+admin:
+auth.currentUser.email,
 
 time:
 serverTimestamp()
@@ -2090,6 +2091,10 @@ ${data.couponNumber}
 ${data.action}
 </p>
 
+<p>
+관리자 :
+${data.admin || "-"}
+</p>
 
 <p>
 시간 :
