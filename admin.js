@@ -206,7 +206,7 @@ let couponFilter="all";
 
 let couponSnapshotData=[];
 
-
+let currentUserRole="";
 
 
 // ================================
@@ -242,7 +242,8 @@ return;
 const userData =
 userSnap.data();
 
-
+currentUserRole =
+userData.role;
 
 if(
 userData.role !== "staff" &&
@@ -273,6 +274,16 @@ loadHistory();
 
 loadRequests();
 
+
+if(currentUserRole==="staff"){
+
+    if(saveCouponBtn)
+    saveCouponBtn.style.display="none";
+
+    if(bulkCreateBtn)
+    bulkCreateBtn.style.display="none";
+
+}    
 }
 
 else{
