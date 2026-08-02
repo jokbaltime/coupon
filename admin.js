@@ -167,6 +167,8 @@ document.getElementById("approvedCouponBtn");
 const usedCouponBtn =
 document.getElementById("usedCouponBtn");
 
+const expiredCouponBtn =
+document.getElementById("expiredCouponBtn");
 
 const totalCoupon =
 document.getElementById("totalCoupon");
@@ -2175,7 +2177,13 @@ renderCouponList();
 
 };
 
+expiredCouponBtn.onclick=()=>{
 
+couponFilter="expired";
+
+renderCouponList();
+
+};
 
 
 
