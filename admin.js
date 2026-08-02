@@ -547,6 +547,9 @@ data.status==="approved"
 data.status==="waiting"
 ?"⏳ 승인 대기"
 :
+data.status==="expired"
+?"🔴 기간 만료"
+:
 "-"
 }
 </p>
