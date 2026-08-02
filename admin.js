@@ -628,45 +628,26 @@ snap = couponSnap;
 
 if(!snap){
 
-
-const q =
-query(
-
-collection(db,"coupons"),
-
-where(
-"couponNumber",
-">=",
-keyword
-),
-
-where(
-"couponNumber",
-"<=",
-keyword + "\uf8ff"
-)
-
-);
-
-
-
 const result =
-await getDocs(q);
+await getDocs(collection(db,"coupons"));
 
+result.forEach((docItem)=>{
 
+const coupon =
+docItem.data();
 
-if(!result.empty){
+if(
+coupon.couponNumber &&
+coupon.couponNumber.endsWith(keyword)
+){
 
-snap =
-result.docs[0];
+snap = docItem;
 
 }
 
+});
 
 }
-
-
-
 
 // 3. 쿠폰명 검색
 
