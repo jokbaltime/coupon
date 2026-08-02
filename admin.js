@@ -2195,6 +2195,7 @@ renderCouponList();
 
 bulkCreateBtn.onclick=async()=>{
 
+bulkCreateBtn.disabled = true;
 
 const title =
 bulkCouponTitle.value.trim();
@@ -2310,7 +2311,7 @@ serverTimestamp()
 
 }
 
-
+bulkCreateBtn.disabled = false;
 
 alert(
 "생성 완료"
