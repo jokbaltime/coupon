@@ -259,7 +259,10 @@ return;
 
 adminBox.classList.remove("hidden");
 
+// 먼저 기간 만료 검사
+await checkExpiredCoupons();
 
+// 화면 로드
 loadDashboard();
 
 loadCouponList();
@@ -267,7 +270,6 @@ loadCouponList();
 loadHistory();
 
 loadRequests();
-
 
 }
 
