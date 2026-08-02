@@ -1091,7 +1091,6 @@ ${data.endDate || "-"}
 
 
 if(
-
 data.status==="used" ||
 
 (data.useCount || 0)
@@ -1266,8 +1265,8 @@ snap.data();
 
 
 if(
-
 data.status==="used" ||
+data.status==="expired" ||
 
 (data.useCount || 0)
 >=
@@ -1276,7 +1275,7 @@ data.status==="used" ||
 ){
 
 alert(
-"이미 사용 완료된 쿠폰입니다."
+"사용할 수 없는 쿠폰입니다."
 );
 
 return;
