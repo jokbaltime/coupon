@@ -371,6 +371,9 @@ function loadDashboard(){
                 used++;
             }
 
+            if(data.status==="expired"){
+    expired++;
+            }
             issued++;
 
         });
@@ -388,6 +391,8 @@ function loadDashboard(){
         if(usedCount)
         usedCount.innerText = used;
 
+        if(expiredCount)
+        expiredCount.innerText = expired;
     }
 
     );
