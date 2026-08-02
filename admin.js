@@ -536,22 +536,9 @@ div.innerHTML=
 
 <p>
 상태 :
-${
-data.status==="issued"
-?"✅ 사용 가능"
-:
-data.status==="used"
-?"❌ 사용 완료"
-:
-data.status==="approved"
-?"✅ 승인 완료"
-:
-data.status==="waiting"
-?"⏳ 승인 대기"
-:
-"-"
-}
+${data.status || "-"}
 </p>
+
 <p>
 할인 :
 ${data.discount || 0}%
