@@ -486,7 +486,30 @@ return;
 
 }
 
+let statusText="";
 
+switch(data.status){
+
+case "issued":
+statusText="✅ 사용 가능";
+break;
+
+case "waiting":
+statusText="⏳ 승인 대기";
+break;
+
+case "approved":
+statusText="✅ 승인 완료";
+break;
+
+case "used":
+statusText="❌ 사용 완료";
+break;
+
+default:
+statusText=data.status || "-";
+
+}
 
 const div =
 document.createElement("div");
