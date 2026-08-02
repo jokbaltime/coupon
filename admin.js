@@ -506,6 +506,12 @@ case "used":
 statusText="❌ 사용 완료";
 break;
 
+case "expired":
+
+statusText="🔴 기간 만료";
+
+break;
+        
 default:
 statusText=data.status || "-";
 
@@ -874,7 +880,7 @@ const data =
 snap.data();
 
 
-
+let statusText = "";
 
 
 // 입력창 채우기
