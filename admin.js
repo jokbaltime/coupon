@@ -494,7 +494,14 @@ document.createElement("div");
 
 div.className="coupon-card";
 
+let statusText = data.status || "-";
 
+
+if(data.status === "expired"){
+
+    statusText = "🔴 기간 만료";
+
+}
 
 div.innerHTML=
 
@@ -506,7 +513,7 @@ div.innerHTML=
 
 <p>
 상태 :
-${data.status || "-"}
+${statusText}
 </p>
 
 <p>
