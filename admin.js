@@ -639,23 +639,80 @@ block:"start"
 
 div.querySelector(".quickDeleteCoupon").onclick=async()=>{
 
-
-if(
-confirm("삭제하시겠습니까?")
-){
-
-await deleteDoc(
-
-doc(
-db,
-"coupons",
-data.couponNumber
-)
-
-);
+    if(!confirm("삭제하시겠습니까?")){
+        return;
+    }
 
 
-}
+    const ref =
+    doc(
+        db,
+        "coupons",
+        data.id
+    );
+
+
+    const snap =
+    await getDoc(ref);
+
+
+    if(!snap.exists()){
+
+        alert("쿠폰을 찾을 수 없습니다.");
+
+        return;
+
+    }
+
+
+    const couponData =
+    snap.data();
+
+
+
+    if(couponData.status==="used"){
+
+        alert(
+            "사용 완료 쿠폰은 삭제할 수 없습니다."
+        );
+
+        return;
+
+    }
+
+
+
+    await deleteDoc(ref);
+
+
+
+    await addDoc(
+
+        collection(
+            db,
+            "coupon_history"
+        ),
+
+        {
+
+            couponNumber:
+            couponData.couponNumber,
+
+            action:
+            "deleted",
+
+            time:
+            serverTimestamp()
+
+        }
+
+    );
+
+
+
+    alert(
+        "삭제 완료"
+    );
 
 
 };
