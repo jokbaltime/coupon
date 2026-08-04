@@ -212,3 +212,76 @@ h2{
     0 5px 15px rgba(0,0,0,.15);
 
 }
+
+/* 쿠폰 카드 디자인 */
+
+#resultCard{
+
+    background:
+    linear-gradient(
+        145deg,
+        #ffffff,
+        #fff5f5
+    );
+
+    border:2px solid #8B0000;
+
+}
+
+
+#resultCard h3{
+
+    font-size:24px;
+
+    color:#8B0000;
+
+}
+
+
+.discount{
+
+    background:#8B0000;
+
+    color:white;
+
+    width:120px;
+
+    height:120px;
+
+    line-height:120px;
+
+    border-radius:50%;
+
+    margin:20px auto;
+
+}
+
+
+.date{
+
+    background:#fafafa;
+
+    padding:15px;
+
+    border-radius:10px;
+
+}
+
+
+#qrcode{
+
+    margin-top:25px;
+
+    text-align:center;
+
+}
+
+
+#qrcode img{
+
+    border:10px solid white;
+
+    box-shadow:
+    0 5px 20px rgba(0,0,0,.2);
+
+}
