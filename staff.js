@@ -543,6 +543,41 @@ return;
 const data =
 snap.data();
 
+// ================================
+// QR TOKEN CHECK
+// ================================
+
+const qrToken =
+useCouponNumber.dataset.token;
+
+
+if(
+!qrToken ||
+data.token !== qrToken
+){
+
+couponInfo.innerHTML = `
+<div class="coupon-detail">
+
+<h3>❌ QR 인증 실패</h3>
+
+<p>
+유효하지 않은 QR 코드입니다.
+</p>
+
+</div>
+`;
+
+useBtn.disabled = true;
+
+return;
+
+}
+
+
+// ================================
+
+    
 const today = new Date();
 
 const startDate = data.startDate
