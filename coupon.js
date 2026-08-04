@@ -149,13 +149,20 @@ if(qrBox){
     qrBox.innerHTML="";
 
     new QRCode(
-        qrBox,
-        {
-            text:data.couponNumber,
-            width:180,
-            height:180
-        }
-    );
+    qrBox,
+    {
+        text:
+        data.couponNumber
+        +
+        "|"
+        +
+        data.token,
+
+        width:180,
+
+        height:180
+    }
+);
 
 }
         
