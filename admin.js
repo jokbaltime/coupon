@@ -2461,29 +2461,87 @@ qrbox:250
 async(decodedText)=>{
 
 
-console.log(
-"QR 인식:",
-decodedText
-);
-
-
-// 카메라 종료
-
 await scanner.stop();
 
+
 reader.innerHTML="";
+
+
+// QR 데이터 분리
+
+const qrData =
+decodedText.split("|");
+
+
+const couponNumber =
+qrData[0];
+
+
+const token =
+qrData[1];
 
 
 // 쿠폰번호 입력
 
 searchCoupon.value =
-decodedText;
+couponNumber;
 
 
-// 자동 조회
+// 쿠폰 조회
 
-searchBtn.click();
+await searchBtn.click();
 
+
+
+// token 확인
+
+const snap =
+await getDoc(
+doc(
+db,
+"coupons",
+couponNumber
+)
+);
+
+
+if(!snap.exists()){
+
+alert(
+"등록되지 않은 쿠폰입니다."
+);
+
+return;
+
+}
+
+
+
+const data =
+snap.data();
+
+
+
+if(
+!data.token ||
+data.token !== token
+){
+
+alert(
+"❌ QR 인증 실패"
+);
+
+
+return;
+
+}
+
+
+
+console.log(
+"QR 인증 성공",
+couponNumber
+);
 
 
 }
