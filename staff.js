@@ -944,7 +944,27 @@ height:300
 
 (decodedText) => {
 
-    useCouponNumber.value = decodedText;
+
+const qrData =
+decodedText.split("|");
+
+
+const couponNumber =
+qrData[0];
+
+
+const token =
+qrData[1];
+
+
+// 쿠폰번호만 입력
+useCouponNumber.value =
+couponNumber;
+
+
+// QR 토큰 저장
+useCouponNumber.dataset.token =
+token;
 
     html5QrCode.stop().then(() => {
 
