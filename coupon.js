@@ -84,36 +84,62 @@ searchBtn.onclick = async () => {
 
         }
 
-        resultCard.innerHTML = `
+resultCard.innerHTML = `
 
-            <h2>${data.title}</h2>
+<h2>🍖 JOKBAL TIME</h2>
 
-            <p><b>쿠폰번호</b></p>
-            <p>${data.couponNumber}</p>
+<h3>${data.title || "-"}</h3>
 
-            <p><b>상태</b></p>
-            <p>${status}</p>
+<div class="discount">
+${data.discount || 0}%
+</div>
 
-            <p><b>할인</b></p>
-            <p>${data.discount}%</p>
+<div class="status">
+${status}
+</div>
 
-            <p><b>사용기간</b></p>
+<div class="date">
 
-            <p>
-            ${data.startDate}
-            <br>
-            ~
-            <br>
-            ${data.endDate}
-            </p>
+사용기간
 
-            <hr>
+<br>
 
-            <b>
-            직원에게 이 화면을 보여주세요.
-            </b>
+${data.startDate || "-"}
 
-        `;
+<br>
+
+~
+
+<br>
+
+${data.endDate || "-"}
+
+</div>
+
+<hr>
+
+<div>
+
+쿠폰번호
+
+<br>
+
+<b>${data.couponNumber || "-"}</b>
+
+</div>
+
+<hr>
+
+<div class="guide">
+
+직원에게 이 화면을 보여주세요.
+
+</div>
+
+`;
+
+
+        
 
     } catch (e) {
 
