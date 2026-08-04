@@ -138,7 +138,26 @@ ${data.endDate || "-"}
 
 `;
 
+// QR 코드 생성
 
+const qrBox =
+document.getElementById("qrcode");
+
+
+if(qrBox){
+
+    qrBox.innerHTML="";
+
+    new QRCode(
+        qrBox,
+        {
+            text:data.couponNumber,
+            width:180,
+            height:180
+        }
+    );
+
+}
         
 
     } catch (e) {
