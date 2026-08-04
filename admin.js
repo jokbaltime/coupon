@@ -2358,15 +2358,11 @@ alert(
 // QR SCANNER
 // ================================
 
-
 scanQrBtn.onclick=async()=>{
 
 
 const scanner =
-new Html5Qrcode(
-"reader"
-);
-
+new Html5Qrcode("reader");
 
 
 try{
@@ -2375,34 +2371,41 @@ try{
 await scanner.start(
 
 {
-
 facingMode:"environment"
-
 },
 
 {
-
 fps:10,
-
 qrbox:250
-
 },
 
 
 async(decodedText)=>{
 
 
-await scanner.stop();
+console.log(
+"QR 인식:",
+decodedText
+);
 
+
+// 카메라 종료
+
+await scanner.stop();
 
 reader.innerHTML="";
 
+
+// 쿠폰번호 입력
 
 searchCoupon.value =
 decodedText;
 
 
+// 자동 조회
+
 searchBtn.click();
+
 
 
 }
@@ -2420,7 +2423,7 @@ console.error(error);
 
 
 alert(
-"카메라 실행 실패"
+"QR 카메라 실행 실패"
 );
 
 
