@@ -1487,13 +1487,60 @@ serverTimestamp()
 
 
 
+couponResult.innerHTML =
+
+`
+<div style="
+background:#e8f5e9;
+padding:25px;
+border-radius:15px;
+text-align:center;
+">
+
+<h2 style="
+color:#2e7d32;
+">
+✅ 사용 완료
+</h2>
+
+
+<hr>
+
+
+<p>
+<b>쿠폰번호</b>
+</p>
+
+<p>
+${number}
+</p>
+
+
+<p>
+<b>처리시간</b>
+</p>
+
+<p>
+${new Date().toLocaleString()}
+</p>
+
+
+<hr>
+
+
+<h3>
+직원 확인 완료
+</h3>
+
+
+</div>
+`;
+
+
+
 alert(
 "쿠폰 사용 완료"
 );
-
-
-
-searchBtn.click();
 
 
 
