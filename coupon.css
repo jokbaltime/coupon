@@ -110,3 +110,61 @@ h2{
     line-height:1.8;
 
 }
+
+#resultCard{
+
+    max-width:420px;
+
+    margin:30px auto;
+
+    background:#ffffff;
+
+    border-radius:20px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+
+    padding:25px;
+
+    text-align:center;
+
+}
+
+#resultCard h2{
+
+    margin:10px 0;
+
+    font-size:28px;
+
+    color:#222;
+
+}
+
+#resultCard .discount{
+
+    font-size:60px;
+
+    font-weight:bold;
+
+    color:#ff3b30;
+
+    margin:20px 0;
+
+}
+
+#resultCard .status{
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    margin:15px 0;
+
+}
+
+#resultCard .guide{
+
+    color:#ff6600;
+
+    font-weight:bold;
+
+}
