@@ -1588,6 +1588,9 @@ number
 
 status:"issued",
 
+token:
+crypto.randomUUID(),
+    
 useCount:0,
 
 usedAt:null,
