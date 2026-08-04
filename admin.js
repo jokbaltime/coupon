@@ -1150,6 +1150,7 @@ ${data.maxUseCount || 1}
 </p>
 
 
+
 <p>
 사용기간 :
 ${data.startDate || "-"}
@@ -1162,30 +1163,41 @@ ${data.endDate || "-"}
 
 
 
+const qrActionBox =
+document.createElement("div");
 
 
 if(
 data.status==="used" ||
-
-(data.useCount || 0)
->=
-(data.maxUseCount || 1)
-
+(data.useCount || 0) >= (data.maxUseCount || 1)
 ){
 
-
-useCouponBtn.classList.add("hidden");
-
+qrActionBox.innerHTML =
+"❌ 이미 사용 완료된 쿠폰";
 
 }
-
 else{
 
+qrActionBox.innerHTML =
+`
+<button id="qrUseBtn">
+쿠폰 사용 처리
+</button>
+`;
 
-useCouponBtn.classList.remove("hidden");
+qrActionBox
+.querySelector("#qrUseBtn")
+.onclick=()=>{
 
+useCouponBtn.click();
+
+};
 
 }
+
+
+couponResult.appendChild(qrActionBox);
+
 
 
 
