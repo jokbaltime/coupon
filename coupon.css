@@ -1,0 +1,112 @@
+body{
+
+    margin:0;
+    padding:0;
+
+    background:#f5f5f5;
+
+    font-family:
+    "Malgun Gothic",
+    sans-serif;
+
+}
+
+.container{
+
+    max-width:450px;
+
+    margin:40px auto;
+
+    background:#fff;
+
+    padding:30px;
+
+    border-radius:15px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+
+}
+
+h1{
+
+    text-align:center;
+
+    color:#a52a2a;
+
+    margin-bottom:5px;
+
+}
+
+h2{
+
+    text-align:center;
+
+    color:#666;
+
+    margin-bottom:30px;
+
+}
+
+.searchBox{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.searchBox input{
+
+    flex:1;
+
+    padding:12px;
+
+    font-size:16px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+}
+
+.searchBox button{
+
+    width:90px;
+
+    border:none;
+
+    background:#8B0000;
+
+    color:white;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+}
+
+.searchBox button:hover{
+
+    background:#a40000;
+
+}
+
+#resultCard{
+
+    margin-top:25px;
+
+    padding:20px;
+
+    border-radius:10px;
+
+    background:#fafafa;
+
+    border:1px solid #ddd;
+
+    min-height:180px;
+
+    line-height:1.8;
+
+}
