@@ -792,7 +792,26 @@ return;
 const data =
 snap.data();
 
+// ================================
+// QR TOKEN RECHECK
+// ================================
 
+const qrToken =
+useCouponNumber.dataset.token;
+
+
+if(
+!qrToken ||
+data.token !== qrToken
+){
+
+alert(
+"QR 인증이 필요합니다."
+);
+
+return;
+
+}
 
 
 
