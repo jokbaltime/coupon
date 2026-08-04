@@ -1180,9 +1180,37 @@ else{
 
 qrActionBox.innerHTML =
 `
-<button id="qrUseBtn">
-쿠폰 사용 처리
+<div style="
+background:#fff3cd;
+padding:15px;
+border-radius:10px;
+margin-top:20px;
+">
+
+<p style="
+font-weight:bold;
+color:#856404;
+">
+⚠️ 사용 처리 후 되돌릴 수 있습니다.
+</p>
+
+
+<button id="qrUseBtn"
+style="
+width:100%;
+padding:15px;
+background:#8B0000;
+color:white;
+border:none;
+border-radius:10px;
+font-size:18px;
+">
+
+✅ 쿠폰 사용 처리
+
 </button>
+
+</div>
 `;
 
 qrActionBox
