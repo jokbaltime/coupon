@@ -2550,7 +2550,7 @@ couponNumber;
 
 // 쿠폰 조회
 
-await searchBtn.click();
+searchBtn.click();
 
 
 
