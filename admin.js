@@ -265,6 +265,9 @@ adminBox.classList.remove("hidden");
 // 먼저 기간 만료 검사
 await checkExpiredCoupons();
 
+// 기존 쿠폰 token 자동 보정
+await fixOldCouponTokens();
+    
 // 화면 로드
 loadDashboard();
 
@@ -2428,7 +2431,65 @@ alert(
 };
 
 
+// ================================
+// OLD COUPON TOKEN FIX
+// ================================
 
+async function fixOldCouponTokens(){
+
+
+const snapshot =
+await getDocs(
+collection(db,"coupons")
+);
+
+
+
+for(const item of snapshot.docs){
+
+
+const data =
+item.data();
+
+
+
+if(!data.token){
+
+
+await updateDoc(
+
+doc(
+db,
+"coupons",
+item.id
+),
+
+{
+
+token:
+crypto.randomUUID(),
+
+updatedAt:
+serverTimestamp()
+
+}
+
+);
+
+
+console.log(
+"기존 쿠폰 token 추가:",
+data.couponNumber
+);
+
+
+}
+
+
+}
+
+
+}
 
 
 
