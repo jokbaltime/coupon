@@ -720,3 +720,90 @@ border-radius:15px;
 overflow:hidden;
 
 }
+
+/* ================================
+   STAFF COUPON PAGE DESIGN
+================================ */
+
+.staff-container{
+
+    max-width:450px;
+
+    margin:40px auto;
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.15);
+
+}
+
+
+.staff-container h1{
+
+    text-align:center;
+
+    color:#8B0000;
+
+}
+
+
+.coupon-detail{
+
+    margin-top:20px;
+
+    padding:25px;
+
+    background:#fff8f0;
+
+    border-radius:20px;
+
+    text-align:center;
+
+}
+
+
+.coupon-detail h3{
+
+    font-size:26px;
+
+}
+
+
+.coupon-detail p{
+
+    font-size:18px;
+
+}
+
+
+#useBtn{
+
+    width:100%;
+
+    margin-top:20px;
+
+    padding:15px;
+
+    font-size:18px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#8B0000;
+
+    color:white;
+
+}
+
+
+#useBtn:disabled{
+
+    background:#aaa;
+
+}
