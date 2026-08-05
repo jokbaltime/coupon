@@ -913,3 +913,23 @@ border-radius:15px;
 overflow:hidden;
 
 }
+
+.qr-ok{
+
+margin-bottom:15px;
+
+padding:10px;
+
+background:#d4edda;
+
+color:#155724;
+
+border-radius:10px;
+
+font-weight:bold;
+
+font-size:18px;
+
+text-align:center;
+
+}
