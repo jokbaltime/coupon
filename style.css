@@ -351,9 +351,6 @@ border-radius:12px;
 }
 
 
-
-
-
 /* ==============================
  STAFF
 ============================== */
@@ -361,53 +358,120 @@ border-radius:12px;
 
 .staff-container{
 
-width:100%;
+    width:100%;
+
+    max-width:450px;
+
+    margin:auto;
 
 }
-
-
 
 
 
 #requestList div{
 
-background:#222;
+    background:#222;
 
-border-radius:12px;
+    border-radius:12px;
 
-padding:15px;
+    padding:15px;
 
-margin-top:10px;
+    margin-top:10px;
 
-border:1px solid #444;
+    border:1px solid #444;
 
 }
-
-
 
 
 
 .request-item button{
 
-background:#2e7d32;
+    background:#2e7d32;
 
 }
 
 
 
-
+/* 쿠폰 결과 카드 */
 
 #couponInfo{
 
-background:#000;
+    background:#fff;
 
-padding:15px;
+    color:#222;
 
-margin-top:15px;
+    padding:25px;
 
-border-radius:12px;
+    margin-top:20px;
+
+    border-radius:20px;
+
+    box-shadow:
+    0 8px 25px rgba(0,0,0,.15);
+
+    line-height:1.8;
 
 }
+
+
+
+/* 쿠폰 제목 */
+
+.coupon-detail h3{
+
+    font-size:26px;
+
+    text-align:center;
+
+    color:#8B0000;
+
+}
+
+
+
+/* 쿠폰 번호 */
+
+.coupon-detail p{
+
+    font-size:17px;
+
+}
+
+
+
+/* 사용 버튼 */
+
+#useBtn{
+
+    width:100%;
+
+    margin-top:20px;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#8B0000;
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+
+
+#useBtn:disabled{
+
+    background:#999;
+
+}
+
+
 
 
 
