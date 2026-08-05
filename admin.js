@@ -837,7 +837,11 @@ if(qrBox){
 
     qrBox.innerHTML="";
 
-
+console.log(
+"ADMIN QR",
+number + "|" + token
+);
+    
     new QRCode(
 
         qrBox,
