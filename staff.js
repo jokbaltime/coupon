@@ -653,6 +653,12 @@ couponInfo.innerHTML = `
 
 <div class="coupon-detail">
 
+<div class="qr-ok">
+
+🟢 QR 인증 완료
+
+</div>
+
 <h3>${data.title || "-"}</h3>
 
 <hr>
