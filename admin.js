@@ -765,6 +765,8 @@ return;
 
 }
 
+const token =
+crypto.randomUUID();
 
 await setDoc(
 
@@ -808,6 +810,9 @@ serverTimestamp(),
 
 token:
 crypto.randomUUID(),
+
+token:
+token,
     
 updatedAt:
 serverTimestamp()
