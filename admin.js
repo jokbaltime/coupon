@@ -806,6 +806,9 @@ endDate.value,
 createdAt:
 serverTimestamp(),
 
+token:
+crypto.randomUUID(),
+    
 updatedAt:
 serverTimestamp()
 
@@ -815,6 +818,38 @@ serverTimestamp()
 
 
 alert("쿠폰 저장 완료");
+
+
+// ================================
+// ADMIN QR 생성
+// ================================
+
+const qrBox =
+document.getElementById("adminQRCode");
+
+
+if(qrBox){
+
+    qrBox.innerHTML="";
+
+
+    new QRCode(
+
+        qrBox,
+
+        {
+
+        text:number,
+
+        width:180,
+
+        height:180
+
+        }
+
+    );
+
+}
 
 
 };
