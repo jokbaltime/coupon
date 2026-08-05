@@ -841,6 +841,8 @@ console.log(
 "ADMIN QR",
 number + "|" + token
 );
+
+qrBox.innerHTML = "";
     
     new QRCode(
 
