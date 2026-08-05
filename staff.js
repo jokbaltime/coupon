@@ -982,12 +982,46 @@ navigator.vibrate(200);
 }
 
 
-alert(
-"사용 완료 처리"
-);
+couponInfo.innerHTML = `
 
-checkBtn.click();
+<div class="coupon-detail">
 
+<div class="success-box">
+
+<h2>✅ 사용 완료</h2>
+
+<p>
+
+처리가 완료되었습니다.
+
+</p>
+
+</div>
+
+`;
+
+
+// 입력창 초기화
+
+useCouponNumber.value = "";
+
+delete useCouponNumber.dataset.token;
+
+
+// 버튼 비활성
+
+useBtn.disabled = true;
+
+
+// 1.5초 후 초기화
+
+setTimeout(()=>{
+
+couponInfo.innerHTML = "";
+
+useCouponNumber.focus();
+
+},1500);
 };
 
 // ================================
