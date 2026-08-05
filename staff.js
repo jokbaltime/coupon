@@ -963,7 +963,23 @@ serverTimestamp()
 );
 
 
+// 성공 효과음
 
+const audio =
+new Audio(
+"https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"
+);
+
+audio.play();
+
+
+// 진동
+
+if(navigator.vibrate){
+
+navigator.vibrate(200);
+
+}
 
 
 alert(
