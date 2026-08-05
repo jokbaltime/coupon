@@ -848,7 +848,8 @@ number + "|" + token
 
         {
 
-        text:number,
+        text:
+        number + "|" + token,
 
         width:180,
 
