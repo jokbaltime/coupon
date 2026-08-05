@@ -580,6 +580,49 @@ return;
     
 const today = new Date();
 
+// ================================
+// 자동 만료 처리
+// ================================
+
+if(
+data.endDate &&
+data.status !== "used"
+){
+
+const endDate =
+new Date(data.endDate);
+
+endDate.setHours(
+23,
+59,
+59,
+999
+);
+
+if(today > endDate){
+
+await updateDoc(
+
+doc(
+db,
+"coupons",
+number
+),
+
+{
+
+status:"expired"
+
+}
+
+);
+
+data.status="expired";
+
+}
+
+}
+    
 const startDate = data.startDate
 ? new Date(data.startDate)
 : null;
