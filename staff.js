@@ -1083,16 +1083,19 @@ html5QrCode.start(
 
 {
 
-fps: 20,
+fps: 10,
 
 qrbox: {
 
-width:300,
+width:250,
 
-height:300
+height:250
 
-}
+},
 
+aspectRatio: 1.0,
+
+disableFlip: false
 },
 
 (decodedText) => {
