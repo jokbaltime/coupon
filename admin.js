@@ -855,8 +855,10 @@ qrBox.innerHTML = "";
 
         width:300,
 
-        height:300
+        height:300,
 
+        correctLevel:
+        QRCode.CorrectLevel.H    
         }
 
     );
