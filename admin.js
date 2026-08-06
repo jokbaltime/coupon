@@ -853,9 +853,9 @@ qrBox.innerHTML = "";
         text:
         number + "|" + token,
 
-        width:180,
+        width:300,
 
-        height:180
+        height:300
 
         }
 
