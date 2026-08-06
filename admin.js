@@ -808,8 +808,7 @@ endDate.value,
 createdAt:
 serverTimestamp(),
 
-token:
-crypto.randomUUID(),
+
 
 token:
 token,
