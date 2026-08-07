@@ -1,1169 +1,530 @@
 /* ======================================
    style.css
-   JOKBAL TIME COUPON SYSTEM
+   JOKBAL TIME COUPON SYSTEM (COMPLETE)
    ====================================== */
 
-
-*{
-
-margin:0;
-
-padding:0;
-
-box-sizing:border-box;
-
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-
-
-:root{
-
---gold:#D4AF37;
-
---dark:#111;
-
---card:#1e1e1e;
-
---red:#b71c1c;
-
---white:#fff;
-
+:root {
+  --gold: #D4AF37;
+  --dark: #111111;
+  --card: #1e1e1e;
+  --red: #b71c1c;
+  --white: #ffffff;
+  --green: #2e7d32;
 }
 
-
-
-
-body{
-
-background:
-
-linear-gradient(
-
-180deg,
-
-#111,
-
-#222
-
-);
-
-color:var(--white);
-
-font-family:
-
-"Pretendard",
-"Noto Sans KR",
-sans-serif;
-
-min-height:100vh;
-
+body {
+  background: linear-gradient(180deg, #111111, #222222);
+  color: var(--white);
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  min-height: 100vh;
 }
 
-
-
-
-
-.header{
-
-text-align:center;
-
-padding:40px 20px;
-
+/* ==============================
+   HEADER
+   ============================== */
+.header {
+  text-align: center;
+  padding: 40px 20px 20px;
 }
 
-
-
-
-
-.header h1{
-
-color:var(--gold);
-
-font-size:34px;
-
-font-weight:800;
-
+.header h1 {
+  color: var(--gold);
+  font-size: 34px;
+  font-weight: 800;
 }
 
-
-
-
-
-.header p{
-
-color:#ccc;
-
-margin-top:10px;
-
+.header p {
+  color: #ccc;
+  margin-top: 8px;
 }
-
-
-
-
 
 /* ==============================
    COMMON BOX
-============================== */
-
-
-.box{
-
-width:92%;
-
-max-width:450px;
-
-margin:30px auto;
-
-background:
-
-rgba(255,255,255,.05);
-
-border:
-
-1px solid rgba(212,175,55,.3);
-
-border-radius:20px;
-
-padding:25px;
-
+   ============================== */
+.box {
+  width: 92%;
+  max-width: 450px;
+  margin: 20px auto;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 20px;
+  padding: 25px;
 }
 
-
-
-
-
-.box h2{
-
-color:var(--gold);
-
-text-align:center;
-
-margin-bottom:20px;
-
+.box h2 {
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 20px;
 }
-
-
-
-
 
 input,
-textarea{
-
-width:100%;
-
-padding:15px;
-
-margin-top:12px;
-
-border:none;
-
-border-radius:12px;
-
-background:#333;
-
-color:white;
-
-font-size:16px;
-
+textarea {
+  width: 100%;
+  padding: 14px 16px;
+  margin-top: 10px;
+  border: 1px solid #444;
+  border-radius: 12px;
+  background: #282828;
+  color: white;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
 }
 
-
-
-
-
-button{
-
-width:100%;
-
-margin-top:15px;
-
-padding:15px;
-
-border:none;
-
-border-radius:12px;
-
-background:
-
-linear-gradient(
-
-90deg,
-
-#8B0000,
-
-#C62828
-
-);
-
-color:white;
-
-font-size:17px;
-
-font-weight:bold;
-
-cursor:pointer;
-
+input:focus,
+textarea:focus {
+  border-color: var(--gold);
 }
 
-
-
-
-
-button:hover{
-
-opacity:.85;
-
+button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #8B0000, #C62828);
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
 }
 
-
-
-
-
-.hidden{
-
-display:none;
-
+button:hover {
+  opacity: 0.9;
 }
 
+button:active {
+  transform: scale(0.98);
+}
 
+button:disabled {
+  background: #555555 !important;
+  color: #888888 !important;
+  cursor: not-allowed;
+  transform: none;
+}
 
-
+.hidden {
+  display: none !important;
+}
 
 /* ==============================
- CUSTOMER
-============================== */
-
-
-.coupon-page{
-
-width:92%;
-
-max-width:450px;
-
-margin:auto;
-
+   CUSTOMER PAGE UI
+   ============================== */
+.coupon-page {
+  width: 92%;
+  max-width: 450px;
+  margin: auto;
 }
 
-
-
-
-
-.slider{
-
-height:240px;
-
-border-radius:25px;
-
-overflow:hidden;
-
-background:#222;
-
+.slider {
+  height: 240px;
+  border-radius: 25px;
+  overflow: hidden;
+  background: #222;
 }
 
-
-
-
-
-.slider img{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover;
-
+.slider img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-
-
-
-
-.coupon-box{
-
-background:#1c1c1c;
-
-border:
-
-1px solid rgba(212,175,55,.3);
-
-border-radius:25px;
-
-padding:30px;
-
-margin-top:25px;
-
-text-align:center;
-
+.coupon-brand {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--gold);
+  margin-bottom: 15px;
+  letter-spacing: 2px;
 }
 
-
-
-
-
-.coupon-box h2{
-
-color:var(--gold);
-
+.coupon-box {
+  background: linear-gradient(180deg, #242424, #151515);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 25px;
+  padding: 30px;
+  margin-top: 25px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-
-
-
-
-.discount{
-
-font-size:20px;
-
-margin:20px 0;
-
+.coupon-box h2 {
+  color: var(--gold);
+  font-size: 26px;
+  margin-top: 10px;
 }
 
-
-
-
-
-.discount span{
-
-display:block;
-
-font-size:65px;
-
-color:#FFD700;
-
-font-weight:900;
-
+.discount-box {
+  margin: 25px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, #3a2a00, #1c1c1c);
+  border-radius: 20px;
+  border: 1px solid var(--gold);
 }
 
-
-
-
-
-#result{
-
-margin-top:20px;
-
-padding:15px;
-
-background:#000;
-
-border-radius:12px;
-
+.discount-box span {
+  display: block;
+  font-size: 70px;
+  font-weight: 900;
+  color: #FFD700;
+  line-height: 1;
 }
 
+.discount-box p {
+  margin-top: 10px;
+  color: #ddd;
+  font-size: 18px;
+}
+
+.status-box {
+  margin: 20px 0;
+  padding: 15px;
+  border-radius: 15px;
+  background: #000000;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.qr-title {
+  margin-top: 25px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #FFD700;
+}
+
+.qr-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px auto;
+  padding: 15px;
+  background: #ffffff;
+  border: 2px solid #eeeeee;
+  border-radius: 16px;
+  width: 280px;
+  height: 280px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.qr-box img,
+.qr-box canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.store-info {
+  margin-top: 25px;
+  padding: 15px;
+  background: #111111;
+  border-radius: 15px;
+  color: #ddd;
+  line-height: 1.8;
+  text-align: left;
+}
+
+#result {
+  margin-top: 20px;
+  padding: 15px;
+  background: #000000;
+  border-radius: 12px;
+  font-size: 15px;
+  line-height: 1.6;
+}
 
 /* ==============================
- STAFF
-============================== */
-
-
-.staff-container{
-
-    width:100%;
-
-    max-width:450px;
-
-    margin:auto;
-
+   STAFF SYSTEM
+   ============================== */
+.staff-container {
+  width: 92%;
+  max-width: 450px;
+  margin: 20px auto 40px;
 }
 
-
-
-#requestList div{
-
-    background:#222;
-
-    border-radius:12px;
-
-    padding:15px;
-
-    margin-top:10px;
-
-    border:1px solid #444;
-
+.scan-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+  align-items: center;
 }
 
-
-
-.request-item button{
-
-    background:#2e7d32;
-
+.scan-row input {
+  flex: 1;
+  margin-top: 0;
 }
 
-
-
-/* 쿠폰 결과 카드 */
-
-#couponInfo{
-
-    background:#fff;
-
-    color:#222;
-
-    padding:25px;
-
-    margin-top:20px;
-
-    border-radius:20px;
-
-    box-shadow:
-    0 8px 25px rgba(0,0,0,.15);
-
-    line-height:1.8;
-
+.scan-row button {
+  width: auto;
+  margin-top: 0;
+  padding: 14px 18px;
+  white-space: nowrap;
 }
 
-
-
-/* 쿠폰 제목 */
-
-.coupon-detail h3{
-
-    font-size:26px;
-
-    text-align:center;
-
-    color:#8B0000;
-
+#scanQRBtn {
+  background: #1976d2;
 }
 
-
-
-/* 쿠폰 번호 */
-
-.coupon-detail p{
-
-    font-size:17px;
-
+#checkBtn {
+  background: var(--green);
 }
 
-
-
-/* 사용 버튼 */
-
-#useBtn{
-
-    width:100%;
-
-    margin-top:20px;
-
-    padding:15px;
-
-    border:none;
-
-    border-radius:12px;
-
-    background:#8B0000;
-
-    color:white;
-
-    font-size:18px;
-
-    font-weight:bold;
-
+/* QR Scanner Container */
+#reader {
+  width: 100%;
+  max-width: 380px;
+  margin: 15px auto;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #000;
 }
 
-
-
-#useBtn:disabled{
-
-    background:#999;
-
+#reader video {
+  width: 100% !important;
+  height: auto !important;
+  border-radius: 15px;
 }
 
+/* Request List Items */
+#requestList .request-item,
+#requestList div {
+  background: #222222;
+  border-radius: 12px;
+  padding: 15px;
+  margin-top: 10px;
+  border: 1px solid #444444;
+  text-align: left;
+}
 
+.request-item p {
+  margin-bottom: 6px;
+  font-size: 15px;
+}
 
+.request-item button {
+  background: var(--green);
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 15px;
+}
 
+/* Coupon Info Detail Box */
+#couponInfo {
+  margin-top: 20px;
+  border-radius: 16px;
+  line-height: 1.8;
+}
 
+.coupon-detail {
+  padding: 20px;
+  background: #ffffff;
+  color: #222222;
+  border-radius: 16px;
+  text-align: left;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
 
+.coupon-detail h3 {
+  font-size: 22px;
+  text-align: center;
+  color: #8B0000;
+  margin-bottom: 10px;
+}
+
+.coupon-detail hr {
+  margin: 10px 0;
+  border: none;
+  border-top: 1px solid #eee;
+}
+
+.coupon-detail p {
+  font-size: 15px;
+  color: #333333;
+}
+
+.qr-ok {
+  margin-bottom: 12px;
+  padding: 8px;
+  background: #d4edda;
+  color: #155724;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+}
+
+.success-box {
+  padding: 30px 20px;
+  background: #d4edda;
+  border-radius: 16px;
+  text-align: center;
+  color: #155724;
+  animation: pop 0.35s ease;
+}
+
+.success-box h2 {
+  font-size: 28px;
+  margin-bottom: 8px;
+  color: #155724;
+}
+
+.success-box p {
+  font-size: 16px;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 
 /* ==============================
- ADMIN
-============================== */
-
-
-.admin-container{
-
-width:92%;
-
-max-width:500px;
-
-margin:auto;
-
+   ADMIN SYSTEM
+   ============================== */
+.admin-container {
+  width: 92%;
+  max-width: 500px;
+  margin: auto;
 }
 
-
-
-
-
-#requestList button{
-
-background:#2e7d32;
-
+/* ==============================
+   HERO & MENU SECTION
+   ============================== */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 20px;
+  margin-bottom: 30px;
 }
 
-
-
-
-
-/* MOBILE */
-
-@media(max-width:480px){
-
-
-.header h1{
-
-font-size:28px;
-
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-
-.discount span{
-
-font-size:52px;
-
+.heroText {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 40px;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.7);
 }
 
-
+.heroLogo {
+  width: 100px;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
 }
 
-/* ===========================
-   QR CODE
-=========================== */
-
-.qr-box{
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-margin:20px auto;
-
-padding:15px;
-
-background:#ffffff;
-
-border:2px solid #eeeeee;
-
-border-radius:12px;
-
-width:340px;
-
-min-height:340px;
-
-box-shadow:0 2px 8px rgba(0,0,0,.08);
-
+.heroText h1 {
+  font-size: 36px;
+  margin-bottom: 8px;
 }
 
-.qr-box img{
-
-width:320px;
-
-height:320px;
-
+.heroText p {
+  font-size: 18px;
+  margin-bottom: 20px;
 }
 
-/* ==========================
-   CUSTOMER COUPON PREMIUM UI
-========================== */
-
-
-.coupon-brand{
-
-font-size:22px;
-
-font-weight:900;
-
-color:var(--gold);
-
-margin-bottom:15px;
-
-letter-spacing:2px;
-
+.heroBtn {
+  display: inline-block;
+  padding: 12px 30px;
+  background: var(--gold);
+  color: #111;
+  font-weight: bold;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
 }
 
-
-
-.coupon-box{
-
-background:
-
-linear-gradient(
-
-180deg,
-
-#242424,
-
-#151515
-
-);
-
-box-shadow:
-
-0 10px 30px rgba(0,0,0,.5);
-
+.heroBtn:hover {
+  background: #ffd700;
+  transform: scale(1.05);
 }
 
-
-
-.coupon-box h2{
-
-font-size:26px;
-
-margin-top:10px;
-
+.bestMenu {
+  margin: 30px 0;
 }
 
-
-
-
-.discount-box{
-
-margin:25px 0;
-
-padding:20px;
-
-background:
-
-linear-gradient(
-
-135deg,
-
-#3a2a00,
-
-#1c1c1c
-
-);
-
-border-radius:20px;
-
-border:
-
-1px solid var(--gold);
-
+.bestMenu h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+  color: var(--gold);
 }
 
-
-
-.discount-box span{
-
-display:block;
-
-font-size:70px;
-
-font-weight:900;
-
-color:#FFD700;
-
-line-height:1;
-
+.menuGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
 }
 
-
-
-.discount-box p{
-
-margin-top:10px;
-
-color:#ddd;
-
-font-size:18px;
-
+.menuCard {
+  background: #1a1a1a;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
 }
 
-
-
-
-
-.status-box{
-
-margin:20px 0;
-
-padding:15px;
-
-border-radius:15px;
-
-background:#000;
-
-font-size:17px;
-
-font-weight:bold;
-
+.menuCard:hover {
+  transform: translateY(-5px);
 }
 
-
-
-
-
-.coupon-info input{
-
-margin-top:15px;
-
+.menuCard img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
 }
 
-
-
-
-
-.qr-title{
-
-margin-top:25px;
-
-font-size:18px;
-
-font-weight:bold;
-
-color:#FFD700;
-
+.menuCard h3 {
+  padding: 12px 12px 4px;
+  font-size: 18px;
+  color: #fff;
 }
 
-
-
-.qr-box{
-
-margin-top:15px;
-
+.menuCard p {
+  padding: 0 12px 15px;
+  color: #ccc;
+  font-size: 14px;
 }
 
-
-
-
-
-.store-info{
-
-margin-top:25px;
-
-padding:15px;
-
-background:#111;
-
-border-radius:15px;
-
-color:#ddd;
-
-line-height:1.8;
-
-}
-
-
-
-
-
-.coupon-box button{
-
-box-shadow:
-
-0 5px 15px rgba(183,28,28,.5);
-
-transition:.2s;
-
-}
-
-
-
-.coupon-box button:active{
-
-transform:scale(.96);
-
-}
-
-/* QR SCANNER */
-
-#reader{
-
-width:100%;
-
-max-width:350px;
-
-margin:20px auto;
-
-border-radius:15px;
-
-overflow:hidden;
-
-}
-
-/* ================================
-   STAFF COUPON PAGE DESIGN
-================================ */
-
-.staff-container{
-
-    max-width:450px;
-
-    margin:40px auto;
-
-    background:white;
-
-    padding:30px;
-
-    border-radius:20px;
-
-    box-shadow:
-    0 10px 30px rgba(0,0,0,.15);
-
-}
-
-
-.staff-container h1{
-
-    text-align:center;
-
-    color:#8B0000;
-
-}
-
-
-.coupon-detail{
-
-    margin-top:20px;
-
-    padding:25px;
-
-    background:#fff8f0;
-
-    border-radius:20px;
-
-    text-align:center;
-
-}
-
-
-.coupon-detail h3{
-
-    font-size:26px;
-
-}
-
-
-.coupon-detail p{
-
-    font-size:18px;
-
-}
-
-
-#useBtn{
-
-    width:100%;
-
-    margin-top:20px;
-
-    padding:15px;
-
-    font-size:18px;
-
-    border:none;
-
-    border-radius:12px;
-
-    background:#8B0000;
-
-    color:white;
-
-}
-
-
-#useBtn:disabled{
-
-    background:#aaa;
-
-}
-
-.scan-row{
-
-display:flex;
-
-gap:10px;
-
-margin-bottom:15px;
-
-}
-
-.scan-row input{
-
-flex:1;
-
-}
-
-#scanQRBtn{
-
-background:#1976d2;
-
-color:white;
-
-}
-
-#checkBtn{
-
-background:#2e7d32;
-
-color:white;
-
-}
-
-#reader{
-
-margin-top:15px;
-
-border-radius:15px;
-
-overflow:hidden;
-
-}
-
-.qr-ok{
-
-margin-bottom:15px;
-
-padding:10px;
-
-background:#d4edda;
-
-color:#155724;
-
-border-radius:10px;
-
-font-weight:bold;
-
-font-size:18px;
-
-text-align:center;
-
-}
-
-.success-box{
-
-padding:40px;
-
-background:#d4edda;
-
-border-radius:20px;
-
-text-align:center;
-
-color:#155724;
-
-animation:pop .35s ease;
-
-}
-
-
-.success-box h2{
-
-font-size:34px;
-
-margin-bottom:10px;
-
-}
-
-
-.success-box p{
-
-font-size:20px;
-
-}
-
-
-@keyframes pop{
-
-0%{
-
-transform:scale(.7);
-
-opacity:0;
-
-}
-
-100%{
-
-transform:scale(1);
-
-opacity:1;
-
-}
-
-}
-
-/* ===========================
- HERO
-=========================== */
-
-.hero{
-
-position:relative;
-
-width:100%;
-
-height:430px;
-
-overflow:hidden;
-
-border-radius:20px;
-
-margin-bottom:40px;
-
-}
-
-.heroImage{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover;
-
-}
-
-.heroText{
-
-position:absolute;
-
-left:0;
-
-right:0;
-
-bottom:45px;
-
-text-align:center;
-
-color:#fff;
-
-text-shadow:0 3px 10px rgba(0,0,0,.7);
-
-}
-
-.heroLogo{
-
-width:120px;
-
-margin-bottom:15px;
-
-filter:drop-shadow(0 4px 10px rgba(0,0,0,.5));
-
-}
-
-.heroText h1{
-
-font-size:42px;
-
-margin-bottom:10px;
-
-}
-
-.heroText p{
-
-font-size:20px;
-
-margin-bottom:25px;
-
-}
-
-.heroBtn{
-
-display:inline-block;
-
-padding:15px 35px;
-
-background:#d4af37;
-
-color:#111;
-
-font-weight:bold;
-
-border-radius:50px;
-
-text-decoration:none;
-
-transition:.25s;
-
-}
-
-.heroBtn:hover{
-
-background:#ffd700;
-
-transform:scale(1.05);
-
-}
-
-
-/* ===========================
- BEST MENU
-=========================== */
-
-.bestMenu{
-
-margin:40px 0;
-
-}
-
-.bestMenu h2{
-
-margin-bottom:20px;
-
-font-size:28px;
-
-text-align:center;
-
-}
-
-.menuGrid{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-
-gap:20px;
-
-}
-
-.menuCard{
-
-background:#1a1a1a;
-
-border-radius:18px;
-
-overflow:hidden;
-
-box-shadow:0 6px 18px rgba(0,0,0,.3);
-
-transition:.25s;
-
-}
-
-.menuCard:hover{
-
-transform:translateY(-6px);
-
-}
-
-.menuCard img{
-
-width:100%;
-
-height:180px;
-
-object-fit:cover;
-
-}
-
-.menuCard h3{
-
-padding:15px 15px 5px;
-
-font-size:22px;
-
-color:#fff;
-
-}
-
-.menuCard p{
-
-padding:0 15px 20px;
-
-color:#ccc;
-
+/* ==============================
+   RESPONSIVE MEDIA QUERIES
+   ============================== */
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 26px;
+  }
+  .discount-box span {
+    font-size: 52px;
+  }
+  .hero {
+    height: 320px;
+  }
+  .heroText h1 {
+    font-size: 28px;
+  }
+  .heroText p {
+    font-size: 15px;
+  }
+  .qr-box {
+    width: 240px;
+    height: 240px;
+  }
 }
