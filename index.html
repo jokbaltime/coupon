@@ -3,216 +3,197 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>족발타임 - 공식 모바일 웹</title>
+  <title>족발타임 - 프리미엄 모바일 홈페이지</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
     body {
-      background-color: #000;
+      background-color: #0b0b0b;
       color: #fff;
       display: flex;
       justify-content: center;
       margin: 0;
       padding: 0;
     }
-    .mobile-wrapper {
+    .mobile-container {
       width: 100%;
       max-width: 480px;
       min-height: 100vh;
-      background: #121212;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+      background: #141414;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
       position: relative;
-      padding-bottom: 50px;
+      padding-bottom: 60px;
     }
 
-    /* 1. 브랜드 상단 배너 */
-    .hero-banner {
+    /* 1. 상단 브랜딩 히어로 배너 */
+    .hero-section {
       position: relative;
-      background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(18,18,18,1) 100%),
+      height: 240px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(20,20,20,1) 100%),
                   url('./hero.jpg') center/cover no-repeat;
-      height: 200px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       padding: 20px;
-      border-bottom: 1px solid #222;
     }
-    .logo-img {
-      max-width: 130px;
+    .brand-logo {
+      max-width: 120px;
       height: auto;
       margin-bottom: 8px;
-      filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.9));
+      filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.8));
     }
-    .hero-title {
-      font-size: 24px;
+    .brand-title {
+      font-size: 26px;
       font-weight: 900;
+      letter-spacing: -0.5px;
       color: #fff;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.9);
     }
-    .hero-subtitle {
+    .brand-sub {
       font-size: 13px;
-      color: #ccc;
+      color: #c5a059;
       margin-top: 4px;
-    }
-
-    /* 2. 매장 시그니처 포인트 바 */
-    .features-bar {
-      display: flex;
-      justify-content: space-around;
-      padding: 16px 20px;
-      background: #181818;
-      border-bottom: 1px solid #282828;
-    }
-    .feature-item {
-      text-align: center;
-    }
-    .feature-icon {
-      font-size: 18px;
-      margin-bottom: 2px;
-    }
-    .feature-text {
-      font-size: 11px;
-      color: #aaa;
       font-weight: 600;
     }
 
-    /* 3. 메뉴 목록 (사진 대폭 확장) */
-    .section-container {
-      padding: 24px 16px;
-    }
-    .section-header {
-      margin-bottom: 20px;
-    }
-    .section-title {
-      font-size: 21px;
-      font-weight: 900;
-      color: #fff;
+    /* 2. 매장 특장점 뱃지 */
+    .feature-strip {
       display: flex;
-      align-items: center;
-      gap: 8px;
+      justify-content: space-around;
+      background: #1a1a1a;
+      padding: 14px 10px;
+      border-top: 1px solid #282828;
+      border-bottom: 1px solid #282828;
     }
-    .section-desc {
-      font-size: 13px;
+    .feature-box {
+      text-align: center;
+    }
+    .feature-box span {
+      display: block;
+      font-size: 11px;
       color: #888;
-      margin-top: 4px;
+      margin-top: 2px;
+    }
+    .feature-box strong {
+      font-size: 13px;
+      color: #e5e5e5;
     }
 
-    /* 대형 메뉴 카드 스타일 */
-    .menu-list {
+    /* 3. 대표 메뉴 섹션 */
+    .menu-section {
+      padding: 24px 16px;
+    }
+    .section-head {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .section-head h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    .section-head p {
+      font-size: 13px;
+      color: #888;
+      margin-top: 6px;
+    }
+
+    /* 대형 카드 형태의 고급스러운 메뉴 리스트 */
+    .menu-card-list {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px;
     }
-    .menu-card {
+    .menu-item {
       background: #1c1c1c;
-      border-radius: 16px;
+      border-radius: 18px;
       overflow: hidden;
-      border: 1px solid #2c2c2c;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      border: 1px solid #2a2a2a;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
     }
-    .menu-img-container {
+    .menu-img-box {
       position: relative;
       width: 100%;
-      height: 220px; /* 사진 크기 대폭 확대 */
-      background: #252525;
+      height: 230px;
+      background: #222;
     }
-    .menu-img-container img {
+    .menu-img-box img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
     }
-    .menu-badge {
+    .tag-badge {
       position: absolute;
-      top: 12px;
-      left: 12px;
-      background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
-      color: #000;
+      top: 14px;
+      left: 14px;
+      background: rgba(0, 0, 0, 0.75);
+      color: #c5a059;
+      border: 1px solid #c5a059;
       font-size: 11px;
-      font-weight: 900;
+      font-weight: 700;
       padding: 4px 10px;
       border-radius: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
     }
-    .menu-content {
-      padding: 16px;
-    }
-    .menu-title-wrap {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
+    .menu-info {
+      padding: 18px;
     }
     .menu-name {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 800;
       color: #fff;
+      margin-bottom: 6px;
     }
     .menu-desc {
       font-size: 13px;
       color: #999;
-      line-height: 1.4;
-    }
-
-    /* 4. 하단 고정형/메인 쿠폰 안내 카드 */
-    .coupon-banner {
-      margin: 20px 16px 0 16px;
-      padding: 20px;
-      background: linear-gradient(145deg, #2a2415, #141414);
-      border: 1px solid #d4af37;
-      border-radius: 16px;
-      text-align: center;
-    }
-    .coupon-banner-title {
-      font-size: 17px;
-      font-weight: 800;
-      color: #d4af37;
-      margin-bottom: 6px;
-    }
-    .coupon-banner-desc {
-      font-size: 12px;
-      color: #ccc;
+      line-height: 1.5;
       margin-bottom: 16px;
     }
-    .btn-get-coupon {
+
+    /* 메뉴 직접 선택 & 쿠폰 바로받기 버튼 */
+    .btn-select-coupon {
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 6px;
       width: 100%;
-      height: 52px;
-      background: linear-gradient(135deg, #e6c660 0%, #aa820a 100%);
+      height: 48px;
+      background: linear-gradient(135deg, #c5a059 0%, #9e7d3b 100%);
       color: #000;
-      font-weight: 900;
-      font-size: 16px;
+      font-weight: 800;
+      font-size: 15px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
       text-decoration: none;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
-      transition: transform 0.1s;
+      box-shadow: 0 4px 12px rgba(197, 160, 89, 0.2);
     }
-    .btn-get-coupon:active {
+    .btn-select-coupon:active {
+      opacity: 0.85;
       transform: scale(0.98);
     }
 
-    /* 5. 매장 정보 & 푸터 */
-    .store-info {
+    /* 4. 하단 통합 안내 & 푸터 */
+    .footer-info {
       background: #0a0a0a;
-      padding: 16px;
-      margin: 24px 16px 0 16px;
-      border-radius: 12px;
+      padding: 20px 16px;
+      margin: 20px 16px 0 16px;
+      border-radius: 14px;
       border: 1px solid #222;
       font-size: 12px;
       color: #777;
-      line-height: 1.7;
+      line-height: 1.8;
     }
-    .store-info b {
+    .footer-info strong {
       color: #aaa;
     }
-    .footer {
+    .copyright {
       text-align: center;
       font-size: 11px;
       color: #444;
@@ -222,117 +203,128 @@
 </head>
 <body>
 
-<div class="mobile-wrapper">
+<div class="mobile-container">
   
-  <!-- 1. 상단 브랜딩 -->
-  <div class="hero-banner">
-    <img src="./logo.png" alt="족발타임 로고" class="logo-img" onerror="this.style.display='none'">
-    <h1 class="hero-title">족발타임</h1>
-    <p class="hero-subtitle">당일 삶아 쫄깃하고 따뜻한 원조 족발 전문점</p>
+  <!-- 1. 상단 브랜딩 영역 -->
+  <div class="hero-section">
+    <img src="./logo.png" alt="족발타임 로고" class="brand-logo" onerror="this.style.display='none'">
+    <h1 class="brand-title">족발타임</h1>
+    <p class="brand-sub">매일 당일 삶아 더욱 따뜻하고 쫀득한 맛집</p>
   </div>
 
-  <!-- 2. 매장 특장점 -->
-  <div class="features-bar">
-    <div class="feature-item">
-      <div class="feature-icon">🍖</div>
-      <div class="feature-text">당일 조리 판매</div>
+  <!-- 2. 브랜드 핵심 가치 -->
+  <div class="feature-strip">
+    <div class="feature-box">
+      <strong>100% 국내산</strong>
+      <span>당일 조리 원칙</span>
     </div>
-    <div class="feature-item">
-      <div class="feature-icon">✨</div>
-      <div class="feature-text">100% 국내산 생족</div>
+    <div class="feature-box">
+      <strong>특제 비법 육수</strong>
+      <span>잡내 없는 깊은 맛</span>
     </div>
-    <div class="feature-item">
-      <div class="feature-icon">🎁</div>
-      <div class="feature-text">방문고객 혜택</div>
+    <div class="feature-box">
+      <strong>방문 우대 혜택</strong>
+      <span>전용 할인 쿠폰</span>
     </div>
   </div>
 
-  <!-- 3. 시그니처 대표 메뉴 (사진 부각 스타일) -->
-  <div class="section-container">
-    <div class="section-header">
-      <h2 class="section-title">🔥 대표 메뉴</h2>
-      <p class="section-desc">매일 정성껏 삶아내는 족발타임의 시그니처 메뉴입니다.</p>
+  <!-- 3. 시그니처 메뉴 및 쿠폰 즉시 발급 섹션 -->
+  <div class="menu-section">
+    <div class="section-head">
+      <h2>MENU & COUPON</h2>
+      <p>원하시는 메뉴를 선택하시면 방문 할인 쿠폰이 발급됩니다.</p>
     </div>
 
-    <div class="menu-list">
-      <!-- menu1: 족발 -->
-      <div class="menu-card">
-        <div class="menu-img-container">
-          <span class="menu-badge">BEST 01</span>
-          <img src="./menu1.jpg" alt="족발">
+    <div class="menu-card-list">
+      
+      <!-- 메뉴 1 -->
+      <div class="menu-item">
+        <div class="menu-img-box">
+          <span class="tag-badge">BEST 대표메뉴</span>
+          <img src="./menu1.jpg" alt="한방 오리지널 족발">
         </div>
-        <div class="menu-content">
-          <div class="menu-title-wrap">
-            <h3 class="menu-name">한방 오리지널 족발</h3>
-          </div>
-          <p class="menu-desc">비법 한방 육수에서 정성껏 삶아내어 잡내 없이 쫄깃하고 부드러운 대표 족발</p>
+        <div class="menu-info">
+          <h3 class="menu-name">한방 오리지널 족발</h3>
+          <p class="menu-desc">비법 한방 육수로 오랜 시간 정성껏 삶아내어 야들야들함과 쫀득함이 살아있는 대표 족발</p>
+          <button class="btn-select-coupon" onclick="selectMenuAndGo('한방 오리지널 족발')">
+            🎟️ 이 메뉴 선택하고 쿠폰받기
+          </button>
         </div>
       </div>
 
-      <!-- menu2: 반반족발 -->
-      <div class="menu-card">
-        <div class="menu-img-container">
-          <span class="menu-badge">인기 폭발</span>
-          <img src="./menu2.jpg" alt="반반족발">
+      <!-- 메뉴 2 -->
+      <div class="menu-item">
+        <div class="menu-img-box">
+          <span class="tag-badge">HOT 추천</span>
+          <img src="./menu2.jpg" alt="매콤 직화 반반족발">
         </div>
-        <div class="menu-content">
-          <div class="menu-title-wrap">
-            <h3 class="menu-name">매콤 반반족발</h3>
-          </div>
-          <p class="menu-desc">담백한 온족발과 화끈한 직화 불족발을 한 번에 즐기는 최고 인기 세트</p>
-        </div>
-      </div>
-
-      <!-- menu3: 냉채족발 -->
-      <div class="menu-card">
-        <div class="menu-img-container">
-          <img src="./menu3.jpg" alt="냉채족발">
-        </div>
-        <div class="menu-content">
-          <div class="menu-title-wrap">
-            <h3 class="menu-name">새콤달콤 냉채족발</h3>
-          </div>
-          <p class="menu-desc">톡 쏘는 겨자 소스와 신선한 야채가 어우러져 한여름에도 입맛 두돋우는 메뉴</p>
+        <div class="menu-info">
+          <h3 class="menu-name">매콤 직화 반반족발</h3>
+          <p class="menu-desc">담백한 온족발과 스트레스를 날려주는 화끈한 불향의 불족발을 동시에 즐기는 인기 메뉴</p>
+          <button class="btn-select-coupon" onclick="selectMenuAndGo('매콤 직화 반반족발')">
+            🎟️ 이 메뉴 선택하고 쿠폰받기
+          </button>
         </div>
       </div>
 
-      <!-- menu4: 족보세트 -->
-      <div class="menu-card">
-        <div class="menu-img-container">
-          <span class="menu-badge">푸짐한 세트</span>
-          <img src="./menu4.jpg" alt="족보세트">
+      <!-- 메뉴 3 -->
+      <div class="menu-item">
+        <div class="menu-img-box">
+          <span class="tag-badge">SPECIAL</span>
+          <img src="./menu3.jpg" alt="새콤달콤 냉채족발">
         </div>
-        <div class="menu-content">
-          <div class="menu-title-wrap">
-            <h3 class="menu-name">명품 족보 세트</h3>
-          </div>
-          <p class="menu-desc">야들야들한 삼겹 보쌈과 쫄깃한 족발을 푸짐하게 함께 담아낸 모임 추천 세트</p>
+        <div class="menu-info">
+          <h3 class="menu-name">새콤달콤 냉채족발</h3>
+          <p class="menu-desc">알싸하고 톡 쏘는 겨자 소스에 신선한 야채가 어우러져 한 입 가득 풍미를 더하는 메뉴</p>
+          <button class="btn-select-coupon" onclick="selectMenuAndGo('새콤달콤 냉채족발')">
+            🎟️ 이 메뉴 선택하고 쿠폰받기
+          </button>
         </div>
       </div>
+
+      <!-- 메뉴 4 -->
+      <div class="menu-item">
+        <div class="menu-img-box">
+          <span class="tag-badge">SET 푸짐한 구성</span>
+          <img src="./menu4.jpg" alt="명품 족보 세트">
+        </div>
+        <div class="menu-info">
+          <h3 class="menu-name">명품 족보 세트</h3>
+          <p class="menu-desc">부드러운 보쌈 고기와 쫄깃한 족발을 한 상 가득 푸짐하게 즐길 수 있는 세트 메뉴</p>
+          <button class="btn-select-coupon" onclick="selectMenuAndGo('명품 족보 세트')">
+            🎟️ 이 메뉴 선택하고 쿠폰받기
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <!-- 4. 방문 유도 쿠폰 받기 섹션 -->
-  <div class="coupon-banner">
-    <h3 class="coupon-banner-title">🎟️ 매장 방문 전 필독!</h3>
-    <p class="coupon-banner-desc">지금 모바일 쿠폰을 확인하고 매장에 방문해 주세요.</p>
-    <a href="./customer.html" class="btn-get-coupon">
-      👉 방문 할인 쿠폰 받기 / 조회
-    </a>
+  <!-- 4. 매장 안내 정보 -->
+  <div class="footer-info">
+    <p><strong>매장 안내</strong> : 족발타임 공식 매장 (포장/방문 전문)</p>
+    <p><strong>운영 시간</strong> : 16:00 ~ 24:00 (재료 소진 시 조기 마감)</p>
+    <p><strong>쿠폰 사용법</strong> : 선택하신 쿠폰 화면을 매장 방문 시 직원에게 보여주세요.</p>
   </div>
 
-  <!-- 5. 매장 정보 -->
-  <div class="store-info">
-    <p><b>매장 안내</b> : 족발타임 매장 방문 및 포장 가능</p>
-    <p><b>운영 시간</b> : 16:00 ~ 24:00 (재료 소진 시 조기 마감)</p>
-    <p><b>쿠폰 안내</b> : [쿠폰 받기] 클릭 후 매장 방문 시 직원에게 보여주세요.</p>
-  </div>
-
-  <div class="footer">
+  <div class="copyright">
     © JOKBAL TIME. All Rights Reserved.
   </div>
 
 </div>
+
+<!-- 쿠폰 페이지 이동 스크립트 -->
+<script>
+  function selectMenuAndGo(menuName) {
+    // 선택한 메뉴 이름을 브라우저 저장소 및 URL 파라미터로 넘깁니다.
+    try {
+      localStorage.setItem("SELECTED_MENU", menuName);
+    } catch(e) {}
+    
+    // customer.html 로 이동 (선택한 메뉴 정보 전달)
+    window.location.href = "./customer.html?menu=" + encodeURIComponent(menuName);
+  }
+</script>
 
 </body>
 </html>
