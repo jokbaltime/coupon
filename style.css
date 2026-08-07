@@ -1078,3 +1078,13 @@ transform:scale(1.05);
 background:#ffd700;
 
 }
+
+.heroLogo{
+
+width:120px;
+
+margin-bottom:15px;
+
+filter:drop-shadow(0 4px 12px rgba(0,0,0,.5));
+
+}
