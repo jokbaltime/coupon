@@ -1,84 +1,206 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JOKBAL TIME - 족발타임 프리미엄 쿠폰</title>
-  <link rel="stylesheet" href="./style.css">
-</head>
+  <title>족발타임 - 쿠폰 & 메뉴</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    body {
+      background-color: #121212;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      padding: 20px 10px;
+    }
+    .container {
+      width: 100%;
+      max-width: 480px;
+      background: #1e1e1e;
+      border-radius: 16px;
+      padding: 24px 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      border: 1px solid #333;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .header h1 {
+      color: #d4af37;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .header p {
+      color: #aaa;
+      font-size: 14px;
+      margin-top: 6px;
+    }
 
+    /* 쿠폰 입력 영역 */
+    .coupon-card {
+      background: #2a2a2a;
+      border: 1px solid #d4af37;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+    .coupon-card h2 {
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .input-group {
+      display: flex;
+      gap: 8px;
+    }
+    .input-group input {
+      flex: 1;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid #444;
+      background: #121212;
+      color: #fff;
+      font-size: 16px;
+      text-transform: uppercase;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+    .input-group input:focus {
+      outline: none;
+      border-color: #d4af37;
+    }
+    .btn-submit {
+      width: 100%;
+      margin-top: 10px;
+      padding: 14px;
+      background: linear-gradient(135deg, #d4af37, #aa820a);
+      color: #111;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-submit:active {
+      opacity: 0.9;
+    }
+
+    /* 메뉴 영역 */
+    .menu-title {
+      font-size: 18px;
+      color: #d4af37;
+      margin-bottom: 16px;
+      border-left: 4px solid #d4af37;
+      padding-left: 8px;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .menu-item {
+      background: #2a2a2a;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #333;
+      text-align: center;
+    }
+    .menu-item img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      display: block;
+    }
+    .menu-item .name {
+      padding: 10px 6px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #eee;
+    }
+
+    /* 푸터 */
+    .footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
 <body>
 
-  <!-- ========================= -->
-  <!-- HERO SECTION -->
-  <!-- ========================= -->
-  <section class="hero">
-    <img src="./images/hero.jpg" id="heroImage" class="heroImage" alt="대표메뉴">
-    
-    <div class="heroText">
-      <img src="./images/logo.png" class="heroLogo" alt="족발타임 로고">
-      <h1>🍖 JOKBAL TIME</h1>
-      <p>오늘도 맛있는 족발</p>
-      <a href="#couponSection" class="heroBtn">🎁 쿠폰 보기</a>
+<div class="container">
+  <!-- 헤더 -->
+  <div class="header">
+    <h1>족발타임 JOKBAL TIME</h1>
+    <p>모바일 쿠폰 확인 및 매장 승인 요청</p>
+  </div>
+
+  <!-- 쿠폰 번호 입력 카드 -->
+  <div class="coupon-card">
+    <h2>🎟️ 쿠폰 번호 입력</h2>
+    <input type="text" id="couponInput" placeholder="예: JT-260726-2031" maxlength="20">
+    <button class="btn-submit" onclick="goToCustomerPage()">쿠폰 조회하기</button>
+  </div>
+
+  <!-- 리뉴얼 대표 메뉴 -->
+  <div class="menu-title">대표 메뉴 안내</div>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <img src="menu1.jpg" alt="족발" onerror="this.src='https://via.placeholder.com/200x120?text=족발'">
+      <div class="name">족발</div>
     </div>
-  </section>
-
-  <!-- ========================= -->
-  <!-- BEST MENU SECTION -->
-  <!-- ========================= -->
-  <section class="bestMenu">
-    <h2>🔥 BEST MENU</h2>
-    <div class="menuGrid">
-      <div class="menuCard">
-        <img src="./images/menu1.jpg" alt="앞다리 족발">
-        <h3>앞다리 족발</h3>
-        <p>대표 인기 메뉴</p>
-      </div>
-      <div class="menuCard">
-        <img src="./images/menu2.jpg" alt="반반세트">
-        <h3>반반세트</h3>
-        <p>족발 + 보쌈</p>
-      </div>
-      <div class="menuCard">
-        <img src="./images/menu3.jpg" alt="쟁반막국수">
-        <h3>쟁반막국수</h3>
-        <p>시원한 별미</p>
-      </div>
-      <div class="menuCard">
-        <img src="./images/menu4.jpg" alt="불족발">
-        <h3>불족발</h3>
-        <p>매콤한 인기 메뉴</p>
-      </div>
+    <div class="menu-item">
+      <img src="menu2.jpg" alt="반반족발" onerror="this.src='https://via.placeholder.com/200x120?text=반반족발'">
+      <div class="name">반반족발</div>
     </div>
-  </section>
+    <div class="menu-item">
+      <img src="menu3.jpg" alt="냉채족발" onerror="this.src='https://via.placeholder.com/200x120?text=냉채족발'">
+      <div class="name">냉채족발</div>
+    </div>
+    <div class="menu-item">
+      <img src="menu4.jpg" alt="족보세트" onerror="this.src='https://via.placeholder.com/200x120?text=족보세트'">
+      <div class="name">족보세트</div>
+    </div>
+  </div>
 
-  <!-- ========================= -->
-  <!-- SERVICE LINK SECTION -->
-  <!-- ========================= -->
-  <section id="couponSection" class="box">
-    <h2>쿠폰 서비스</h2>
-    <p>고객 쿠폰 확인 및 사용</p>
-    <a href="./customer.html">
-      <button>쿠폰 사용하기</button>
-    </a>
-  </section>
+  <!-- 푸터 -->
+  <div class="footer">
+    © JOKBAL TIME. All rights reserved.
+  </div>
+</div>
 
-  <section class="box">
-    <h2>관리 페이지</h2>
-    <p>매장 직원 및 관리자 전용</p>
-    <a href="./admin.html">
-      <button>관리자 페이지</button>
-    </a>
-  </section>
+<script>
+  function goToCustomerPage() {
+    const input = document.getElementById("couponInput");
+    const num = input.value.trim();
 
-  <!-- ========================= -->
-  <!-- FOOTER -->
-  <!-- ========================= -->
-  <footer>
-    <p>© JOKBAL TIME. All rights reserved.</p>
-  </footer>
+    if (!num) {
+      alert("쿠폰 번호를 입력해 주세요.");
+      return;
+    }
+
+    // 로컬스토리지 저장 및 URL 파라미터를 넘기며 customer.html로 이동
+    localStorage.setItem("JT_COUPON_NUMBER", num);
+    window.location.href = `./customer.html?coupon=${encodeURIComponent(num)}&v=2.0`;
+  }
+
+  // 엔터키 누르면 바로 조회 실행
+  document.getElementById("couponInput").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+      goToCustomerPage();
+    }
+  });
+</script>
 
 </body>
-
 </html>
