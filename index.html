@@ -30,12 +30,12 @@
       padding-bottom: 60px;
     }
 
-    /* 1. 상단 브랜딩 히어로 배너 */
+    /* 1. 상단 브랜딩 히어로 배너 (images/hero.jpg 적용) */
     .hero-section {
       position: relative;
       height: 240px;
       background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(20,20,20,1) 100%),
-                  url('./hero.jpg') center/cover no-repeat;
+                  url('images/hero.jpg') center/cover no-repeat;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -156,7 +156,7 @@
       margin-bottom: 16px;
     }
 
-    /* 메뉴 직접 선택 & 쿠폰 바로받기 버튼 */
+    /* 메뉴 선택 & 쿠폰 바로받기 버튼 */
     .btn-select-coupon {
       display: flex;
       align-items: center;
@@ -179,7 +179,7 @@
       transform: scale(0.98);
     }
 
-    /* 4. 하단 통합 안내 & 푸터 */
+    /* 4. 하단 안내 & 푸터 */
     .footer-info {
       background: #0a0a0a;
       padding: 20px 16px;
@@ -205,9 +205,9 @@
 
 <div class="mobile-container">
   
-  <!-- 1. 상단 브랜딩 영역 -->
+  <!-- 1. 상단 브랜딩 영역 (images/logo.png 적용) -->
   <div class="hero-section">
-    <img src="./logo.png" alt="족발타임 로고" class="brand-logo" onerror="this.style.display='none'">
+    <img src="images/logo.png" alt="족발타임 로고" class="brand-logo" onerror="this.style.display='none'">
     <h1 class="brand-title">족발타임</h1>
     <p class="brand-sub">매일 당일 삶아 더욱 따뜻하고 쫀득한 맛집</p>
   </div>
@@ -228,7 +228,7 @@
     </div>
   </div>
 
-  <!-- 3. 시그니처 메뉴 및 쿠폰 즉시 발급 섹션 -->
+  <!-- 3. 대표 메뉴 섹션 (images/menu1~4.jpg 적용) -->
   <div class="menu-section">
     <div class="section-head">
       <h2>MENU & COUPON</h2>
@@ -241,7 +241,7 @@
       <div class="menu-item">
         <div class="menu-img-box">
           <span class="tag-badge">BEST 대표메뉴</span>
-          <img src="./menu1.jpg" alt="한방 오리지널 족발">
+          <img src="images/menu1.jpg" alt="한방 오리지널 족발">
         </div>
         <div class="menu-info">
           <h3 class="menu-name">한방 오리지널 족발</h3>
@@ -256,7 +256,7 @@
       <div class="menu-item">
         <div class="menu-img-box">
           <span class="tag-badge">HOT 추천</span>
-          <img src="./menu2.jpg" alt="매콤 직화 반반족발">
+          <img src="images/menu2.jpg" alt="매콤 직화 반반족발">
         </div>
         <div class="menu-info">
           <h3 class="menu-name">매콤 직화 반반족발</h3>
@@ -271,7 +271,7 @@
       <div class="menu-item">
         <div class="menu-img-box">
           <span class="tag-badge">SPECIAL</span>
-          <img src="./menu3.jpg" alt="새콤달콤 냉채족발">
+          <img src="images/menu3.jpg" alt="새콤달콤 냉채족발">
         </div>
         <div class="menu-info">
           <h3 class="menu-name">새콤달콤 냉채족발</h3>
@@ -286,7 +286,7 @@
       <div class="menu-item">
         <div class="menu-img-box">
           <span class="tag-badge">SET 푸짐한 구성</span>
-          <img src="./menu4.jpg" alt="명품 족보 세트">
+          <img src="images/menu4.jpg" alt="명품 족보 세트">
         </div>
         <div class="menu-info">
           <h3 class="menu-name">명품 족보 세트</h3>
@@ -316,12 +316,10 @@
 <!-- 쿠폰 페이지 이동 스크립트 -->
 <script>
   function selectMenuAndGo(menuName) {
-    // 선택한 메뉴 이름을 브라우저 저장소 및 URL 파라미터로 넘깁니다.
     try {
       localStorage.setItem("SELECTED_MENU", menuName);
     } catch(e) {}
     
-    // customer.html 로 이동 (선택한 메뉴 정보 전달)
     window.location.href = "./customer.html?menu=" + encodeURIComponent(menuName);
   }
 </script>
