@@ -1088,3 +1088,82 @@ background:#ffd700;
 transform:scale(1.05);
 
 }
+
+
+/* ===========================
+ BEST MENU
+=========================== */
+
+.bestMenu{
+
+margin:40px 0;
+
+}
+
+.bestMenu h2{
+
+margin-bottom:20px;
+
+font-size:28px;
+
+text-align:center;
+
+}
+
+.menuGrid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+gap:20px;
+
+}
+
+.menuCard{
+
+background:#1a1a1a;
+
+border-radius:18px;
+
+overflow:hidden;
+
+box-shadow:0 6px 18px rgba(0,0,0,.3);
+
+transition:.25s;
+
+}
+
+.menuCard:hover{
+
+transform:translateY(-6px);
+
+}
+
+.menuCard img{
+
+width:100%;
+
+height:180px;
+
+object-fit:cover;
+
+}
+
+.menuCard h3{
+
+padding:15px 15px 5px;
+
+font-size:22px;
+
+color:#fff;
+
+}
+
+.menuCard p{
+
+padding:0 15px 20px;
+
+color:#ccc;
+
+}
