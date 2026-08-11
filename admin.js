@@ -51,7 +51,6 @@ const searchBtn = document.getElementById("searchBtn");
 const searchTitle = document.getElementById("searchTitle");
 const searchTitleBtn = document.getElementById("searchTitleBtn");
 const couponResult = document.getElementById("couponResult");
-const couponList = document.getElementById("couponList");
 
 const useCouponBtn = document.getElementById("useCouponBtn");
 const cancelUseBtn = document.getElementById("cancelUseBtn");
@@ -71,13 +70,6 @@ const bulkEndDate = document.getElementById("bulkEndDate");
 const bulkNotice = document.getElementById("bulkNotice");
 const bulkCreateBtn = document.getElementById("bulkCreateBtn");
 
-const allCouponBtn = document.getElementById("allCouponBtn");
-const issuedCouponBtn = document.getElementById("issuedCouponBtn");
-const waitingCouponBtn = document.getElementById("waitingCouponBtn");
-const approvedCouponBtn = document.getElementById("approvedCouponBtn");
-const usedCouponBtn = document.getElementById("usedCouponBtn");
-const expiredCouponBtn = document.getElementById("expiredCouponBtn");
-
 const totalCoupon = document.getElementById("totalCoupon");
 const waitingCount = document.getElementById("waitingCount");
 const approvedCount = document.getElementById("approvedCount");
@@ -87,8 +79,6 @@ const expiredCount = document.getElementById("expiredCount");
 const scanQrBtn = document.getElementById("scanQrBtn");
 const reader = document.getElementById("reader");
 
-let couponFilter = "all";
-let couponSnapshotData = [];
 let currentUserRole = "";
 
 // ================================
@@ -119,9 +109,16 @@ onAuthStateChanged(auth, async (user) => {
     await fixOldCouponTokens();
 
     loadDashboard();
-    loadCouponList();
     loadHistory();
     loadRequests();
+
+    // coupons.html에서 "조회/수정"으로 넘어온 경우 자동 조회
+    const urlParams = new URLSearchParams(window.location.search);
+    const presetSearch = urlParams.get("search");
+    if (presetSearch) {
+      searchCoupon.value = presetSearch;
+      setTimeout(() => searchBtn.click(), 300);
+    }
 
     if (currentUserRole === "staff") {
       if (saveCouponBtn) saveCouponBtn.style.display = "none";
@@ -189,124 +186,6 @@ function loadDashboard() {
     if (approvedCount) approvedCount.innerText = approved;
     if (usedCount) usedCount.innerText = used;
     if (expiredCount) expiredCount.innerText = expired;
-  });
-}
-
-// ================================
-// COUPON LIST
-// ================================
-function loadCouponList() {
-  onSnapshot(collection(db, "coupons"), (snapshot) => {
-    couponSnapshotData = [];
-    snapshot.forEach((item) => {
-      couponSnapshotData.push({
-        id: item.id,
-        ...item.data()
-      });
-    });
-    renderCouponList();
-  });
-}
-
-function renderCouponList() {
-  couponList.innerHTML = "";
-
-  const sortedList = [...couponSnapshotData]
-    .sort((a, b) => {
-      const aTime = a.updatedAt?.seconds || a.createdAt?.seconds || 0;
-      const bTime = b.updatedAt?.seconds || b.createdAt?.seconds || 0;
-      return bTime - aTime;
-    })
-    .slice(0, 20);
-
-  sortedList.forEach((data) => {
-    if (couponFilter !== "all" && data.status !== couponFilter) {
-      return;
-    }
-
-    let statusText = "";
-    switch (data.status) {
-      case "issued":
-        statusText = "✅ 사용 가능";
-        break;
-      case "waiting":
-        statusText = "⏳ 승인 대기";
-        break;
-      case "approved":
-        statusText = "✅ 승인 완료";
-        break;
-      case "used":
-        statusText = "❌ 사용 완료";
-        break;
-      case "expired":
-        statusText = "🔴 기간 만료";
-        break;
-      default:
-        statusText = data.status || "-";
-    }
-
-    const div = document.createElement("div");
-    div.className = "coupon-card";
-    div.innerHTML = `
-      <p><b>${data.couponNumber}</b></p>
-      <p>${data.title || "-"}</p>
-      <p>상태 : ${statusText}</p>
-      <p>할인 : ${data.discount || 0}%</p>
-      <button class="selectCoupon">조회</button>
-      <button class="quickEditCoupon">수정</button>
-      <button class="quickDeleteCoupon">삭제</button>
-    `;
-
-    div.querySelector(".selectCoupon").onclick = () => {
-      delete searchCoupon.dataset.token;
-      searchCoupon.value = data.couponNumber;
-      searchBtn.click();
-      setTimeout(() => {
-        couponResult.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 200);
-    };
-
-    div.querySelector(".quickEditCoupon").onclick = () => {
-      delete searchCoupon.dataset.token;
-      searchCoupon.value = data.couponNumber;
-      searchBtn.click();
-      setTimeout(() => {
-        const section = document.querySelector("#couponEditSection");
-        if (section) {
-          section.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 200);
-    };
-
-    div.querySelector(".quickDeleteCoupon").onclick = async () => {
-      if (!confirm("삭제하시겠습니까?")) return;
-
-      const ref = doc(db, "coupons", data.id);
-      const snap = await getDoc(ref);
-
-      if (!snap.exists()) {
-        alert("쿠폰을 찾을 수 없습니다.");
-        return;
-      }
-
-      const couponData = snap.data();
-      if (couponData.status === "used") {
-        alert("사용 완료 쿠폰은 삭제할 수 없습니다.");
-        return;
-      }
-
-      await deleteDoc(ref);
-      await addDoc(collection(db, "coupon_history"), {
-        couponNumber: couponData.couponNumber,
-        action: "deleted",
-        admin: auth.currentUser?.email || "-",
-        time: serverTimestamp()
-      });
-
-      alert("삭제 완료");
-    };
-
-    couponList.appendChild(div);
   });
 }
 
@@ -832,16 +711,6 @@ function loadHistory() {
     });
   });
 }
-
-// ================================
-// FILTER EVENT HANDLERS
-// ================================
-allCouponBtn.onclick = () => { couponFilter = "all"; renderCouponList(); };
-issuedCouponBtn.onclick = () => { couponFilter = "issued"; renderCouponList(); };
-waitingCouponBtn.onclick = () => { couponFilter = "waiting"; renderCouponList(); };
-approvedCouponBtn.onclick = () => { couponFilter = "approved"; renderCouponList(); };
-usedCouponBtn.onclick = () => { couponFilter = "used"; renderCouponList(); };
-expiredCouponBtn.onclick = () => { couponFilter = "expired"; renderCouponList(); };
 
 // ================================
 // BULK CREATE
