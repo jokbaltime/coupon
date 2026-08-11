@@ -3,581 +3,293 @@
    JOKBAL TIME ADMIN SYSTEM
    ====================================== */
 
-
 *{
-
 margin:0;
-
 padding:0;
-
 box-sizing:border-box;
-
 }
-
-
 
 :root{
-
 --gold:#D4AF37;
-
 --dark:#111;
-
 --card:#1c1c1c;
-
 --red:#b71c1c;
-
 --white:#fff;
-
 }
 
-
-
-
-
 body{
-
 background:
-
 linear-gradient(
-
 180deg,
-
 #111,
-
 #222
-
 );
-
 color:white;
-
 font-family:
-
 "Pretendard",
 "Noto Sans KR",
 sans-serif;
-
 min-height:100vh;
-
 padding:20px;
-
 }
-
-
-
-
 
 .admin-container{
-
 width:100%;
-
 max-width:520px;
-
 margin:auto;
-
 }
-
-
-
-
 
 .admin-container > h1{
-
 text-align:center;
-
 color:var(--gold);
-
 font-size:32px;
-
 margin:30px 0;
-
 }
-
-
-
-
-
-
 
 .box{
-
 background:
-
 rgba(255,255,255,.05);
-
 border:
-
 1px solid rgba(212,175,55,.3);
-
 border-radius:20px;
-
 padding:25px;
-
 margin-bottom:25px;
-
 }
-
-
-
-
 
 .box h2{
-
 text-align:center;
-
 color:var(--gold);
-
 margin-bottom:20px;
-
 }
-
-
-
-
 
 .box h3{
-
 color:var(--gold);
-
 margin-top:20px;
-
 margin-bottom:15px;
-
 }
-
-
-
-
-
-
 
 input,
 textarea{
-
 width:100%;
-
 padding:15px;
-
 margin-bottom:12px;
-
 border:none;
-
 border-radius:12px;
-
 background:#333;
-
 color:white;
-
 font-size:16px;
-
 }
-
-
-
-
 
 textarea{
-
 height:120px;
-
 resize:none;
-
 }
-
-
-
-
-
-
 
 button{
-
 width:100%;
-
 padding:15px;
-
 border:none;
-
 border-radius:12px;
-
 margin-top:10px;
-
 background:
-
 linear-gradient(
-
 90deg,
-
 #8B0000,
-
 #C62828
-
 );
-
 color:white;
-
 font-size:17px;
-
 font-weight:bold;
-
 cursor:pointer;
-
 }
-
-
-
-
 
 button:hover{
-
 opacity:.85;
-
 }
-
-
-
-
-
-
 
 .top{
-
 display:flex;
-
 justify-content:space-between;
-
 align-items:center;
-
 }
-
-
-
-
 
 .top button{
-
 width:auto;
-
 padding:10px 20px;
-
 background:#444;
-
 }
-
-
-
-
 
 .hidden{
-
 display:none;
-
 }
-
-
-
-
-
-
 
 #requestList{
-
 margin-top:15px;
-
 }
-
-
-
-
 
 .request-card{
-
 background:#222;
-
 padding:18px;
-
 border-radius:15px;
-
 border:
-
 1px solid #444;
-
 margin-bottom:12px;
-
 }
-
-
-
-
 
 .request-card button{
-
 background:#2e7d32;
-
 }
-
-
-
-
 
 #couponResult{
-
 margin-top:15px;
-
 padding:20px;
-
 background:#000;
-
 border-radius:12px;
-
 line-height:1.8;
-
 }
-
-
-
-
-
-
 
 #historyList{
-
 background:#111;
-
 padding:15px;
-
 border-radius:12px;
-
 max-height:300px;
-
 overflow:auto;
-
 }
-
-
-
-
 
 #historyList p{
-
 border-bottom:
-
 1px solid #333;
-
 padding:10px 0;
-
 color:#ddd;
-
 }
-
-
-
-
-
-
 
 hr{
-
 border:none;
-
 border-top:
-
 1px solid #444;
-
 margin:30px 0;
-
 }
 
+/* 쿠폰 목록 페이지로 이동하는 링크 (admin.html에 남은 하나뿐인 진입점) */
+.list-page-link{
+display:block;
+text-align:center;
+padding:15px;
+border-radius:12px;
+margin-top:10px;
+background:rgba(212,175,55,.12);
+border:1px solid rgba(212,175,55,.4);
+color:var(--gold);
+font-weight:bold;
+text-decoration:none;
+}
 
-
-
-
+.list-page-link:hover{
+background:rgba(212,175,55,.2);
+}
 
 @media(max-width:480px){
-
-
 .admin-container > h1{
-
 font-size:26px;
-
 }
-
-
 .box{
-
 padding:20px;
-
 }
-
-
 }
 
 .coupon-card{
-
 background:#1f2937;
-
 color:white;
-
 border-radius:15px;
-
 padding:18px;
-
 margin:12px 0;
-
 box-shadow:
 0 5px 15px rgba(0,0,0,0.25);
-
 }
-
 
 .coupon-card p{
-
 color:white;
-
 font-size:15px;
-
 line-height:1.5;
-
 margin:8px 0;
-
 }
-
 
 .coupon-card b{
-
 color:#ffd54f;
-
 font-size:18px;
-
 }
-
 
 .coupon-card button{
-
 margin-top:10px;
-
 margin-right:5px;
-
 padding:8px 14px;
-
 border:none;
-
 border-radius:8px;
-
 cursor:pointer;
-
 font-weight:bold;
-
 }
-
-
 
 .selectCoupon{
-
 background:#2196f3;
-
 color:white;
-
 }
-
 
 .quickEditCoupon{
-
 background:#4caf50;
-
 color:white;
-
 }
 
-
 .quickDeleteCoupon{
-
 background:#f44336;
-
 color:white;
-
 }
 
 /* ==========================
    ADMIN COUPON CARD PREMIUM
 ========================== */
 
-
 .coupon-card{
-
 background:
 linear-gradient(
 180deg,
 #242424,
 #161616
 );
-
 border:
-
 1px solid rgba(212,175,55,.35);
-
 border-radius:18px;
-
 padding:20px;
-
 margin-bottom:15px;
-
 box-shadow:
-
 0 8px 20px rgba(0,0,0,.35);
-
 }
-
 
 .coupon-card p{
-
 margin:8px 0;
-
 font-size:15px;
-
 }
-
 
 .coupon-card b{
-
 color:#FFD700;
-
 font-size:18px;
-
 }
-
-
 
 .coupon-card button{
-
 width:auto;
-
 display:inline-block;
-
 margin-right:6px;
-
 padding:10px 15px;
-
 font-size:14px;
-
 }
-
 
 .selectCoupon{
-
 background:#1565c0;
-
 }
-
 
 .quickEditCoupon{
-
 background:#2e7d32;
-
 }
 
-
 .quickDeleteCoupon{
-
 background:#b71c1c;
-
 }
