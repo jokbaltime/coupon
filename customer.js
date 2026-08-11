@@ -1,7 +1,7 @@
 // ======================================
 // customer.js
 // JOKBAL TIME CUSTOMER COUPON SYSTEM
-// FIX VERSION (INTEGRATED)
+// FIX VERSION (INTEGRATED) + SEND-TO-STAFF
 // ======================================
 
 import {
@@ -27,9 +27,14 @@ const discount = document.getElementById("discount");
 const notice = document.getElementById("notice");
 const mainImage = document.getElementById("mainImage");
 const qrCode = document.getElementById("qrcode");
+const sendBtn = document.getElementById("sendBtn");
 
 let couponCreating = false;
 let currentUnsubscribe = null; // 실시간 수신기 해제용
+
+// 직원 전달 버튼용 현재 쿠폰 정보
+let currentCouponNumber = null;
+let currentToken = null;
 
 // ================================
 // CUSTOMER ID GENERATOR
@@ -100,11 +105,12 @@ function loadAndListenCoupon(number) {
     if (!snapshot.exists()) {
       result.innerHTML = "❌ 존재하지 않는 쿠폰입니다.";
       clearQr();
+      disableSendBtn();
       return;
     }
 
     const data = snapshot.data();
-    
+
     // 토큰이 없는 기존 쿠폰 보정
     let token = data.token;
     if (!token) {
@@ -129,6 +135,7 @@ function loadAndListenCoupon(number) {
       result.innerHTML = "⛔ 사용 기간 만료";
       requestBtn.disabled = true;
       clearQr();
+      disableSendBtn();
       return;
     }
 
@@ -136,6 +143,7 @@ function loadAndListenCoupon(number) {
       result.innerHTML = "❌ 이미 사용 완료된 쿠폰입니다.";
       requestBtn.disabled = true;
       clearQr();
+      disableSendBtn();
       return;
     }
 
@@ -145,6 +153,11 @@ function loadAndListenCoupon(number) {
 
     // 관리자 스캐너용 형식으로 QR 생성 (쿠폰번호|토큰)
     renderQr(`${data.couponNumber}|${token}`);
+
+    // 직원 전달 버튼 활성화
+    currentCouponNumber = data.couponNumber;
+    currentToken = token;
+    enableSendBtn();
   });
 }
 
@@ -160,6 +173,47 @@ function renderQr(text) {
 
 function clearQr() {
   qrCode.innerHTML = "<p style='color:#888; padding:20px 0;'>QR 코드를 표시할 수 없습니다.</p>";
+}
+
+// ================================
+// SEND TO STAFF (공유 / 클립보드 복사)
+// ================================
+function enableSendBtn() {
+  if (sendBtn) sendBtn.disabled = false;
+}
+function disableSendBtn() {
+  currentCouponNumber = null;
+  currentToken = null;
+  if (sendBtn) sendBtn.disabled = true;
+}
+
+if (sendBtn) {
+  sendBtn.disabled = true;
+
+  sendBtn.onclick = async () => {
+    if (!currentCouponNumber || !currentToken) return;
+
+    const payload = `${currentCouponNumber}|${currentToken}`;
+    const originalText = sendBtn.textContent;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "족발타임 쿠폰",
+          text: payload
+        });
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(payload);
+        sendBtn.textContent = "✅ 복사 완료! 직원에게 붙여넣어 주세요";
+        setTimeout(() => { sendBtn.textContent = originalText; }, 2000);
+      } else {
+        alert("이 브라우저에서는 전송 기능을 지원하지 않아요. QR을 보여주세요.");
+      }
+    } catch (err) {
+      // 사용자가 공유창을 취소한 경우 등은 조용히 무시
+      console.warn("전달 실패:", err);
+    }
+  };
 }
 
 // ================================
