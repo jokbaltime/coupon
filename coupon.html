@@ -1,62 +1,65 @@
+<!-- ======================================
+     coupons.html
+     JOKBAL TIME COUPON LIST (페이지네이션)
+     ====================================== -->
 <!DOCTYPE html>
 <html lang="ko">
-    
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>JOKBAL TIME 쿠폰</title>
-
-<link rel="stylesheet" href="coupon.css">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>족발타임 쿠폰 목록</title>
+<link rel="stylesheet" href="./admin.css">
+<style>
+  .list-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+  .back-link{color:var(--gold);font-size:14px;}
+  #searchInput{margin-bottom:16px;}
+  .coupon-filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+  .coupon-filter button{width:auto;padding:8px 14px;font-size:13px;background:#333;margin-top:0;}
+  .coupon-filter button.active{background:var(--gold);color:#111;font-weight:bold;}
+  #pageInfo{text-align:center;color:#ccc;font-size:13px;margin:14px 0 4px;}
+  #pagination{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;margin-top:10px;}
+  #pagination button{width:auto;padding:8px 13px;margin-top:0;background:#333;font-size:13px;}
+  #pagination button.active{background:var(--gold);color:#111;font-weight:bold;}
+  #pagination button:disabled{opacity:.35;}
+  #pagination .dots{color:#888;padding:8px 4px;}
+  .coupon-card button{width:auto;margin-right:6px;padding:8px 14px;font-size:13px;}
+  .coupon-card .viewEditBtn{background:#1565c0;}
+  .coupon-card .deleteBtn{background:#b71c1c;}
+</style>
 </head>
-
 <body>
+<div class="admin-container">
 
-<div class="container">
+  <div class="list-top">
+    <h1 style="margin:0;font-size:22px;">📋 쿠폰 목록</h1>
+    <a class="back-link" href="admin.html">← 관리자로</a>
+  </div>
 
-    <h1>🍖 JOKBAL TIME</h1>
-
-    <h2>쿠폰 조회</h2>
-
-    <div class="searchBox">
-
-        <input
-            id="couponInput"
-            type="text"
-            placeholder="쿠폰번호 입력">
-
-        <button id="searchBtn">
-            조회
-        </button>
-
+  <section id="listBox" class="box hidden">
+    <div class="top">
+      <h2>전체 쿠폰</h2>
+      <button id="logoutBtn">로그아웃</button>
     </div>
 
-    <div id="resultCard">
+    <input id="searchInput" placeholder="쿠폰번호 또는 쿠폰명 검색">
 
-        쿠폰번호를 입력해주세요.
-
+    <div id="filterRow" class="coupon-filter">
+      <button data-filter="all" class="active">전체</button>
+      <button data-filter="issued">발급됨</button>
+      <button data-filter="waiting">승인대기</button>
+      <button data-filter="approved">사용가능</button>
+      <button data-filter="used">사용완료</button>
+      <button data-filter="expired">기간만료</button>
     </div>
 
-<div class="qrBox">
+    <div id="couponList"></div>
 
-    <h3>
-    📱 쿠폰 QR
-    </h3>
-
-    <div id="qrcode"></div>
+    <p id="pageInfo"></p>
+    <div id="pagination"></div>
+  </section>
 
 </div>
-    
-</div>
 
-<script type="module" src="coupon.js"></script>
-
+<script type="module" src="./coupons.js"></script>
 </body>
-
 </html>
