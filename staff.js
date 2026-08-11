@@ -1,6 +1,7 @@
 // ======================================
 // staff.js
 // JOKBAL TIME STAFF SYSTEM (FULLY FIXED & SAFE)
+// + 고객이 전달한 "번호|토큰" 붙여넣기 지원
 // ======================================
 
 // 1. Firestore 모듈은 ./firebase.js 에서 가져오기
@@ -18,7 +19,7 @@ import {
   serverTimestamp
 } from "./firebase.js";
 
-// 2. Auth 인증 모듈은 Firebase 공식 CDN URL에서 가져오기 (문법 에러 완벽 해결)
+// 2. Auth 인증 모듈은 Firebase 공식 CDN URL에서 가져오기
 import {
   signInWithEmailAndPassword,
   signOut,
@@ -138,7 +139,6 @@ function loadRequests() {
 // ================================
 async function approveCoupon(number, requestId) {
   try {
-    // 💡 setDoc(..., { merge: true }) 사용으로 문서 미존재 에러 방지
     await setDoc(doc(db, "coupons", number), {
       status: "approved",
       approvedAt: serverTimestamp()
@@ -163,11 +163,33 @@ async function approveCoupon(number, requestId) {
 }
 
 // ================================
+// 입력값 정규화: "쿠폰번호|토큰" 붙여넣기 지원
+// (QR 스캔 결과와 동일한 포맷을 손으로 붙여넣었을 때도 인증되게 함)
+// ================================
+function normalizeCouponInput() {
+  let raw = useCouponNumber.value.trim();
+
+  if (raw.includes("|")) {
+    const parts = raw.split("|");
+    const number = parts[0].trim();
+    const token = (parts[1] || "").trim();
+
+    useCouponNumber.value = number;
+    if (token) {
+      useCouponNumber.dataset.token = token;
+    }
+    return number;
+  }
+
+  return raw;
+}
+
+// ================================
 // CHECK COUPON
 // ================================
 if (checkBtn) {
   checkBtn.onclick = async () => {
-    const number = useCouponNumber.value.trim();
+    const number = normalizeCouponInput();
 
     if (!number) {
       alert("쿠폰번호를 입력해 주세요.");
@@ -186,12 +208,12 @@ if (checkBtn) {
       const data = snap.data();
       const qrToken = useCouponNumber.dataset.token;
 
-      // QR 토큰 검증
+      // QR / 붙여넣기 토큰 검증
       if (data.token && (!qrToken || data.token !== qrToken)) {
         couponInfo.innerHTML = `
           <div class="coupon-detail">
-            <h3>❌ QR 인증 실패</h3>
-            <p>유효하지 않거나 QR 인증을 거치지 않은 쿠폰입니다.</p>
+            <h3>❌ 인증 실패</h3>
+            <p>QR을 스캔하거나, 고객이 전달한 쿠폰번호|인증코드를 그대로 붙여넣어 주세요.</p>
           </div>
         `;
         if (useBtn) useBtn.disabled = true;
@@ -258,7 +280,7 @@ if (checkBtn) {
 
       couponInfo.innerHTML = `
         <div class="coupon-detail">
-          <div class="qr-ok">🟢 ${data.token ? "QR 인증 완료" : "쿠폰 확인 완료"}</div>
+          <div class="qr-ok">🟢 ${data.token ? "인증 완료" : "쿠폰 확인 완료"}</div>
           <h3>${data.title || "-"}</h3>
           <hr>
           <p><b>쿠폰번호</b> : ${number}</p>
@@ -271,7 +293,6 @@ if (checkBtn) {
         </div>
       `;
 
-      // 사용 가능 상태 제어
       const isUsableState = data.status === "issued" || data.status === "approved";
       if (useBtn) {
         if (isUsableState && (data.useCount || 0) < (data.maxUseCount || 1)) {
@@ -318,7 +339,7 @@ if (useBtn) {
       const qrToken = useCouponNumber.dataset.token;
 
       if (data.token && (!qrToken || data.token !== qrToken)) {
-        alert("QR 인증이 필요합니다.");
+        alert("인증이 필요합니다.");
         return;
       }
 
@@ -329,7 +350,6 @@ if (useBtn) {
 
       useBtn.disabled = true;
 
-      // 안전한 setDoc 사용
       await setDoc(doc(db, "coupons", number), {
         status: "used",
         useCount: 1,
@@ -349,7 +369,6 @@ if (useBtn) {
         time: serverTimestamp()
       });
 
-      // 효과음 & 진동
       try {
         const audio = new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg");
         audio.play();
