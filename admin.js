@@ -1,7 +1,7 @@
 // ======================================
 // admin.js
 // JOKBAL TIME COUPON ADMIN SYSTEM
-// FIX VERSION (INTEGRATED)
+// FIX VERSION (INTEGRATED) + PASTE(번호|토큰) 지원
 // ======================================
 
 import {
@@ -115,11 +115,9 @@ onAuthStateChanged(auth, async (user) => {
 
     adminBox.classList.remove("hidden");
 
-    // 초기화 함수 실행
     await checkExpiredCoupons();
     await fixOldCouponTokens();
 
-    // 화면 데이터 로드
     loadDashboard();
     loadCouponList();
     loadHistory();
@@ -260,6 +258,7 @@ function renderCouponList() {
     `;
 
     div.querySelector(".selectCoupon").onclick = () => {
+      delete searchCoupon.dataset.token;
       searchCoupon.value = data.couponNumber;
       searchBtn.click();
       setTimeout(() => {
@@ -268,6 +267,7 @@ function renderCouponList() {
     };
 
     div.querySelector(".quickEditCoupon").onclick = () => {
+      delete searchCoupon.dataset.token;
       searchCoupon.value = data.couponNumber;
       searchBtn.click();
       setTimeout(() => {
@@ -343,10 +343,34 @@ saveCouponBtn.onclick = async () => {
 };
 
 // ================================
+// 검색어 정규화: "쿠폰번호|토큰" 붙여넣기 지원
+// (고객이 customer.html "직원에게 전달하기"로 보낸 텍스트를 그대로 붙여넣었을 때 인식)
+// ================================
+function normalizeSearchInput() {
+  let raw = searchCoupon.value.trim();
+
+  if (raw.includes("|")) {
+    const parts = raw.split("|");
+    const number = parts[0].trim();
+    const token = (parts[1] || "").trim();
+
+    searchCoupon.value = number;
+    if (token) {
+      searchCoupon.dataset.token = token;
+    }
+    return number;
+  }
+
+  // 번호만 입력한 경우 = 관리자의 일반 조회이므로 이전에 붙여있던 토큰은 제거
+  delete searchCoupon.dataset.token;
+  return raw;
+}
+
+// ================================
 // SEARCH COUPON
 // ================================
 searchBtn.onclick = async () => {
-  const keyword = searchCoupon.value.trim();
+  const keyword = normalizeSearchInput();
 
   if (!keyword) {
     alert("검색어 입력");
@@ -447,9 +471,19 @@ searchBtn.onclick = async () => {
   `;
 
   const qrActionBox = document.createElement("div");
+  const providedToken = searchCoupon.dataset.token;
+  const tokenMismatch = providedToken && data.token && providedToken !== data.token;
 
   if (data.status === "used" || (data.useCount || 0) >= (data.maxUseCount || 1)) {
     qrActionBox.innerHTML = "<p style='margin-top:15px;'>❌ 이미 사용 완료된 쿠폰</p>";
+  } else if (tokenMismatch) {
+    qrActionBox.innerHTML = `
+      <div style="background:#fdecea; padding:15px; border-radius:10px; margin-top:20px;">
+        <p style="font-weight:bold; color:#c62828;">
+          ❌ 인증 실패 — 전달받은 코드가 이 쿠폰과 일치하지 않습니다.
+        </p>
+      </div>
+    `;
   } else {
     qrActionBox.innerHTML = `
       <div style="background:#fff3cd; padding:15px; border-radius:10px; margin-top:20px;">
@@ -541,11 +575,28 @@ useCouponBtn.onclick = async () => {
 
     const couponData = couponSnap.data();
 
+    if (
+      couponData.status === "used" ||
+      couponData.status === "expired" ||
+      (couponData.useCount || 0) >= (couponData.maxUseCount || 1)
+    ) {
+      throw new Error("ALREADY_USED");
+    }
+
+    const nextUseCount = (couponData.useCount || 0) + 1;
+
     transaction.update(couponRef, {
-      status: "used",
-      useCount: (couponData.useCount || 0) + 1,
+      status: nextUseCount >= (couponData.maxUseCount || 1) ? "used" : couponData.status,
+      useCount: nextUseCount,
       usedAt: serverTimestamp()
     });
+  }).catch((err) => {
+    if (err.message === "ALREADY_USED") {
+      alert("이미 다른 곳에서 처리된 쿠폰입니다.");
+    } else {
+      alert("처리 중 오류가 발생했습니다.");
+    }
+    throw err;
   });
 
   await addDoc(collection(db, "coupon_history"), {
@@ -736,6 +787,12 @@ async function approveCoupon(number) {
     return;
   }
 
+  const data = snap.data();
+  if (data.status === "used" || data.status === "expired") {
+    alert("이미 사용되었거나 만료된 쿠폰은 승인할 수 없습니다.");
+    return;
+  }
+
   await updateDoc(ref, {
     status: "approved",
     approvedAt: serverTimestamp()
@@ -849,7 +906,7 @@ async function fixOldCouponTokens() {
 }
 
 // ================================
-// QR SCANNER
+// QR SCANNER (검증 통과 후에만 결과 표시)
 // ================================
 scanQrBtn.onclick = async () => {
   const scanner = new Html5Qrcode("reader");
@@ -864,10 +921,7 @@ scanQrBtn.onclick = async () => {
 
         const qrData = decodedText.split("|");
         const scanCouponNumber = qrData[0];
-        const token = qrData[1];
-
-        searchCoupon.value = scanCouponNumber;
-        searchBtn.click();
+        const token = qrData[1] || "";
 
         const snap = await getDoc(doc(db, "coupons", scanCouponNumber));
 
@@ -883,7 +937,10 @@ scanQrBtn.onclick = async () => {
           return;
         }
 
-        console.log("QR 인증 성공", scanCouponNumber);
+        // 인증 성공한 경우에만 검색창에 반영하고 결과를 표시
+        searchCoupon.value = scanCouponNumber;
+        searchCoupon.dataset.token = token;
+        searchBtn.click();
       }
     );
   } catch (error) {
