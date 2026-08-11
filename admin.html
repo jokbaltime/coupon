@@ -19,7 +19,7 @@ content="width=device-width, initial-scale=1.0">
 </title>
 
 <script src="https://unpkg.com/html5-qrcode"></script>
-     
+
 <link rel="stylesheet"
 href="./admin.css">
 
@@ -32,13 +32,6 @@ href="./admin.css">
 <h1>
 🍖 족발타임 관리자
 </h1>
-
-
-
-
-
-
-
 
 <!-- ============================= -->
 <!-- ADMIN -->
@@ -62,8 +55,6 @@ id="logoutBtn">
 </button>
 
 </div>
-
-
 
 <hr>
 
@@ -97,7 +88,7 @@ id="logoutBtn">
 기간만료 :
 <span id="expiredCount">0</span>
 </p>
-     
+
 <p>
 오늘 발급 :
 <span id="todayIssued">0</span>
@@ -107,7 +98,7 @@ id="logoutBtn">
 오늘 사용 :
 <span id="todayUsed">0</span>
 </p>
-     
+
 </div>
 
 <hr>
@@ -172,12 +163,10 @@ id="saveCouponBtn">
 </button>
 
 </div>
-     
+
 <hr>
 
-
-     
-  <!-- ============================= -->
+<!-- ============================= -->
 <!-- 승인 요청 -->
 <!-- ============================= -->
 
@@ -201,54 +190,48 @@ id="saveCouponBtn">
 대량 쿠폰 생성
 </h3>
 
-
 <label>
 쿠폰명
 </label>
 
-<input 
+<input
 id="bulkCouponTitle"
 type="text"
 placeholder="족발 10% 할인">
-
 
 <label>
 할인율
 </label>
 
-<input 
+<input
 id="bulkDiscount"
 type="number"
 value="10">
-
 
 <label>
 생성 수량
 </label>
 
-<input 
+<input
 id="bulkCount"
 type="number"
 value="100">
-
 
 <label>
 시작일
 </label>
 
-<input 
+<input
 id="bulkStartDate"
 type="date">
-
 
 <label>
 종료일
 </label>
 
-<input 
+<input
 id="bulkEndDate"
 type="date">
-
 
 <label>
 공지
@@ -259,11 +242,9 @@ id="bulkNotice"
 placeholder="이벤트 안내">
 </textarea>
 
-
 <button id="bulkCreateBtn">
 쿠폰 생성
 </button>
-
 
 </div>
 
@@ -275,45 +256,12 @@ placeholder="이벤트 안내">
 쿠폰 조회 / 관리
 </h3>
 
-<h3>
-📋 쿠폰 목록
-</h3>
-
-<div class="coupon-filter">
-
-<button id="allCouponBtn">
-전체
-</button>
-
-<button id="issuedCouponBtn">
-발급됨
-</button>
-
-<button id="waitingCouponBtn">
-승인대기
-</button>
-
-<button id="approvedCouponBtn">
-사용가능
-</button>
-
-<button id="usedCouponBtn">
-사용완료
-</button>
-
-<button id="expiredCouponBtn">
-기간 만료
-</button>
-     
-</div>
-     
-<div id="couponList">
-
-</div>
+<a href="coupons.html" class="list-page-link">
+📋 쿠폰 전체 목록 보기 (페이지별로)
+</a>
 
 <hr>
-     
-     
+
 <input
 id="searchCoupon"
 placeholder="쿠폰번호 입력">
@@ -338,9 +286,9 @@ type="button"
 id="searchTitleBtn">
 쿠폰명 검색
 </button>
-     
+
 <div id="reader"></div>
-     
+
 <div id="couponResult">
 
 </div>
@@ -360,7 +308,7 @@ id="searchTitleBtn">
 </button>
 
 </div>
-     
+
 <br>
 
 <button
@@ -369,21 +317,18 @@ id="useCouponBtn">
 쿠폰 사용 처리
 
 </button>
-     
+
 <button
 id="deleteCouponBtn">
 쿠폰 삭제
 </button>
 
-     
 <button
 id="cancelUseBtn">
 사용 취소 복구
 </button>
 
 <hr>
-
-
 
 <!-- ============================= -->
 <!-- 처리 기록 -->
@@ -404,7 +349,7 @@ id="cancelUseBtn">
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-     
+
 <script
 
 type="module"
@@ -415,5 +360,4 @@ src="./admin.js">
 
 </body>
 
-</html>   
-
+</html>
