@@ -193,25 +193,30 @@ if (sendBtn) {
   sendBtn.onclick = async () => {
     if (!currentCouponNumber || !currentToken) return;
 
-    const payload = `${currentCouponNumber}|${currentToken}`;
     const originalText = sendBtn.textContent;
+    sendBtn.disabled = true;
+    sendBtn.textContent = "전달 중...";
 
     try {
-      if (navigator.share) {
-        await navigator.share({
-          title: "족발타임 쿠폰",
-          text: payload
-        });
-      } else if (navigator.clipboard) {
-        await navigator.clipboard.writeText(payload);
-        sendBtn.textContent = "✅ 복사 완료! 직원에게 붙여넣어 주세요";
-        setTimeout(() => { sendBtn.textContent = originalText; }, 2000);
-      } else {
-        alert("이 브라우저에서는 전송 기능을 지원하지 않아요. QR을 보여주세요.");
-      }
+      // 직원 승인 요청 목록(coupon_requests)에 기록
+      // → staff.html의 "승인 요청"에 실시간으로 표시됨
+      await addDoc(collection(db, "coupon_requests"), {
+        couponNumber: currentCouponNumber,
+        token: currentToken,
+        status: "waiting",
+        createdAt: serverTimestamp()
+      });
+
+      sendBtn.textContent = "✅ 직원에게 전달했어요";
+      setTimeout(() => {
+        sendBtn.textContent = originalText;
+        sendBtn.disabled = false;
+      }, 2500);
     } catch (err) {
-      // 사용자가 공유창을 취소한 경우 등은 조용히 무시
-      console.warn("전달 실패:", err);
+      console.error("전달 실패:", err);
+      sendBtn.textContent = originalText;
+      sendBtn.disabled = false;
+      alert("전달에 실패했어요. QR을 보여주세요.");
     }
   };
 }
