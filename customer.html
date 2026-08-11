@@ -1,237 +1,146 @@
 <!-- ======================================
      customer.html
-     JOKBAL TIME COUPON CUSTOMER
+     JOKBAL TIME COUPON CUSTOMER (REDESIGN)
      ====================================== -->
-
-
 <!DOCTYPE html>
-
 <html lang="ko">
-
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>족발타임 쿠폰</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+  :root{
+    --bg:#0a0a0a;--bg2:#151515;--red:#ff3b30;--red-deep:#c81f17;
+    --yellow:#ffc93c;--cream:#fff6e9;--smoke:#8f8a84;--line:rgba(255,255,255,.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--cream);font-family:"Pretendard","Noto Sans KR",sans-serif;-webkit-tap-highlight-color:transparent;}
+  img{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{width:100%;max-width:440px;margin:0 auto;padding:0 20px 40px;}
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  .top-bar{padding:20px 0 8px;text-align:center;}
+  .brand-link{display:inline-block;font-family:"Black Han Sans";font-size:15px;color:var(--yellow);letter-spacing:1px;opacity:.9;}
+  .brand-link:active{opacity:.6;}
 
+  /* -------- TICKET -------- */
+  .ticket{
+    margin-top:18px;background:var(--bg2);border:1px solid var(--line);border-radius:20px;
+    overflow:hidden;transform:rotate(-1deg);box-shadow:0 22px 50px rgba(0,0,0,.55);
+  }
+  .ticket-photo{position:relative;height:150px;background:linear-gradient(135deg,#241010,#0a0a0a);}
+  .ticket-photo img{width:100%;height:100%;object-fit:cover;}
+  .ticket-photo-shade{position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,10,10,.05) 30%, rgba(10,10,10,.92) 100%);}
+  .brand-mark{position:absolute;top:14px;left:16px;font-family:"Black Han Sans";font-size:13px;color:var(--yellow);letter-spacing:1px;text-shadow:0 2px 6px rgba(0,0,0,.6);}
 
-<title>
-족발타임 쿠폰
-</title>
+  .ticket-main{padding:22px 22px 6px;text-align:center;}
+  .coupon-title{font-family:"Black Han Sans";font-size:21px;color:var(--cream);margin-bottom:18px;line-height:1.35;}
 
+  .discount-seal{
+    display:inline-flex;flex-direction:column;align-items:center;justify-content:center;
+    width:130px;height:130px;border-radius:50%;border:3px dashed var(--yellow);
+    margin:0 auto 18px;background:radial-gradient(circle, rgba(255,201,60,.08), transparent 70%);
+  }
+  .discount-seal span{font-family:"Black Han Sans";font-size:38px;color:var(--yellow);line-height:1;}
+  .discount-seal small{font-size:10.5px;color:var(--smoke);letter-spacing:3px;margin-top:4px;}
 
-<link rel="stylesheet" href="./style.css">
+  .status-badge{
+    display:inline-block;border:1.5px solid var(--red);color:var(--red);font-weight:800;
+    font-size:13px;padding:7px 16px;border-radius:999px;background:rgba(255,59,48,.08);margin-bottom:16px;
+  }
 
+  .notice-text{font-size:12.5px;color:var(--smoke);line-height:1.65;padding-bottom:22px;}
 
+  .perforation{position:relative;height:0;}
+  .perforation::before{content:"";position:absolute;left:18px;right:18px;top:0;border-top:2px dashed var(--line);}
+  .hole{position:absolute;top:-11px;width:22px;height:22px;background:var(--bg);border-radius:50%;}
+  .hole.left{left:-11px;}
+  .hole.right{right:-11px;}
+
+  .ticket-stub{padding:28px 22px 24px;text-align:center;}
+  .stub-label{font-size:12.5px;font-weight:800;color:var(--yellow);letter-spacing:.5px;margin-bottom:16px;}
+  .qr-box{width:196px;height:196px;margin:0 auto;background:#fff;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(0,0,0,.35);}
+  .qr-box img,.qr-box canvas{width:100% !important;height:100% !important;}
+  .fake-barcode{margin:18px auto 0;width:68%;height:30px;
+    background:repeating-linear-gradient(90deg,#4a4a4a 0 2px,transparent 2px 5px,#4a4a4a 5px 7px,transparent 7px 13px);opacity:.45;}
+
+  /* -------- MANUAL LOOKUP -------- */
+  .manual-lookup{margin-top:22px;}
+  .manual-label{font-size:11.5px;color:var(--smoke);margin-bottom:8px;text-align:center;}
+  .manual-row{display:flex;gap:8px;}
+  .manual-row input{
+    flex:1;padding:13px 14px;border-radius:12px;border:1px solid var(--line);
+    background:var(--bg2);color:var(--cream);font-size:14px;outline:none;
+  }
+  .manual-row input:focus{border-color:var(--yellow);}
+  .manual-row button{
+    padding:13px 18px;border:none;border-radius:12px;background:var(--red);
+    color:#fff;font-weight:800;font-size:13.5px;cursor:pointer;
+  }
+  .manual-row button:active{background:var(--red-deep);}
+
+  /* -------- STORE MINI -------- */
+  .store-mini{margin-top:26px;padding:16px 16px;border-left:3px solid var(--red);font-size:12px;color:var(--smoke);line-height:1.9;}
+  .store-mini b{color:var(--cream);}
+</style>
 </head>
-
-
-
 <body>
 
+<div class="wrap">
 
+  <div class="top-bar">
+    <a class="brand-link" href="index.html">🍖 JOKBAL TIME</a>
+  </div>
 
-<header class="header">
+  <div class="ticket">
+    <div class="ticket-photo">
+      <img id="mainImage" alt="" onerror="this.style.display='none'">
+      <div class="ticket-photo-shade"></div>
+      <div class="brand-mark">JOKBAL TIME COUPON</div>
+    </div>
 
+    <div class="ticket-main">
+      <h2 id="couponTitle" class="coupon-title">쿠폰 확인</h2>
 
-<h1>
-🍖 JOKBAL TIME
-</h1>
+      <div class="discount-seal">
+        <span id="discount">0%</span>
+        <small>OFF</small>
+      </div>
 
+      <div id="result" class="status-badge">쿠폰 상태 확인 중</div>
 
-<p>
-프리미엄 쿠폰 사용
-</p>
+      <p id="notice" class="notice-text">쿠폰번호를 입력해주세요.</p>
+    </div>
 
+    <div class="perforation"><span class="hole left"></span><span class="hole right"></span></div>
 
-</header>
+    <div class="ticket-stub">
+      <p class="stub-label">📱 직원에게 이 QR을 보여주세요</p>
+      <div id="qrcode" class="qr-box"></div>
+      <div class="fake-barcode"></div>
+    </div>
+  </div>
 
+  <div class="manual-lookup">
+    <p class="manual-label">다른 쿠폰번호로 조회하시려면</p>
+    <div class="manual-row">
+      <input id="couponNumber" placeholder="쿠폰번호 입력" autocomplete="off">
+      <button id="requestBtn">확인</button>
+    </div>
+  </div>
 
-
-
-
-
-
-<section class="coupon-page">
-
-
-
-
-
-<div class="slider">
-
-
-<img
-
-id="mainImage"
-
-src=""
-
-alt="쿠폰 이미지"
-
->
-
-
-</div>
-
-
-
-<div class="coupon-box">
-
-
-<div class="coupon-brand">
-
-🍖 JOKBAL TIME
+  <div class="store-mini">
+    <p><b>📍</b> 경기 여주시 여양로233번길 5-26 103동 102호</p>
+    <p><b>☎</b> 031-8087-7812 · 15:00~24:00</p>
+  </div>
 
 </div>
-
-
-
-<h2 id="couponTitle">
-
-쿠폰 확인
-
-</h2>
-
-
-
-
-<div class="discount-box">
-
-
-<span id="discount">
-
-0%
-
-</span>
-
-
-<p>
-할인 쿠폰
-</p>
-
-
-</div>
-
-
-
-
-
-<div id="result" class="status-box">
-
-쿠폰 상태 확인 중
-
-</div>
-
-
-
-
-
-
-<div class="coupon-info">
-
-
-<p id="notice">
-
-쿠폰번호를 입력해주세요.
-
-</p>
-
-
-
-<input
-
-id="couponNumber"
-
-placeholder="쿠폰번호 입력"
-
-autocomplete="off"
-
->
-
-
-
-<button
-
-id="requestBtn"
-
->
-
-쿠폰 확인하기
-
-</button>
-
-
-
-</div>
-
-
-
-
-
-<div class="qr-title">
-
-직원에게 QR을 보여주세요
-
-</div>
-
-
-
-<div id="qrcode" class="qr-box"></div>
-
-
-
-
-
-<div class="store-info">
-
-
-<p>
-📍 족발타임 매장
-</p>
-
-
-<p>
-☎ 전화 문의
-</p>
-
-
-</div>
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-</section>
-
-
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-
-<script
-
-type="module"
-
-src="./customer.js">
-
-</script>
-
-
-
+<script type="module" src="./customer.js"></script>
 </body>
-
-
 </html>
