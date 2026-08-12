@@ -26,6 +26,7 @@ const couponTitle = document.getElementById("couponTitle");
 const discount = document.getElementById("discount");
 const notice = document.getElementById("notice");
 const mainImage = document.getElementById("mainImage");
+const validPeriod = document.getElementById("validPeriod");
 const qrCode = document.getElementById("qrcode");
 const sendBtn = document.getElementById("sendBtn");
 
@@ -162,6 +163,10 @@ function loadAndListenCoupon(number) {
     couponTitle.innerText = data.title || "족발타임 쿠폰";
     discount.innerText = (data.discount || 0) + "%";
     notice.innerText = data.notice || "";
+
+    if (validPeriod) {
+      validPeriod.innerHTML = `사용기간 : <b>${data.startDate || "-"} ~ ${data.endDate || "-"}</b>`;
+    }
 
     if (data.image) {
       mainImage.src = data.image;
