@@ -46,6 +46,7 @@ const endDate = document.getElementById("endDate");
 const saveCouponBtn = document.getElementById("saveCouponBtn");
 const setAsTemplate = document.getElementById("setAsTemplate");
 const templateStatus = document.getElementById("templateStatus");
+const cleanupOldBtn = document.getElementById("cleanupOldBtn");
 
 const requestList = document.getElementById("requestList");
 
@@ -121,6 +122,7 @@ onAuthStateChanged(auth, async (user) => {
 
     if (currentUserRole === "staff") {
       if (saveCouponBtn) saveCouponBtn.style.display = "none";
+      if (cleanupOldBtn) cleanupOldBtn.style.display = "none";
     }
   } else {
     location.href = "login.html";
@@ -266,17 +268,92 @@ saveCouponBtn.onclick = async () => {
 };
 
 // ================================
-// 현재 대표 쿠폰(자동발급 기준) 실시간 표시
+// 현재 대표 쿠폰(자동발급 기준) 실시간 표시 + 종료 임박 경고
 // ================================
 if (templateStatus) {
   onSnapshot(doc(db, "settings", "activeTemplate"), (snap) => {
     if (!snap.exists()) {
       templateStatus.textContent = "⚠️ 현재 지정된 대표 쿠폰이 없습니다 (자동발급 안 됨)";
+      templateStatus.style.color = "#e57373";
       return;
     }
+
     const t = snap.data();
-    templateStatus.textContent = `현재 대표 쿠폰: ${t.sourceCoupon} (${t.title || "-"} / ${t.discount || 0}% / ~${t.endDate || "-"})`;
+    let ddayText = "";
+    let warn = false;
+
+    if (t.endDate) {
+      const end = new Date(t.endDate);
+      end.setHours(23, 59, 59, 999);
+      const diffDays = Math.ceil((end - new Date()) / (1000 * 60 * 60 * 24));
+
+      if (diffDays < 0) {
+        ddayText = " · ⚠️ 이미 종료됨 (자동발급 중단 상태)";
+        warn = true;
+      } else if (diffDays === 0) {
+        ddayText = " · ⚠️ 오늘 종료";
+        warn = true;
+      } else if (diffDays <= 3) {
+        ddayText = ` · ⚠️ 종료까지 D-${diffDays}`;
+        warn = true;
+      } else {
+        ddayText = ` · 종료까지 D-${diffDays}`;
+      }
+    }
+
+    templateStatus.textContent = `현재 대표 쿠폰: ${t.sourceCoupon} (${t.title || "-"} / ${t.discount || 0}% / ~${t.endDate || "-"})${ddayText}`;
+    templateStatus.style.color = warn ? "#ff6b6b" : "#D4AF37";
+    templateStatus.style.fontWeight = warn ? "bold" : "normal";
   });
+}
+
+// ================================
+// 오래된 쿠폰(사용완료/기간만료) 일괄 삭제
+// ================================
+if (cleanupOldBtn) {
+  cleanupOldBtn.onclick = async () => {
+    if (!confirm("3개월 지난 사용완료/기간만료 쿠폰을 모두 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.")) {
+      return;
+    }
+
+    cleanupOldBtn.disabled = true;
+    cleanupOldBtn.textContent = "정리 중...";
+
+    try {
+      const threeMonthsAgo = new Date();
+      threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+
+      const snapshot = await getDocs(collection(db, "coupons"));
+      let deletedCount = 0;
+
+      for (const item of snapshot.docs) {
+        const data = item.data();
+
+        if (data.status !== "used" && data.status !== "expired") {
+          continue;
+        }
+
+        const refDate =
+          (data.usedAt && data.usedAt.toDate && data.usedAt.toDate()) ||
+          (data.expiredAt && data.expiredAt.toDate && data.expiredAt.toDate()) ||
+          (data.updatedAt && data.updatedAt.toDate && data.updatedAt.toDate()) ||
+          null;
+
+        if (refDate && refDate < threeMonthsAgo) {
+          await deleteDoc(doc(db, "coupons", item.id));
+          deletedCount++;
+        }
+      }
+
+      alert(`${deletedCount}개의 오래된 쿠폰을 삭제했습니다.`);
+    } catch (err) {
+      console.error("오래된 쿠폰 정리 중 오류:", err);
+      alert("정리 중 오류가 발생했습니다: " + err.message);
+    } finally {
+      cleanupOldBtn.disabled = false;
+      cleanupOldBtn.textContent = "🗑️ 오래된 쿠폰 일괄 삭제";
+    }
+  };
 }
 
 // ================================
