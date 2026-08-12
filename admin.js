@@ -65,14 +65,6 @@ const updateCouponBtn = document.getElementById("updateCouponBtn");
 
 const historyList = document.getElementById("historyList");
 
-const bulkCouponTitle = document.getElementById("bulkCouponTitle");
-const bulkDiscount = document.getElementById("bulkDiscount");
-const bulkCount = document.getElementById("bulkCount");
-const bulkStartDate = document.getElementById("bulkStartDate");
-const bulkEndDate = document.getElementById("bulkEndDate");
-const bulkNotice = document.getElementById("bulkNotice");
-const bulkCreateBtn = document.getElementById("bulkCreateBtn");
-
 const totalCoupon = document.getElementById("totalCoupon");
 const waitingCount = document.getElementById("waitingCount");
 const approvedCount = document.getElementById("approvedCount");
@@ -129,7 +121,6 @@ onAuthStateChanged(auth, async (user) => {
 
     if (currentUserRole === "staff") {
       if (saveCouponBtn) saveCouponBtn.style.display = "none";
-      if (bulkCreateBtn) bulkCreateBtn.style.display = "none";
     }
   } else {
     location.href = "login.html";
@@ -778,49 +769,6 @@ function loadHistory() {
     });
   });
 }
-
-// ================================
-// BULK CREATE
-// ================================
-bulkCreateBtn.onclick = async () => {
-  bulkCreateBtn.disabled = true;
-  const title = bulkCouponTitle.value.trim();
-  const count = Number(bulkCount.value);
-
-  if (!title) {
-    alert("쿠폰명 입력");
-    bulkCreateBtn.disabled = false;
-    return;
-  }
-
-  if (!count) {
-    alert("수량 입력");
-    bulkCreateBtn.disabled = false;
-    return;
-  }
-
-  for (let i = 1; i <= count; i++) {
-    const number = "JBT-" + Date.now().toString().slice(-6) + "-" + String(i).padStart(4, "0");
-
-    await setDoc(doc(db, "coupons", number), {
-      couponNumber: number,
-      title: title,
-      discount: Number(bulkDiscount.value),
-      maxUseCount: 1,
-      useCount: 0,
-      status: "issued",
-      notice: bulkNotice.value.trim(),
-      startDate: bulkStartDate.value,
-      endDate: bulkEndDate.value,
-      token: crypto.randomUUID(),
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
-  }
-
-  bulkCreateBtn.disabled = false;
-  alert("대량 생성 완료");
-};
 
 // ================================
 // OLD COUPON TOKEN FIX
