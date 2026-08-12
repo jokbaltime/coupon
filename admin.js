@@ -43,6 +43,8 @@ const imageUrl = document.getElementById("imageUrl");
 const startDate = document.getElementById("startDate");
 const endDate = document.getElementById("endDate");
 const saveCouponBtn = document.getElementById("saveCouponBtn");
+const setAsTemplate = document.getElementById("setAsTemplate");
+const templateStatus = document.getElementById("templateStatus");
 
 const requestList = document.getElementById("requestList");
 
@@ -202,7 +204,7 @@ saveCouponBtn.onclick = async () => {
 
   const token = crypto.randomUUID();
 
-  await setDoc(doc(db, "coupons", number), {
+  const couponData = {
     couponNumber: number,
     title: couponTitle.value.trim(),
     discount: Number(discount.value),
@@ -216,10 +218,42 @@ saveCouponBtn.onclick = async () => {
     createdAt: serverTimestamp(),
     token: token,
     updatedAt: serverTimestamp()
-  });
+  };
+
+  await setDoc(doc(db, "coupons", number), couponData);
+
+  // "대표 쿠폰으로 지정"이 체크된 경우, 자동발급 기준 설정에도 동일하게 저장
+  if (setAsTemplate && setAsTemplate.checked) {
+    await setDoc(doc(db, "settings", "activeTemplate"), {
+      title: couponData.title,
+      discount: couponData.discount,
+      maxUseCount: couponData.maxUseCount,
+      notice: couponData.notice,
+      image: couponData.image,
+      startDate: couponData.startDate,
+      endDate: couponData.endDate,
+      sourceCoupon: number,
+      updatedAt: serverTimestamp()
+    });
+    setAsTemplate.checked = false;
+  }
 
   alert("쿠폰 저장 완료");
 };
+
+// ================================
+// 현재 대표 쿠폰(자동발급 기준) 실시간 표시
+// ================================
+if (templateStatus) {
+  onSnapshot(doc(db, "settings", "activeTemplate"), (snap) => {
+    if (!snap.exists()) {
+      templateStatus.textContent = "⚠️ 현재 지정된 대표 쿠폰이 없습니다 (자동발급 안 됨)";
+      return;
+    }
+    const t = snap.data();
+    templateStatus.textContent = `현재 대표 쿠폰: ${t.sourceCoupon} (${t.title || "-"} / ${t.discount || 0}% / ~${t.endDate || "-"})`;
+  });
+}
 
 // ================================
 // 검색어 정규화: "쿠폰번호|토큰" 붙여넣기 지원
