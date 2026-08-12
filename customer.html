@@ -53,7 +53,11 @@
     font-size:13px;padding:7px 16px;border-radius:999px;background:rgba(255,59,48,.08);margin-bottom:16px;
   }
 
-  .notice-text{font-size:12.5px;color:var(--smoke);line-height:1.65;padding-bottom:22px;}
+  .notice-text{
+    font-size:12.5px;color:var(--cream);line-height:1.7;
+    background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;margin-bottom:20px;text-align:left;white-space:pre-line;
+  }
 
   .perforation{position:relative;height:0;}
   .perforation::before{content:"";position:absolute;left:18px;right:18px;top:0;border-top:2px dashed var(--line);}
@@ -67,6 +71,9 @@
   .qr-box img,.qr-box canvas{width:100% !important;height:100% !important;}
   .fake-barcode{margin:18px auto 0;width:68%;height:30px;
     background:repeating-linear-gradient(90deg,#4a4a4a 0 2px,transparent 2px 5px,#4a4a4a 5px 7px,transparent 7px 13px);opacity:.45;}
+
+  .valid-period{margin-top:16px;font-size:12px;color:var(--smoke);text-align:center;letter-spacing:.3px;}
+  .valid-period b{color:var(--yellow);font-weight:800;}
 
   .or-divider{display:flex;align-items:center;gap:10px;margin:20px 0 0;color:var(--smoke);font-size:11px;}
   .or-divider::before,.or-divider::after{content:"";flex:1;height:1px;background:var(--line);}
@@ -133,6 +140,7 @@
       <p class="stub-label">📱 직원에게 이 QR을 보여주세요</p>
       <div id="qrcode" class="qr-box"></div>
       <div class="fake-barcode"></div>
+      <p id="validPeriod" class="valid-period"></p>
       <div class="or-divider">또는</div>
       <button id="sendBtn" type="button">📤 직원에게 전달하기</button>
     </div>
