@@ -53,8 +53,47 @@ function getCustomerId() {
 // ================================
 async function createAutoCoupon() {
   const savedCoupon = localStorage.getItem("myCoupon");
+
   if (savedCoupon) {
-    return savedCoupon;
+    // 저장된 쿠폰이 아직 유효한지 먼저 확인
+    try {
+      const savedSnap = await getDoc(doc(db, "coupons", savedCoupon));
+
+      if (savedSnap.exists()) {
+        const savedData = savedSnap.data();
+        const isUsedUp = savedData.status === "used" || (savedData.useCount || 0) >= (savedData.maxUseCount || 1);
+        const isExpired = savedData.status === "expired";
+
+        if (!isUsedUp && !isExpired) {
+          // 아직 사용 가능한 쿠폰이면 그대로 재사용
+          return savedCoupon;
+        }
+        // 사용완료/만료된 쿠폰이면 지우고 아래에서 새로 발급
+        localStorage.removeItem("myCoupon");
+      } else {
+        localStorage.removeItem("myCoupon");
+      }
+    } catch (e) {
+      console.warn("기존 쿠폰 확인 실패, 저장된 쿠폰 유지:", e);
+      return savedCoupon;
+    }
+  }
+
+  // 관리자가 지정한 "대표 쿠폰(자동발급 기준)" 불러오기
+  let template = null;
+  try {
+    const templateSnap = await getDoc(doc(db, "settings", "activeTemplate"));
+    if (templateSnap.exists()) template = templateSnap.data();
+  } catch (e) {
+    console.warn("대표 쿠폰 설정 로드 실패:", e);
+  }
+
+  // 대표 쿠폰의 사용 종료일이 지났으면 자동발급 중단
+  if (template && template.endDate) {
+    const today = new Date().toISOString().split("T")[0];
+    if (today > template.endDate) {
+      throw new Error("EVENT_ENDED");
+    }
   }
 
   const newCouponNumber = "JBT-" + Date.now().toString().slice(-8);
@@ -63,14 +102,15 @@ async function createAutoCoupon() {
   const couponData = {
     couponNumber: newCouponNumber,
     customerId: getCustomerId(),
-    title: "첫 방문 할인 쿠폰",
-    discount: 10,
-    maxUseCount: 1,
+    title: template?.title || "첫 방문 할인 쿠폰",
+    discount: template?.discount ?? 10,
+    maxUseCount: template?.maxUseCount || 1,
     useCount: 0,
     status: "issued",
-    notice: "족발타임 방문 감사 쿠폰입니다.",
-    startDate: new Date().toISOString().split("T")[0],
-    endDate: "2099-12-31",
+    notice: template?.notice || "족발타임 방문 감사 쿠폰입니다.",
+    image: template?.image || "",
+    startDate: template?.startDate || new Date().toISOString().split("T")[0],
+    endDate: template?.endDate || "2099-12-31",
     token: token,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp()
@@ -274,7 +314,11 @@ async function autoLoadCoupon() {
       loadAndListenCoupon(newCoupon);
     } catch (error) {
       console.error(error);
-      result.innerHTML = "❌ 쿠폰 발급 오류";
+      if (error.message === "EVENT_ENDED") {
+        result.innerHTML = "😢 현재 진행 중인 쿠폰 이벤트가 없습니다.";
+      } else {
+        result.innerHTML = "❌ 쿠폰 발급 오류";
+      }
     } finally {
       couponCreating = false;
     }
