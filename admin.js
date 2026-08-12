@@ -763,7 +763,7 @@ updateCouponBtn.onclick = async () => {
 };
 
 // ================================
-// REQUEST LIST
+// REQUEST LIST (staff.js와 동일한 흐름으로 통일)
 // ================================
 function loadRequests() {
   const q = query(
@@ -771,55 +771,127 @@ function loadRequests() {
     where("status", "==", "waiting")
   );
 
-  onSnapshot(q, (snapshot) => {
+  onSnapshot(q, async (snapshot) => {
     requestList.innerHTML = "";
 
-    snapshot.forEach((item) => {
+    if (snapshot.empty) {
+      requestList.innerHTML = "<p style='color:#888;'>대기 중인 요청이 없습니다.</p>";
+      return;
+    }
+
+    for (const item of snapshot.docs) {
       const data = item.data();
       const div = document.createElement("div");
       div.className = "request-card";
+
+      let couponData = {};
+      try {
+        const couponSnap = await getDoc(doc(db, "coupons", data.couponNumber));
+        if (couponSnap.exists()) {
+          couponData = couponSnap.data();
+        }
+      } catch (err) {
+        console.error("쿠폰 정보 로드 실패:", err);
+      }
+
       div.innerHTML = `
-        <p>쿠폰번호 : ${data.couponNumber}</p>
-        <button class="approveBtn">승인</button>
+        <p>쿠폰번호 : <b>${data.couponNumber}</b></p>
+        <p>쿠폰명 : ${couponData.title || "-"}</p>
+        <p>할인 : ${couponData.discount || 0}%</p>
+        <p>요청시간 : ${data.createdAt ? data.createdAt.toDate().toLocaleString() : ""}</p>
+        <div style="display:flex; gap:8px; margin-top:10px;">
+          <button class="approve-btn" style="flex:1;">✅ 사용 처리</button>
+          <button class="cancel-btn" style="flex:1; background:#555;">↩️ 다음에 사용</button>
+        </div>
       `;
 
-      div.querySelector(".approveBtn").onclick = async () => {
-        await approveCoupon(data.couponNumber);
+      div.querySelector(".approve-btn").onclick = async (e) => {
+        e.target.disabled = true;
+        await processRequestUse(data.couponNumber, data.token, item.id);
+        e.target.disabled = false;
+      };
+
+      div.querySelector(".cancel-btn").onclick = async (e) => {
+        if (!confirm(`쿠폰 [${data.couponNumber}] 요청을 목록에서 지울까요?\n(쿠폰 자체는 그대로 남아있어 나중에 다시 전달하거나 QR로 사용할 수 있어요)`)) {
+          return;
+        }
+        e.target.disabled = true;
+        try {
+          await setDoc(doc(db, "coupon_requests", item.id), { status: "cancelled" }, { merge: true });
+        } catch (err) {
+          console.error("요청 취소 중 오류:", err);
+          alert("취소 실패: " + err.message);
+          e.target.disabled = false;
+        }
       };
 
       requestList.appendChild(div);
-    });
+    }
   });
 }
 
-async function approveCoupon(number) {
-  const ref = doc(db, "coupons", number);
-  const snap = await getDoc(ref);
+// ================================
+// 승인요청 → 즉시 사용 처리 (토큰 검증 포함)
+// ================================
+async function processRequestUse(number, token, requestId) {
+  try {
+    const ref = doc(db, "coupons", number);
+    const snap = await getDoc(ref);
 
-  if (!snap.exists()) {
-    alert("쿠폰 없음");
-    return;
+    if (!snap.exists()) {
+      alert("존재하지 않는 쿠폰입니다.");
+      return;
+    }
+
+    const data = snap.data();
+
+    if (data.token && token && data.token !== token) {
+      alert("❌ 인증 실패 — 고객이 전달한 정보와 쿠폰 토큰이 일치하지 않습니다.");
+      return;
+    }
+
+    if (data.status === "used" || (data.useCount || 0) >= (data.maxUseCount || 1)) {
+      alert("이미 사용 완료된 쿠폰입니다.");
+      await setDoc(doc(db, "coupon_requests", requestId), { status: "expired" }, { merge: true });
+      return;
+    }
+
+    if (data.endDate) {
+      const today = new Date();
+      const endDate = new Date(data.endDate);
+      endDate.setHours(23, 59, 59, 999);
+      if (today > endDate) {
+        alert("사용 기간이 만료된 쿠폰입니다.");
+        await setDoc(ref, { status: "expired" }, { merge: true });
+        await setDoc(doc(db, "coupon_requests", requestId), { status: "expired" }, { merge: true });
+        return;
+      }
+    }
+
+    if (!confirm(`쿠폰 [${number}] (${data.title || "-"} / ${data.discount || 0}%) 를 사용 처리하시겠습니까?`)) {
+      return;
+    }
+
+    await setDoc(ref, {
+      status: "used",
+      useCount: 1,
+      usedAt: serverTimestamp()
+    }, { merge: true });
+
+    await setDoc(doc(db, "coupon_requests", requestId), { status: "completed" }, { merge: true });
+
+    await addDoc(collection(db, "coupon_history"), {
+      couponNumber: number,
+      action: "used",
+      admin: auth.currentUser?.email || "-",
+      time: serverTimestamp()
+    });
+
+    alert("✅ 사용 완료 처리되었습니다.");
+  } catch (error) {
+    console.error("승인요청 처리 중 오류:", error);
+    alert("처리 실패: " + error.message);
   }
-
-  const data = snap.data();
-  if (data.status === "used" || data.status === "expired") {
-    alert("이미 사용되었거나 만료된 쿠폰은 승인할 수 없습니다.");
-    return;
-  }
-
-  await updateDoc(ref, {
-    status: "approved",
-    approvedAt: serverTimestamp()
-  });
-
-  await addDoc(collection(db, "coupon_history"), {
-    couponNumber: number,
-    action: "approved",
-    admin: auth.currentUser?.email || "-",
-    time: serverTimestamp()
-  });
-
-  alert("승인 완료");
 }
 
 // ================================
