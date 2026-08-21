@@ -29,6 +29,11 @@ const mainImage = document.getElementById("mainImage");
 const validPeriod = document.getElementById("validPeriod");
 const qrCode = document.getElementById("qrcode");
 const sendBtn = document.getElementById("sendBtn");
+const reserveDate = document.getElementById("reserveDate");
+const reserveTime = document.getElementById("reserveTime");
+const reservePeople = document.getElementById("reservePeople");
+const reserveBtn = document.getElementById("reserveBtn");
+const reserveResult = document.getElementById("reserveResult");
 
 let couponCreating = false;
 let currentUnsubscribe = null; // 실시간 수신기 해제용
@@ -337,3 +342,52 @@ async function autoLoadCoupon() {
 }
 
 autoLoadCoupon();
+
+// ================================
+// 방문예약
+// ================================
+if (reserveBtn) {
+  reserveBtn.onclick = async () => {
+    const date = reserveDate.value;
+    const time = reserveTime.value;
+    const people = Number(reservePeople.value);
+
+    if (!date) {
+      reserveResult.textContent = "날짜를 선택해 주세요.";
+      return;
+    }
+    if (!time) {
+      reserveResult.textContent = "시간을 선택해 주세요.";
+      return;
+    }
+    if (!people || people < 1) {
+      reserveResult.textContent = "인원수를 입력해 주세요.";
+      return;
+    }
+
+    reserveBtn.disabled = true;
+    reserveResult.textContent = "예약 신청 중...";
+
+    try {
+      await addDoc(collection(db, "reservations"), {
+        couponNumber: currentCouponNumber || couponNumberInput.value.trim() || null,
+        customerId: getCustomerId(),
+        date: date,
+        time: time,
+        people: people,
+        status: "requested",
+        createdAt: serverTimestamp()
+      });
+
+      reserveResult.textContent = "✅ 예약 신청이 접수되었습니다. 매장에서 확인 후 연락드릴게요.";
+      reserveDate.value = "";
+      reserveTime.value = "";
+      reservePeople.value = "";
+    } catch (err) {
+      console.error("예약 신청 오류:", err);
+      reserveResult.textContent = "❌ 예약 신청에 실패했어요. 잠시 후 다시 시도해 주세요.";
+    } finally {
+      reserveBtn.disabled = false;
+    }
+  };
+}
