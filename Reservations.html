@@ -1,0 +1,67 @@
+<!-- ======================================
+     reservations.html
+     JOKBAL TIME RESERVATION LIST
+     ====================================== -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>족발타임 방문예약 목록</title>
+<link rel="stylesheet" href="./admin.css">
+<style>
+  .list-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+  .back-link{color:var(--gold);font-size:14px;}
+  .res-filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+  .res-filter button{width:auto;padding:8px 14px;font-size:13px;background:#333;margin-top:0;}
+  .res-filter button.active{background:var(--gold);color:#111;font-weight:bold;}
+  .res-card{
+    background:linear-gradient(180deg,#242424,#161616);
+    border:1px solid rgba(212,175,55,.35);border-radius:16px;
+    padding:18px;margin-bottom:14px;
+  }
+  .res-card .when{font-size:20px;font-weight:bold;color:#FFD700;margin-bottom:6px;}
+  .res-card p{margin:4px 0;font-size:14px;color:#ddd;}
+  .res-card .status-tag{
+    display:inline-block;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;margin-top:8px;
+  }
+  .status-requested{background:#5c4400;color:#ffd54f;}
+  .status-confirmed{background:#1b5e20;color:#a5d6a7;}
+  .status-cancelled{background:#4a1414;color:#ef9a9a;}
+  .res-card .actions{display:flex;gap:8px;margin-top:12px;}
+  .res-card button{width:auto;padding:9px 14px;font-size:13px;}
+  .confirm-btn{background:#2e7d32;}
+  .cancel-btn2{background:#555;}
+  .delete-btn2{background:#b71c1c;}
+</style>
+</head>
+<body>
+<div class="admin-container">
+
+  <div class="list-top">
+    <h1 style="margin:0;font-size:22px;">📅 방문예약 목록</h1>
+    <a class="back-link" href="admin.html">← 관리자로</a>
+  </div>
+
+  <section id="listBox" class="box hidden">
+    <div class="top">
+      <h2>예약 현황</h2>
+      <button id="logoutBtn">로그아웃</button>
+    </div>
+
+    <div id="filterRow" class="res-filter">
+      <button data-filter="upcoming" class="active">예정된 예약</button>
+      <button data-filter="requested">신청됨</button>
+      <button data-filter="confirmed">확정</button>
+      <button data-filter="cancelled">취소됨</button>
+      <button data-filter="all">전체</button>
+    </div>
+
+    <div id="reservationList"></div>
+  </section>
+
+</div>
+
+<script type="module" src="./reservations.js"></script>
+</body>
+</html>
