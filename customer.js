@@ -35,6 +35,17 @@ const reservePeople = document.getElementById("reservePeople");
 const reserveBtn = document.getElementById("reserveBtn");
 const reserveResult = document.getElementById("reserveResult");
 
+// ================================
+// EmailJS (방문예약 알림용)
+// ================================
+const EMAILJS_SERVICE_ID = "service_ahojk5u";
+const EMAILJS_TEMPLATE_ID = "template_ah7ab6h";
+const EMAILJS_PUBLIC_KEY = "88LHSjwyC_5rZA7Sy";
+
+if (window.emailjs) {
+  window.emailjs.init(EMAILJS_PUBLIC_KEY);
+}
+
 let couponCreating = false;
 let currentUnsubscribe = null; // 실시간 수신기 해제용
 
@@ -378,6 +389,18 @@ if (reserveBtn) {
         status: "requested",
         createdAt: serverTimestamp()
       });
+
+      // 사장님께 이메일 알림 전송 (실패해도 예약 자체는 정상 처리됨)
+      if (window.emailjs) {
+        window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          reservation_date: date,
+          reservation_time: time,
+          people: people,
+          coupon_number: currentCouponNumber || couponNumberInput.value.trim() || "-"
+        }).catch((err) => {
+          console.warn("예약 알림 이메일 전송 실패:", err);
+        });
+      }
 
       reserveResult.textContent = "✅ 예약 신청이 접수되었습니다. 매장에서 확인 후 연락드릴게요.";
       reserveDate.value = "";
